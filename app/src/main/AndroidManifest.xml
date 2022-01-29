@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.palettegrap">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/palettegrap"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".view.activity.Activity_MyStory"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_FeedUpload"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".view.activity.Activity_Following"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_MyStoryEdit"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Follower"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_SellRecord"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_BuyRecord"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_PwEdit"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_EmailEdit"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_NickEdit"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_ProfileEdit"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_MypageSetting"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_FindEmailCheck"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_TermsOfService"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_NickName"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Profile"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_PwReset"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Pw"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Email2"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Email"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Main"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Login"
+            android:exported="true" />
+        <activity
+            android:name=".etc.Splash"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.palettegrap.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>
