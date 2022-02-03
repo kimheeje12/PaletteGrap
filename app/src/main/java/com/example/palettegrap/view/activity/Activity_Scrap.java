@@ -47,9 +47,8 @@ public class Activity_Scrap extends AppCompatActivity {
 
         ImageView empty = (ImageView) findViewById(R.id.empty); //북마크 표시
 
-        Intent intent = getIntent();
-        String feed_id = intent.getStringExtra("feed_id"); //피드 일련번호
-        String member_email = intent.getStringExtra("member_email"); //회원 이메일
+        SharedPreferences pref = getSharedPreferences("autologin", MODE_PRIVATE);
+        String email = pref.getString("inputemail", null); //회원 이메일
 
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -60,13 +59,13 @@ public class Activity_Scrap extends AppCompatActivity {
                 .build();
 
         GetScrap api = retrofit.create(GetScrap.class);
-        Call<List<FeedData>> call = api.getScrap(feed_id, member_email);
+        Call<List<FeedData>> call = api.getScrap(email);
         call.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
         {
             @Override
             public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.e("Success", "call back 정상!");
+                    Log.e("Success", "scrap 정상!");
 
                     generateFeedList(response.body());
 
@@ -95,16 +94,20 @@ public class Activity_Scrap extends AppCompatActivity {
             private void generateFeedList(List<FeedData> body){
 
                 //리사이클러뷰 형성
-                recyclerView = (RecyclerView) findViewById(R.id.Recycler_myfeed);
+                recyclerView = (RecyclerView) findViewById(R.id.recycler_scrap);
 
                 myFeedUploadAdapter = new MyFeedUploadAdapter(Activity_Scrap.this, body);
                 recyclerView.setAdapter(myFeedUploadAdapter);
 
-                //게시글이 비었을 때
+                //스크랩이 비었을 때
                 if(body.size()!=0){
                     empty.setVisibility(View.INVISIBLE);
+                    empty2.setVisibility(View.INVISIBLE);
+                    empty3.setVisibility(View.INVISIBLE);
                 }else{
                     empty.setVisibility(View.VISIBLE);
+                    empty2.setVisibility(View.VISIBLE);
+                    empty3.setVisibility(View.VISIBLE);
                 }
 
                 //리사이클러뷰 연결

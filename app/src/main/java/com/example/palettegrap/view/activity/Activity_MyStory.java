@@ -335,12 +335,6 @@ public class Activity_MyStory extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             Log.e("Success", "scrapinput 정상!");
 
-                            //스크랩 액티비티로 데이터 보내기
-                            Intent intent = new Intent(Activity_MyStory.this, Activity_Scrap.class);
-                            intent.putExtra("member_email",email);
-                            intent.putExtra("feed_id",feed_id);
-                            startActivity(intent);
-
                         }
                     }
                     @Override
@@ -381,12 +375,6 @@ public class Activity_MyStory extends AppCompatActivity {
                     public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             Log.e("Success", "scrapdelete 정상!");
-
-                            //스크랩 액티비티로 데이터 보내기(삭제!)
-//                            Intent intent = new Intent(Activity_MyStory.this, Activity_Scrap.class);
-//                            intent.putExtra("email",email);
-//                            intent.putExtra("feed_id",feed_id);
-//                            startActivity(intent);
 
                         }
                     }

@@ -16,7 +16,6 @@ public interface GetScrap {
     @FormUrlEncoded
     @POST("GetScrap.php")
     Call<List<FeedData>> getScrap(
-            @Field("feed_id") String feed_id,
             @Field("member_email") String member_email);
 
 }
