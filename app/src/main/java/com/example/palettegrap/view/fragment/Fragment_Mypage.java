@@ -25,6 +25,7 @@ import com.example.palettegrap.R;
 import com.example.palettegrap.etc.GetFeed;
 import com.example.palettegrap.etc.GetImage;
 import com.example.palettegrap.etc.GetMyFeed;
+import com.example.palettegrap.etc.GetNickName;
 import com.example.palettegrap.etc.SpacesItemDecoration;
 import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.item.MyFeedData;
@@ -34,6 +35,7 @@ import com.example.palettegrap.view.activity.Activity_Main;
 import com.example.palettegrap.view.activity.Activity_MyStory;
 import com.example.palettegrap.view.activity.Activity_MypageSetting;
 import com.example.palettegrap.view.activity.Activity_ProfileEdit;
+import com.example.palettegrap.view.activity.Activity_Scrap;
 import com.example.palettegrap.view.adapter.FeedUploadAdapter;
 import com.example.palettegrap.view.adapter.MyFeedUploadAdapter;
 import com.google.gson.Gson;
@@ -63,41 +65,72 @@ public class Fragment_Mypage extends Fragment {
         //(사용할 자원, 자원 담을 곳, T/F) -> 메인에 직접 들어가면 T / 프래그먼트에 있으면 F
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_mypage, container, false);
 
-        Button btn_setting = (Button) rootView.findViewById(R.id.setting);
-        Button btn_profile_edit = (Button) rootView.findViewById(R.id.profile_edit);
-        Button sell = (Button) rootView.findViewById(R.id.sell);
-        Button buy = (Button) rootView.findViewById(R.id.buy);
+        Button btn_setting = (Button) rootView.findViewById(R.id.setting); // 설정
+        Button btn_profile_edit = (Button) rootView.findViewById(R.id.profile_edit); //프로필 편집
+        Button Scrap = (Button) rootView.findViewById(R.id.scrap); //프로필 편집
 
-        TextView following = (TextView) rootView.findViewById(R.id.following);
-        TextView follower = (TextView) rootView.findViewById(R.id.follower);
-        TextView board_count = (TextView) rootView.findViewById(R.id.board_count);
+        TextView following = (TextView) rootView.findViewById(R.id.following); //팔로잉
+        TextView follower = (TextView) rootView.findViewById(R.id.follower); //팔로우
+        TextView board_count = (TextView) rootView.findViewById(R.id.board_count); //게시글 갯수
+        TextView nickname = (TextView) rootView.findViewById(R.id.nickname); //회원 닉네임
+        TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시
 
-        ImageView profileImage = (ImageView) rootView.findViewById(R.id.profileimage);
-
+        ImageView profileImage = (ImageView) rootView.findViewById(R.id.profileimage); //프로필 이미지
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);
+
+        //프로필 닉네임 설정
+        String loginemail = pref.getString("inputemail", null);
+
+        Gson gson = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GetNickName.GetNickName_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        GetNickName api = retrofit.create(GetNickName.class);
+        Call<String> call = api.getNickName(loginemail);
+        call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+        {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "call back 정상! 닉네임 획득");
+                    String jsonResponse = response.body();
+                    nickname.setText(jsonResponse);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
+
+            }
+        });
 
 
         //프로필 이미지 설정
         if(profileImage.getDrawable() != null){
-            String loginemail=pref.getString("inputemail",null);
+            String loginemail2=pref.getString("inputemail",null);
 
-            Gson gson = new GsonBuilder().setLenient().create();
+            Gson gson2 = new GsonBuilder().setLenient().create();
 
-            Retrofit retrofit = new Retrofit.Builder()
+            Retrofit retrofit2 = new Retrofit.Builder()
                     .baseUrl(GetImage.GetImage_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(GsonConverterFactory.create(gson2))
                     .build();
 
-            GetImage api = retrofit.create(GetImage.class);
-            Call<String> call = api.getImage(loginemail);
-            call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+            GetImage api2 = retrofit2.create(GetImage.class);
+            Call<String> call2 = api2.getImage(loginemail2);
+            call2.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
             {
                 @Override
                 public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         Log.e("Success", "call back 정상! 이미지 획득");
                         String jsonResponse = response.body();
+
                         Glide.with(Fragment_Mypage.this).load(jsonResponse).circleCrop().into(profileImage);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("inputimage", jsonResponse);
@@ -115,19 +148,19 @@ public class Fragment_Mypage extends Fragment {
         }
 
         //마이페이지 피드 게시글 형성
-        String loginemail = pref.getString("inputemail", null);
+        String loginemail3 = pref.getString("inputemail", null);
 
-        Gson gson = new GsonBuilder().setLenient().create();
+        Gson gson3 = new GsonBuilder().setLenient().create();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofit3 = new Retrofit.Builder()
                 .baseUrl(GetMyFeed.GetMyFeed_URL)
                 .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(gson3))
                 .build();
 
-        GetMyFeed api = retrofit.create(GetMyFeed.class);
-        Call<List<FeedData>> call = api.getMyFeed(loginemail);
-        call.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
+        GetMyFeed api3 = retrofit3.create(GetMyFeed.class);
+        Call<List<FeedData>> call3 = api3.getMyFeed(loginemail3);
+        call3.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
         {
             @Override
             public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
@@ -135,7 +168,6 @@ public class Fragment_Mypage extends Fragment {
                     Log.e("Success", "call back 정상!");
 
                     generateFeedList(response.body());
-
 
                     myFeedUploadAdapter.setOnItemClickListener(new MyFeedUploadAdapter.OnItemClickListener() {
                         @Override
@@ -159,13 +191,14 @@ public class Fragment_Mypage extends Fragment {
             }
 
             private void generateFeedList(List<FeedData> body){
+
                 //리사이클러뷰 형성
                 recyclerView = (RecyclerView) rootView.findViewById(R.id.Recycler_myfeed);
 
                 myFeedUploadAdapter = new MyFeedUploadAdapter(getActivity(), body);
                 recyclerView.setAdapter(myFeedUploadAdapter);
 
-                board_count.setText(String.valueOf(body.size()));
+                board_count.setText(String.valueOf(body.size())); // 게시글 갯수(사이즈는 int -> String으로 바꾸자!)
 
                 //리사이클러뷰 연결
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
@@ -173,6 +206,7 @@ public class Fragment_Mypage extends Fragment {
                 recyclerView.setLayoutManager(gridLayoutManager);
 
                 myFeedUploadAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -200,7 +234,7 @@ public class Fragment_Mypage extends Fragment {
             }
         });
 
-        //팔로워
+        //팔로우
         follower.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,6 +253,16 @@ public class Fragment_Mypage extends Fragment {
 
             }
         });
+
+        //스크랩
+        Scrap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Activity_Scrap.class);
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }

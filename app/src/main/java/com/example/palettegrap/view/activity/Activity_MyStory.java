@@ -105,6 +105,12 @@ public class Activity_MyStory extends AppCompatActivity {
                     intent.putExtra("mypage",1);
                     startActivity(intent);
                 }else{
+                    //다른 회원 닉네임 정보 넘기기(다른 회원 마이페이지 이동했을 때 데이터를 불러오기 위해)
+                    SharedPreferences pref = getSharedPreferences("otherprofile", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("othernick", member_nick.getText().toString());
+                    editor.apply();
+                    Log.e("member_nick", "member_nick"+member_nick.getText().toString());
                     Intent intent = new Intent(Activity_MyStory.this, Activity_Main.class);
                     intent.putExtra("mypage",2);
                     startActivity(intent);

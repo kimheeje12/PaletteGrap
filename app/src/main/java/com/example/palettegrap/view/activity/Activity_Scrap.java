@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.palettegrap.R;
 
-public class Activity_BuyRecord extends AppCompatActivity {
+public class Activity_Scrap extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buy_record);
+        setContentView(R.layout.activity_scrap);
     }
 }

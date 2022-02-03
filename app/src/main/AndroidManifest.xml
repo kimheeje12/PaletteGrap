@@ -27,6 +27,9 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.Activity_Scrap"
+            android:exported="true" />
+        <activity
             android:name=".view.activity.Activity_MyStory"
             android:exported="true" />
         <activity
@@ -41,12 +44,6 @@
             android:exported="true" />
         <activity
             android:name=".view.activity.Activity_Follower"
-            android:exported="true" />
-        <activity
-            android:name=".view.activity.Activity_SellRecord"
-            android:exported="true" />
-        <activity
-            android:name=".view.activity.Activity_BuyRecord"
             android:exported="true" />
         <activity
             android:name=".view.activity.Activity_PwEdit"

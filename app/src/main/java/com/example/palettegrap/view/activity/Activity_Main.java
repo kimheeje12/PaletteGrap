@@ -46,7 +46,7 @@ public class Activity_Main extends AppCompatActivity {
             transaction.replace(R.id.frame, fragment_mypage);
             transaction.addToBackStack(null);
             transaction.commit();
-        }else if(mypage==2){ //다른 사람 페이지
+        }else if(mypage==2){ //다른 회원 마이페이지
             bottomNavigationView.setSelectedItemId(R.id.mypage);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             Fragment_OtherPage fragment_otherPage= new Fragment_OtherPage();

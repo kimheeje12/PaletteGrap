@@ -1,177 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/nickname"
+        android:layout_width="170dp"
+        android:layout_height="60dp"
+        android:fontFamily="@font/allura_regular"
+        android:gravity="center"
+        android:hint="Nickname"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        app:layout_constraintEnd_toStartOf="@+id/setting"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/setting"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/setting"
+        app:layout_constraintBottom_toBottomOf="@+id/nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nickname"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <FrameLayout
+        android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="250dp"
+        android:clipToPadding="false">
 
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="170dp"
-            android:layout_height="60dp"
-            android:fontFamily="@font/allura_regular"
-            android:gravity="center"
-            android:text="PaletteGrap"
-            android:textColor="@color/white"
-            android:textSize="35dp"
-            app:layout_constraintEnd_toStartOf="@+id/setting"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/setting"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/setting"
-            app:layout_constraintBottom_toBottomOf="@+id/textView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView2"
-            app:layout_constraintVertical_bias="0.4" />
-
-        <FrameLayout
-            android:id="@+id/frame"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/Recycler_myfeed"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="250dp"
-            android:clipToPadding="false">
+            android:layout_height="350dp"
+            android:clipToPadding="false" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/Recycler_myfeed"
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:clipToPadding="false" />
+    </FrameLayout>
 
-        </FrameLayout>
+    <ImageView
+        android:id="@+id/profileimage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="12dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nickname"
+        app:srcCompat="@drawable/profilebasic" />
 
-        <ImageView
-            android:id="@+id/profileimage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="12dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.025"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:srcCompat="@drawable/profilebasic" />
+    <Button
+        android:id="@+id/follow"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="팔로우"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/send_message"
+        app:layout_constraintHorizontal_bias="0.189"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileimage" />
 
-        <Button
-            android:id="@+id/profile_edit"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="프로필 편집"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/profileimage"
-            app:layout_constraintHorizontal_bias="0.464"
-            app:layout_constraintStart_toStartOf="@+id/profileimage"
-            app:layout_constraintTop_toBottomOf="@+id/profileimage" />
+    <Button
+        android:id="@+id/send_message"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:drawableLeft="@drawable/send_message_resize"
+        android:text="메시지"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/follow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/follow"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/sell"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="판매내역"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_edit"
-            app:layout_constraintStart_toEndOf="@+id/profile_edit"
-            app:layout_constraintTop_toTopOf="@+id/profile_edit"
-            app:layout_constraintVertical_bias="0.0" />
+    <TextView
+        android:id="@+id/follower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="팔로워"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/follwer_num"
+        app:layout_constraintHorizontal_bias="0.422"
+        app:layout_constraintStart_toStartOf="@+id/follwer_num"
+        app:layout_constraintTop_toBottomOf="@+id/follwer_num" />
 
-        <Button
-            android:id="@+id/buy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="구매내역"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/sell"
-            app:layout_constraintStart_toEndOf="@+id/sell"
-            app:layout_constraintTop_toTopOf="@+id/sell"
-            app:layout_constraintVertical_bias="0.0" />
+    <TextView
+        android:id="@+id/follwer_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="44dp"
+        android:hint="0"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/following_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/following_num"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/follower"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="팔로워"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/follwer_num"
-            app:layout_constraintHorizontal_bias="0.422"
-            app:layout_constraintStart_toStartOf="@+id/follwer_num"
-            app:layout_constraintTop_toBottomOf="@+id/follwer_num" />
+    <TextView
+        android:id="@+id/following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="팔로잉"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/following_num"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/following_num"
+        app:layout_constraintTop_toBottomOf="@+id/following_num" />
 
-        <TextView
-            android:id="@+id/follwer_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="44dp"
-            android:hint="0"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/following_num"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/following_num"
-            app:layout_constraintVertical_bias="0.0" />
+    <TextView
+        android:id="@+id/board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="게시글"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/board_count"
+        app:layout_constraintStart_toStartOf="@+id/board_count"
+        app:layout_constraintTop_toBottomOf="@+id/board_count" />
 
-        <TextView
-            android:id="@+id/following"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="팔로잉"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/following_num"
-            app:layout_constraintHorizontal_bias="0.444"
-            app:layout_constraintStart_toStartOf="@+id/following_num"
-            app:layout_constraintTop_toBottomOf="@+id/following_num" />
+    <TextView
+        android:id="@+id/following_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:hint="0"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileimage"
+        app:layout_constraintEnd_toStartOf="@+id/follwer_num"
+        app:layout_constraintTop_toTopOf="@+id/profileimage"
+        app:layout_constraintVertical_bias="0.215" />
 
-        <TextView
-            android:id="@+id/board"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="게시글"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/board_count"
-            app:layout_constraintStart_toStartOf="@+id/board_count"
-            app:layout_constraintTop_toBottomOf="@+id/board_count" />
+    <TextView
+        android:id="@+id/board_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:hint="0"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileimage"
+        app:layout_constraintStart_toEndOf="@+id/profileimage"
+        app:layout_constraintTop_toTopOf="@+id/profileimage"
+        app:layout_constraintVertical_bias="0.215" />
 
-        <TextView
-            android:id="@+id/following_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
-            android:hint="0"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/profileimage"
-            app:layout_constraintEnd_toStartOf="@+id/follwer_num"
-            app:layout_constraintTop_toTopOf="@+id/profileimage"
-            app:layout_constraintVertical_bias="0.215" />
-
-        <TextView
-            android:id="@+id/board_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:hint="0"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/profileimage"
-            app:layout_constraintStart_toEndOf="@+id/profileimage"
-            app:layout_constraintTop_toTopOf="@+id/profileimage"
-            app:layout_constraintVertical_bias="0.215" />
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:text="현재 게시글이 없습니다"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/follow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

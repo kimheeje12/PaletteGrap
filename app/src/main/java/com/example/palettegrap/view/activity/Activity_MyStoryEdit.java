@@ -126,6 +126,9 @@ public class Activity_MyStoryEdit extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(Activity_MyStoryEdit.this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.scrollToPosition(uriList.size()); //좌측부터 정렬하기!
 
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(imageUploadAdapter));
+        helper.attachToRecyclerView(recyclerView);
+
         //카테고리
         if (feed_category.equals("0")) {
             feedcategory.setText("일러스트");
@@ -305,7 +308,7 @@ public class Activity_MyStoryEdit extends AppCompatActivity {
                     RequestBody requestBody0 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 일련번호
                     RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), member_email); //이메일
                     RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_text.getText().toString()); //피드 text
-                    RequestBody requestBody3 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(uriList.size())); //이미지 사이즈
+                    RequestBody requestBody3 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(imagePathList.size())); //이미지 사이즈
                     RequestBody requestBody4 = RequestBody.create(MediaType.parse("text/plain"), feed_category); //이미지 카테고리
                     RequestBody requestBody5 = RequestBody.create(MediaType.parse("text/plain"), drawingtool.getText().toString()); //드로잉 툴
                     RequestBody requestBody6 = RequestBody.create(MediaType.parse("text/plain"), drawingtime.getText().toString()); //소요시간
@@ -351,7 +354,6 @@ public class Activity_MyStoryEdit extends AppCompatActivity {
 
                                 String tmp = createCopyAndReturnRealPath(Activity_MyStoryEdit.this, uri); //절대경로 만들기
                                 imagePathList2.add(Uri.parse(tmp)); //기존 이미지+새로운 이미지 순서용
-
 
                                 imagePathList.add(uri); //새로운 이미지 경로를 서버로 보내기 위해
                                 imageUploadAdapter.seturiList(uriList);
