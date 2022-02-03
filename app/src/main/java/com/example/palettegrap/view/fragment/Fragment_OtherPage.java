@@ -69,6 +69,7 @@ public class Fragment_OtherPage extends Fragment {
         TextView follower = (TextView) rootView.findViewById(R.id.follower); //팔로워 숫자
         TextView board_count = (TextView) rootView.findViewById(R.id.board_count); //게시글 숫자
         TextView nickname = (TextView) rootView.findViewById(R.id.nickname); //게시글 숫자
+        TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시
 
         ImageView profileImage = (ImageView) rootView.findViewById(R.id.profileimage); //프로필 이미지
 
@@ -187,7 +188,14 @@ public class Fragment_OtherPage extends Fragment {
                 myFeedUploadAdapter = new MyFeedUploadAdapter(getActivity(), body);
                 recyclerView.setAdapter(myFeedUploadAdapter);
 
-                board_count.setText(String.valueOf(body.size()));
+                board_count.setText(String.valueOf(body.size())); // 게시글 갯수(사이즈는 int -> String으로 바꾸자!)
+
+                //게시글이 비었을 때
+                if(body.size()!=0){
+                    empty.setVisibility(View.INVISIBLE);
+                }else{
+                    empty.setVisibility(View.VISIBLE);
+                }
 
                 //리사이클러뷰 연결
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);

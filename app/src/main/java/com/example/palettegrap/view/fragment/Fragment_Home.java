@@ -82,6 +82,7 @@ public class Fragment_Home extends Fragment{
 
         TextView member_nick = (TextView) rootView.findViewById(R.id.member_nick); //닉네임
         TextView feedtext = (TextView) rootView.findViewById(R.id.feedtext); //피드 텍스트
+        TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);
         SharedPreferences pref2 = this.getActivity().getSharedPreferences("category", Context.MODE_PRIVATE);
@@ -116,6 +117,7 @@ public class Fragment_Home extends Fragment{
                                 FeedData feedData = response.body().get(position);
 
                                 Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                intent.putExtra("member_email", feedData.getMember_email());
                                 intent.putExtra("feed_id", feedData.getfeed_id());
                                 intent.putExtra("member_image", feedData.getmember_image());
                                 intent.putExtra("member_nick", feedData.getmember_nick());
@@ -138,6 +140,13 @@ public class Fragment_Home extends Fragment{
 
                     feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                     recyclerView.setAdapter(feedUploadAdapter);
+
+                    //게시글이 비었을 때
+                    if(body.size()!=0){
+                        empty.setVisibility(View.INVISIBLE);
+                    }else{
+                        empty.setVisibility(View.VISIBLE);
+                    }
 
                     //리사이클러뷰 연결
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
@@ -209,6 +218,13 @@ public class Fragment_Home extends Fragment{
 
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
+
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
 
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
@@ -282,6 +298,13 @@ public class Fragment_Home extends Fragment{
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
 
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
+
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(gridLayoutManager);
@@ -353,6 +376,13 @@ public class Fragment_Home extends Fragment{
 
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
+
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
 
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
@@ -426,6 +456,13 @@ public class Fragment_Home extends Fragment{
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
 
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
+
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(gridLayoutManager);
@@ -497,6 +534,13 @@ public class Fragment_Home extends Fragment{
 
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
+
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
 
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
@@ -570,6 +614,13 @@ public class Fragment_Home extends Fragment{
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
 
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
+
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(gridLayoutManager);
@@ -641,6 +692,13 @@ public class Fragment_Home extends Fragment{
 
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
+
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
 
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
@@ -714,6 +772,13 @@ public class Fragment_Home extends Fragment{
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
 
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
+
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(gridLayoutManager);
@@ -785,6 +850,13 @@ public class Fragment_Home extends Fragment{
 
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
+
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
 
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
@@ -858,6 +930,13 @@ public class Fragment_Home extends Fragment{
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
 
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
+
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(gridLayoutManager);
@@ -930,6 +1009,13 @@ public class Fragment_Home extends Fragment{
                         feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
                         recyclerView.setAdapter(feedUploadAdapter);
 
+                        //게시글이 비었을 때
+                        if(body.size()!=0){
+                            empty.setVisibility(View.INVISIBLE);
+                        }else{
+                            empty.setVisibility(View.VISIBLE);
+                        }
+
                         //리사이클러뷰 연결
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
                         recyclerView.setLayoutManager(gridLayoutManager);
@@ -973,7 +1059,6 @@ public class Fragment_Home extends Fragment{
 
 
 // TODO: 2022-01-25 리사이클러뷰 활용
-// [사용법] - https://stickode.com/detail.html?no=1040
 
 //        categorylist.clear(); //자꾸 추가됨, clear
 //

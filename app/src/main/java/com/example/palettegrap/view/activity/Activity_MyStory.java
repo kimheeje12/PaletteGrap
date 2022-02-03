@@ -48,6 +48,8 @@ public class Activity_MyStory extends AppCompatActivity {
     private ImageSliderAdapter imageSliderAdapter;
     private LinearLayout layoutIndicator;
 
+
+    //바로바로 최신화하기 위해!(생명주기)
     @Override
     protected void onStart() {
         super.onStart();
@@ -59,8 +61,12 @@ public class Activity_MyStory extends AppCompatActivity {
         TextView feed_drawingtool = (TextView) findViewById(R.id.feed_drawingtool); //사용도구
         TextView feed_drawingtime = (TextView) findViewById(R.id.feed_drawingtime); //소요시간
         TextView feed_created = (TextView) findViewById(R.id.feed_created); //작성일
+        TextView setting = (TextView) findViewById(R.id.setting); //설정
 
         ImageView feed_setting = (ImageView) findViewById(R.id.feed_setting); //설정
+        ImageView scrap = (ImageView) findViewById(R.id.scrap); //스크랩(스크랩 하지 않았을 때)
+        ImageView scrap2 = (ImageView) findViewById(R.id.scrap2); //스크랩2(스크랩 했을 때)
+
 
         viewPager2 = findViewById(R.id.viewpager2);
         layoutIndicator = findViewById(R.id.layoutIndicators);
@@ -73,7 +79,7 @@ public class Activity_MyStory extends AppCompatActivity {
             }
         });
 
-        //마이스토리
+        //마이스토리(마이페이지와 홈에서 인텐트로 해당 아이템 정보를 가져옴)
         Intent intent = getIntent();
         String feed_id = intent.getStringExtra("feed_id"); //피드 일련번호
         String member_email = intent.getStringExtra("member_email"); //회원 이메일
@@ -84,7 +90,6 @@ public class Activity_MyStory extends AppCompatActivity {
         String feeddrawingtime = intent.getStringExtra("feed_drawingtime"); //소요시간
         String feedcreated = intent.getStringExtra("feed_created"); //작성일
         String feed_category = intent.getStringExtra("feed_category"); //피드 카테고리
-        //int position = intent.getIntExtra("position",-1); //포지션 값
 
         Glide.with(Activity_MyStory.this).load(member_image).circleCrop().into(member_profile); //프로필 이미지
         member_nick.setText(membernick); //닉네임
@@ -95,6 +100,17 @@ public class Activity_MyStory extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("autologin", MODE_PRIVATE);
         String nickname = pref.getString("inputnick", null);
+        String email = pref.getString("inputemail", null);
+
+        //설정 창 보여주기(로그인 시 & 비로그인 시)
+        //현재 로그인 되어있는 이메일과 동일하지 않을 시 설정창 가리기
+        if(member_email.equals(email)){
+            feed_setting.setVisibility(View.VISIBLE);
+            setting.setVisibility(View.VISIBLE);
+        }else{
+            feed_setting.setVisibility(View.INVISIBLE);
+            setting.setVisibility(View.INVISIBLE);
+        }
 
         //프로필 클릭시 마이페이지로 이동!
         member_profile.setOnClickListener(new View.OnClickListener() {
@@ -245,6 +261,51 @@ public class Activity_MyStory extends AppCompatActivity {
                     }
                 });
                 builder.show();
+            }
+        });
+
+        //스크랩 유무 확인
+        if(scrap2.getVisibility()==View.VISIBLE){ //스크랩이 되어있을 경우
+
+
+
+        }else{ // 스크랩이 되어있지 않는 경우
+
+
+        }
+
+
+        //스크랩 할 때
+        scrap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+
+
+
+
+
+                scrap2.setVisibility(View.VISIBLE);
+                scrap.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), "해당 게시글이 저장되었습니다", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //스크랩 취소할 때
+        scrap2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+
+
+
+                scrap.setVisibility(View.VISIBLE);
+                scrap2.setVisibility(View.INVISIBLE);
+
             }
         });
     }

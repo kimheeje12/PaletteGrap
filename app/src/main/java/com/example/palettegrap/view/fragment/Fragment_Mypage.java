@@ -132,6 +132,9 @@ public class Fragment_Mypage extends Fragment {
                         String jsonResponse = response.body();
 
                         Glide.with(Fragment_Mypage.this).load(jsonResponse).circleCrop().into(profileImage);
+
+
+                        //프로필 이미지 편집할 때 활용
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("inputimage", jsonResponse);
                         editor.apply();
@@ -175,6 +178,7 @@ public class Fragment_Mypage extends Fragment {
                             FeedData feedData = response.body().get(position);
 
                             Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                            intent.putExtra("member_email", feedData.getMember_email());
                             intent.putExtra("feed_id", feedData.getfeed_id());
                             intent.putExtra("member_image", feedData.getmember_image());
                             intent.putExtra("member_nick", feedData.getmember_nick());
@@ -199,6 +203,13 @@ public class Fragment_Mypage extends Fragment {
                 recyclerView.setAdapter(myFeedUploadAdapter);
 
                 board_count.setText(String.valueOf(body.size())); // 게시글 갯수(사이즈는 int -> String으로 바꾸자!)
+
+                //게시글이 비었을 때
+                if(body.size()!=0){
+                    empty.setVisibility(View.INVISIBLE);
+                }else{
+                    empty.setVisibility(View.VISIBLE);
+                }
 
                 //리사이클러뷰 연결
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);

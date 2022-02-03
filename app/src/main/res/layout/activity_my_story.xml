@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/setting"
         app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -211,7 +211,7 @@
         app:layout_constraintTop_toTopOf="@+id/back" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="설정"
@@ -296,7 +296,7 @@
         app:layout_constraintTop_toTopOf="@+id/replytext" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/scrap"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="72dp"
@@ -305,8 +305,20 @@
         app:layout_constraintTop_toTopOf="@+id/reply"
         app:srcCompat="@drawable/bookmark1" />
 
+    <ImageView
+        android:id="@+id/scrap2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="72dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/reply"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/reply"
+        app:srcCompat="@drawable/bookmark2" />
+
+
     <TextView
-        android:id="@+id/scrap"
+        android:id="@+id/scrap3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -314,9 +326,9 @@
         android:textColor="@color/white"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintBottom_toBottomOf="@+id/scrap"
+        app:layout_constraintStart_toEndOf="@+id/scrap"
+        app:layout_constraintTop_toTopOf="@+id/scrap" />
 
     <View
         android:id="@+id/view5"
