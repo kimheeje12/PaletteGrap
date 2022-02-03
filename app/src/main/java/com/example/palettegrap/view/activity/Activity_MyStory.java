@@ -25,6 +25,9 @@ import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.FeedDelete;
 import com.example.palettegrap.etc.GetMyStory;
+import com.example.palettegrap.etc.ScrapCheck;
+import com.example.palettegrap.etc.ScrapDelete;
+import com.example.palettegrap.etc.ScrapInput;
 import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.view.adapter.ImageSliderAdapter;
 import com.example.palettegrap.view.fragment.Fragment_Mypage;
@@ -34,6 +37,8 @@ import com.google.gson.GsonBuilder;
 import java.io.Serializable;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -264,29 +269,88 @@ public class Activity_MyStory extends AppCompatActivity {
             }
         });
 
-        //스크랩 유무 확인
-        if(scrap2.getVisibility()==View.VISIBLE){ //스크랩이 되어있을 경우
 
+        //스크랩 유무 확인(php에서 판단(피드 일련번호+회원이메일) -> 1-click / 0-unclick)
+        Gson gson2 = new GsonBuilder().setLenient().create();
 
+        Retrofit retrofit2 = new Retrofit.Builder()
+                .baseUrl(ScrapCheck.ScrapCheck_URL)
+                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                .addConverterFactory(GsonConverterFactory.create(gson2))
+                .build();
 
-        }else{ // 스크랩이 되어있지 않는 경우
+        ScrapCheck api2 = retrofit2.create(ScrapCheck.class);
 
+        RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+        RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
 
-        }
+        Call<String> call2 = api2.ScrapCheck(requestBody1,requestBody2);
+        call2.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+        {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "call back 정상!");
 
+                    if (response.body().contains("click")) { //스크랩 이미 했을 경우
+                        scrap2.setVisibility(View.VISIBLE);
+                        scrap.setVisibility(View.INVISIBLE);
+                    }if (response.body().contains("unclick")) {//스크랩 아직 하지 않았을 경우
+                        scrap.setVisibility(View.VISIBLE);
+                        scrap2.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
+
+            }
+        });
 
         //스크랩 할 때
         scrap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Gson gson = new GsonBuilder().setLenient().create();
 
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(ScrapInput.ScrapInput_URL)
+                        .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
 
+                ScrapInput api = retrofit.create(ScrapInput.class);
 
+                RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+                RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
 
+                Call<String> call = api.ScrapInput(requestBody1,requestBody2);
+                call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Log.e("Success", "scrapinput 정상!");
 
+                            //스크랩 액티비티로 데이터 보내기
+                            Intent intent = new Intent(Activity_MyStory.this, Activity_Scrap.class);
+                            intent.putExtra("member_email",email);
+                            intent.putExtra("feed_id",feed_id);
+                            startActivity(intent);
 
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("Fail", "call back 실패" + t.getMessage());
 
+                    }
+                });
+
+                //스크랩 click/unclick
                 scrap2.setVisibility(View.VISIBLE);
                 scrap.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), "해당 게시글이 저장되었습니다", Toast.LENGTH_SHORT).show();
@@ -297,15 +361,45 @@ public class Activity_MyStory extends AppCompatActivity {
         scrap2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Gson gson = new GsonBuilder().setLenient().create();
 
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(ScrapDelete.ScrapDelete_URL)
+                        .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
 
+                ScrapDelete api = retrofit.create(ScrapDelete.class);
 
+                RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+                RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
 
+                Call<String> call = api.ScrapDelete(requestBody1,requestBody2);
+                call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Log.e("Success", "scrapdelete 정상!");
 
+                            //스크랩 액티비티로 데이터 보내기(삭제!)
+//                            Intent intent = new Intent(Activity_MyStory.this, Activity_Scrap.class);
+//                            intent.putExtra("email",email);
+//                            intent.putExtra("feed_id",feed_id);
+//                            startActivity(intent);
 
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("Fail", "call back 실패" + t.getMessage());
+
+                    }
+                });
+
+                //스크랩 click/unclick
                 scrap.setVisibility(View.VISIBLE);
                 scrap2.setVisibility(View.INVISIBLE);
-
             }
         });
     }
