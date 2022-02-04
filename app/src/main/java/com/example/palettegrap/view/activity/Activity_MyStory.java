@@ -25,6 +25,9 @@ import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.FeedDelete;
 import com.example.palettegrap.etc.GetMyStory;
+import com.example.palettegrap.etc.LikeCheck;
+import com.example.palettegrap.etc.LikeDelete;
+import com.example.palettegrap.etc.LikeInput;
 import com.example.palettegrap.etc.ScrapCheck;
 import com.example.palettegrap.etc.ScrapDelete;
 import com.example.palettegrap.etc.ScrapInput;
@@ -67,10 +70,13 @@ public class Activity_MyStory extends AppCompatActivity {
         TextView feed_drawingtime = (TextView) findViewById(R.id.feed_drawingtime); //소요시간
         TextView feed_created = (TextView) findViewById(R.id.feed_created); //작성일
         TextView setting = (TextView) findViewById(R.id.setting); //설정
+        TextView likecount = (TextView) findViewById(R.id.likecount); //좋아요 갯수
 
         ImageView feed_setting = (ImageView) findViewById(R.id.feed_setting); //설정
         ImageView scrap = (ImageView) findViewById(R.id.scrap); //스크랩(스크랩 하지 않았을 때)
         ImageView scrap2 = (ImageView) findViewById(R.id.scrap2); //스크랩2(스크랩 했을 때)
+        ImageView like = (ImageView) findViewById(R.id.like); //좋아요(클릭 했을 때)
+        ImageView unlike = (ImageView) findViewById(R.id.unlike); //무응답(클릭 하지 않았을 때)
 
 
         viewPager2 = findViewById(R.id.viewpager2);
@@ -269,6 +275,218 @@ public class Activity_MyStory extends AppCompatActivity {
             }
         });
 
+        //좋아요 유무 확인(php에서 판단(피드 일련번호+회원이메일) -> 1-click / 0-unclick)
+        Gson gson3 = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit3 = new Retrofit.Builder()
+                .baseUrl(LikeCheck.LikeCheck_URL)
+                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                .addConverterFactory(GsonConverterFactory.create(gson3))
+                .build();
+
+        LikeCheck api3 = retrofit3.create(LikeCheck.class);
+
+        RequestBody requestBody3 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+        RequestBody requestBody4 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
+
+        Call<String> call3 = api3.LikeCheck(requestBody3,requestBody4);
+        call3.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+        {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "call back 정상!");
+
+                    if (response.body().contains("click")) { //스크랩 이미 했을 경우
+                        like.setVisibility(View.INVISIBLE);
+                        unlike.setVisibility(View.VISIBLE);
+                    }if (response.body().contains("unclick")) {//스크랩 아직 하지 않았을 경우
+                        unlike.setVisibility(View.INVISIBLE);
+                        like.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
+
+            }
+        });
+
+
+        //좋아요 갯수 카운팅
+        Gson gson4 = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit4 = new Retrofit.Builder()
+                .baseUrl(GetMyStory.GetMyStory_URL)
+                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                .addConverterFactory(GsonConverterFactory.create(gson4))
+                .build();
+
+        GetMyStory api4 = retrofit4.create(GetMyStory.class);
+        Call<List<FeedData>> call4 = api4.getMyStory(feed_id);
+        call4.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
+        {
+            @Override
+            public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "call back 정상!");
+                    myList = response.body();
+
+                    FeedData feedData = myList.get(0);
+                    likecount.setText(feedData.getLike_count());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FeedData>> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
+
+            }
+        });
+
+        //좋아요
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Gson gson = new GsonBuilder().setLenient().create();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(LikeInput.LikeInput_URL)
+                        .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
+
+                LikeInput api = retrofit.create(LikeInput.class);
+
+                RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+                RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
+
+                Call<String> call = api.LikeInput(requestBody1,requestBody2);
+                call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Log.e("Success", "Like 정상!");
+
+                            Gson gson4 = new GsonBuilder().setLenient().create();
+
+                            Retrofit retrofit4 = new Retrofit.Builder()
+                                    .baseUrl(GetMyStory.GetMyStory_URL)
+                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                    .addConverterFactory(GsonConverterFactory.create(gson4))
+                                    .build();
+
+                            GetMyStory api4 = retrofit4.create(GetMyStory.class);
+                            Call<List<FeedData>> call4 = api4.getMyStory(feed_id);
+                            call4.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
+                            {
+                                @Override
+                                public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        Log.e("Success", "call back 정상!");
+                                        myList = response.body();
+
+                                        FeedData feedData = myList.get(0);
+                                        likecount.setText(feedData.getLike_count());
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<FeedData>> call, Throwable t) {
+                                    Log.e("Fail", "call back 실패" + t.getMessage());
+
+                                }
+                            });
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("Fail", "call back 실패" + t.getMessage());
+
+                    }
+                });
+
+                //좋아요 click/unclick
+                like.setVisibility(View.INVISIBLE);
+                unlike.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //좋아요 취소
+        unlike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Gson gson = new GsonBuilder().setLenient().create();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(LikeDelete.LikeDelete_URL)
+                        .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build();
+
+                LikeDelete api = retrofit.create(LikeDelete.class);
+
+                RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+                RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
+
+                Call<String> call = api.LikeDelete(requestBody1,requestBody2);
+                call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                {
+                    @Override
+                    public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Log.e("Success", "Likedelete 정상!");
+                            Gson gson4 = new GsonBuilder().setLenient().create();
+
+                            Retrofit retrofit4 = new Retrofit.Builder()
+                                    .baseUrl(GetMyStory.GetMyStory_URL)
+                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                    .addConverterFactory(GsonConverterFactory.create(gson4))
+                                    .build();
+
+                            GetMyStory api4 = retrofit4.create(GetMyStory.class);
+                            Call<List<FeedData>> call4 = api4.getMyStory(feed_id);
+                            call4.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
+                            {
+                                @Override
+                                public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        Log.e("Success", "call back 정상!");
+                                        myList = response.body();
+
+                                        FeedData feedData = myList.get(0);
+                                        likecount.setText(feedData.getLike_count());
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<FeedData>> call, Throwable t) {
+                                    Log.e("Fail", "call back 실패" + t.getMessage());
+
+                                }
+                            });
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("Fail", "call back 실패" + t.getMessage());
+
+                    }
+                });
+
+                //좋아요 click/unclick
+                like.setVisibility(View.VISIBLE);
+                unlike.setVisibility(View.INVISIBLE);
+            }
+        });
 
         //스크랩 유무 확인(php에서 판단(피드 일련번호+회원이메일) -> 1-click / 0-unclick)
         Gson gson2 = new GsonBuilder().setLenient().create();

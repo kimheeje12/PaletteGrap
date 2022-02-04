@@ -37,6 +37,12 @@ public class FeedData implements Serializable {
     @SerializedName("feed_category") //피드 카테고리
     private String feed_category;
 
+    @SerializedName("like_count") //좋아요 갯수
+    private String like_count;
+
+    @SerializedName("reply_count") //댓글 갯수
+    private String reply_count;
+
     public void setMember_email(String member_email){this.member_email = member_email;}
     public void setmember_image(String member_image){
         this.member_image = member_image;
@@ -55,6 +61,8 @@ public class FeedData implements Serializable {
     public void setfeed_drawingtool(String feed_created){ this.feed_drawingtool = feed_drawingtool; }
     public void setfeed_drawingtime(String feed_created){ this.feed_drawingtime = feed_drawingtime; }
     public void setFeed_category(String feed_category){this.feed_category=feed_category;}
+    public void setLike_count(String like_count){this.like_count=like_count;}
+    public void setReply_count(String reply_count){this.reply_count=reply_count;}
 
     public String getMember_email(){return member_email;}
     public String getfeed_id(){ return feed_id; }
@@ -72,4 +80,6 @@ public class FeedData implements Serializable {
     public String getfeed_drawingtool(){ return feed_drawingtool; }
     public String getfeed_drawingtime(){ return feed_drawingtime; }
     public String getFeed_category(){return feed_category;}
+    public String getLike_count(){return like_count;}
+    public String getReply_count(){return reply_count;}
 }

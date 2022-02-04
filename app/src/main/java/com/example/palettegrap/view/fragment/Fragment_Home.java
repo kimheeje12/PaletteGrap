@@ -90,6 +90,8 @@ public class Fragment_Home extends Fragment{
 
         String loginemail = pref.getString("inputemail", null);
 
+
+        //홈 화면(전체)
             Gson gson = new GsonBuilder().setLenient().create();
 
             Retrofit retrofit = new Retrofit.Builder()
