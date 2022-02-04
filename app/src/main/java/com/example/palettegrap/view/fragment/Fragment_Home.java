@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.palettegrap.R;
+import com.example.palettegrap.etc.LikeCheck;
+import com.example.palettegrap.etc.LikeCheck2;
 import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.etc.GetFeed;
 import com.example.palettegrap.view.activity.Activity_FeedUpload;
@@ -36,6 +38,8 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,14 +78,6 @@ public class Fragment_Home extends Fragment{
         Button category8 = (Button) rootView.findViewById(R.id.category8); // 캘리그래피
         Button category9 = (Button) rootView.findViewById(R.id.category9); // 기타
 
-        ImageView member_profile = (ImageView) rootView.findViewById(R.id.member_profile); //프로필 이미지
-        ImageView feed_setting = (ImageView) rootView.findViewById(R.id.feed_setting); //피드 세팅창
-        ImageView feedimage = (ImageView) rootView.findViewById(R.id.feedimage); //이미지
-        ImageView like = (ImageView) rootView.findViewById(R.id.like); //좋아요
-        ImageView reply = (ImageView) rootView.findViewById(R.id.reply); //댓글
-
-        TextView member_nick = (TextView) rootView.findViewById(R.id.member_nick); //닉네임
-        TextView feedtext = (TextView) rootView.findViewById(R.id.feedtext); //피드 텍스트
         TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);

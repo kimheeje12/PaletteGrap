@@ -76,10 +76,21 @@ public class FeedUploadAdapter extends RecyclerView.Adapter<FeedUploadAdapter.Vi
         Glide.with(context).load(feeditemposition.getimage_path()).into(holder.feed_image); // 피드 이미지
         Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_profile); // 프로필 이미지
 
+        holder.likecount.setText(feeditemposition.getLike_count()); //좋아요 갯수
         holder.member_nick.setText(feeditemposition.getmember_nick()); //닉네임
 
-        holder.member_profile.setOnClickListener(new View.OnClickListener(){
+        int likecount = Integer.parseInt(feeditemposition.getLike_count()); //좋아요 갯수
 
+        //좋아요 여부(좋아요 갯수가 0이 아니라면, 하트보여주기)
+        if (likecount != 0) {
+            holder.like.setVisibility(View.VISIBLE);
+            holder.unlike.setVisibility(View.INVISIBLE);
+        } else {
+            holder.like.setVisibility(View.INVISIBLE);
+            holder.unlike.setVisibility(View.VISIBLE);
+        }
+
+        holder.member_profile.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 ((FragmentActivity) view.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Fragment_Mypage()).commit();
@@ -97,7 +108,7 @@ public class FeedUploadAdapter extends RecyclerView.Adapter<FeedUploadAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-          ImageView member_profile, like, feed_image;
+          ImageView member_profile, like, unlike, feed_image;
           TextView likecount, member_nick;
 
         public ViewHolder(@NonNull View itemView) {
@@ -105,6 +116,7 @@ public class FeedUploadAdapter extends RecyclerView.Adapter<FeedUploadAdapter.Vi
 
         member_profile = (ImageView) itemView.findViewById(R.id.member_profile); // 회원 프로필
         like = (ImageView) itemView.findViewById(R.id.like); //좋아요
+        unlike = (ImageView) itemView.findViewById(R.id.unlike); //좋아요 없음
         feed_image = (ImageView) itemView.findViewById(R.id.feed_image); //피드 이미지
 
         member_nick = (TextView) itemView.findViewById(R.id.member_nick); //회원 닉네임

@@ -297,10 +297,10 @@ public class Activity_MyStory extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.e("Success", "call back 정상!");
 
-                    if (response.body().contains("click")) { //스크랩 이미 했을 경우
+                    if (response.body().contains("click")) { //좋아요 이미 했을 경우
                         like.setVisibility(View.INVISIBLE);
                         unlike.setVisibility(View.VISIBLE);
-                    }if (response.body().contains("unclick")) {//스크랩 아직 하지 않았을 경우
+                    }if (response.body().contains("unclick")) {//좋아요 아직 하지 않았을 경우
                         unlike.setVisibility(View.INVISIBLE);
                         like.setVisibility(View.VISIBLE);
                     }

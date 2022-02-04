@@ -274,7 +274,7 @@
         android:id="@+id/reply"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/reply"
+        android:background="@drawable/chat"
         app:layout_constraintBottom_toBottomOf="@+id/like"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.45"
@@ -323,10 +323,11 @@
         android:layout_height="30dp"
         android:layout_marginEnd="72dp"
         android:visibility="invisible"
+        android:backgroundTint="#AAF0D1"
+        android:background="@drawable/bookmark2"
         app:layout_constraintBottom_toBottomOf="@+id/reply"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/reply"
-        app:srcCompat="@drawable/bookmark2" />
+        app:layout_constraintTop_toTopOf="@+id/reply"/>
 
 
     <TextView
