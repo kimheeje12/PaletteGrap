@@ -491,14 +491,44 @@ public class Activity_MyStory extends AppCompatActivity {
 
 
         //댓글 갯수 카운팅
+        Gson gson5 = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit5 = new Retrofit.Builder()
+                .baseUrl(GetMyStory.GetMyStory_URL)
+                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                .addConverterFactory(GsonConverterFactory.create(gson5))
+                .build();
+
+        GetMyStory api5 = retrofit5.create(GetMyStory.class);
+        Call<List<FeedData>> call5 = api5.getMyStory(feed_id);
+        call5.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
+        {
+            @Override
+            public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "call back 정상!");
+                    myList = response.body();
+
+                    FeedData feedData = myList.get(0);
+                    replycount.setText(feedData.getReply_count());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FeedData>> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
+
+            }
+        });
 
 
-
-        //댓글 이동
+        //댓글창으로 이동
         reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Activity_MyStory.this, Activity_Reply.class);
+                intent.putExtra("feed_id",feed_id);
                 startActivity(intent);
 
             }

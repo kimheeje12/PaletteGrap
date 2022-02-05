@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,20 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.palettegrap.R;
-import com.example.palettegrap.etc.LikeCheck;
-import com.example.palettegrap.etc.LikeCheck2;
 import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.etc.GetFeed;
 import com.example.palettegrap.view.activity.Activity_FeedUpload;
@@ -35,11 +31,8 @@ import com.example.palettegrap.view.adapter.ImageSliderAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,7 +71,9 @@ public class Fragment_Home extends Fragment{
         Button category8 = (Button) rootView.findViewById(R.id.category8); // 캘리그래피
         Button category9 = (Button) rootView.findViewById(R.id.category9); // 기타
 
-        TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시
+        TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시(현재 게시글이 없습니다)
+        ImageView empty2 = (ImageView) rootView.findViewById(R.id.empty2); //게시글이 비었을 때 표시(이미지)
+
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);
         SharedPreferences pref2 = this.getActivity().getSharedPreferences("category", Context.MODE_PRIVATE);
@@ -88,6 +83,7 @@ public class Fragment_Home extends Fragment{
 
 
         //홈 화면(전체)
+
             Gson gson = new GsonBuilder().setLenient().create();
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -142,8 +138,11 @@ public class Fragment_Home extends Fragment{
                     //게시글이 비었을 때
                     if(body.size()!=0){
                         empty.setVisibility(View.INVISIBLE);
+                        empty2.setVisibility(View.INVISIBLE);
+
                     }else{
                         empty.setVisibility(View.VISIBLE);
+                        empty2.setVisibility(View.VISIBLE);
                     }
 
                     //리사이클러뷰 연결
@@ -164,6 +163,20 @@ public class Fragment_Home extends Fragment{
         category10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#AAF0D1"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category10 = "10";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -220,8 +233,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -243,6 +259,20 @@ public class Fragment_Home extends Fragment{
         category0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#AAF0D1"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category0 = "0";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -299,8 +329,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -322,6 +355,20 @@ public class Fragment_Home extends Fragment{
         category1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#AAF0D1"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category1= "1";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -378,8 +425,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -401,6 +451,20 @@ public class Fragment_Home extends Fragment{
         category2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#AAF0D1"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category2 = "2";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -457,8 +521,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -480,6 +547,20 @@ public class Fragment_Home extends Fragment{
         category3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#AAF0D1"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category3 = "3";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -536,8 +617,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -559,6 +643,20 @@ public class Fragment_Home extends Fragment{
         category4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#AAF0D1"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category4 = "4";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -615,8 +713,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -638,6 +739,20 @@ public class Fragment_Home extends Fragment{
         category5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#AAF0D1"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category5 = "5";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -694,8 +809,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -717,6 +835,20 @@ public class Fragment_Home extends Fragment{
         category6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#AAF0D1"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category6 = "6";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -773,8 +905,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -796,6 +931,20 @@ public class Fragment_Home extends Fragment{
         category7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#AAF0D1"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category7 = "7";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -852,8 +1001,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -875,6 +1027,20 @@ public class Fragment_Home extends Fragment{
         category8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#AAF0D1"));
+                category9.setTextColor(Color.parseColor("#ffffff"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category8 = "8";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -931,8 +1097,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
@@ -954,6 +1123,20 @@ public class Fragment_Home extends Fragment{
         category9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //버튼 색깔 바꾸기
+                category10.setTextColor(Color.parseColor("#ffffff"));
+                category0.setTextColor(Color.parseColor("#ffffff"));
+                category1.setTextColor(Color.parseColor("#ffffff"));
+                category2.setTextColor(Color.parseColor("#ffffff"));
+                category3.setTextColor(Color.parseColor("#ffffff"));
+                category4.setTextColor(Color.parseColor("#ffffff"));
+                category5.setTextColor(Color.parseColor("#ffffff"));
+                category6.setTextColor(Color.parseColor("#ffffff"));
+                category7.setTextColor(Color.parseColor("#ffffff"));
+                category8.setTextColor(Color.parseColor("#ffffff"));
+                category9.setTextColor(Color.parseColor("#AAF0D1"));
+
                 String loginemail = pref.getString("inputemail", null);
                 String category9 = "9";
                 Gson gson = new GsonBuilder().setLenient().create();
@@ -1010,8 +1193,11 @@ public class Fragment_Home extends Fragment{
                         //게시글이 비었을 때
                         if(body.size()!=0){
                             empty.setVisibility(View.INVISIBLE);
+                            empty2.setVisibility(View.INVISIBLE);
+
                         }else{
                             empty.setVisibility(View.VISIBLE);
+                            empty2.setVisibility(View.VISIBLE);
                         }
 
                         //리사이클러뷰 연결
