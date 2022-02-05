@@ -1,5 +1,9 @@
 package com.example.palettegrap.etc;
 
+import com.example.palettegrap.item.FeedData;
+
+import java.util.List;
+
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Multipart;
@@ -14,7 +18,7 @@ public interface GetReply {
     @Multipart
     //HTTP를 통해 FILE을 SERVER로 전송하기 위해 사용되는 Content-Type입니다. Body에 들어가는 데이터 타입을 명시해주는 게 Content-type입니다.
     @POST("GetReply.php") //api 주소
-    Call<String> GetReply(
+    Call<List<FeedData>> GetReply(
             @Part("member_email") RequestBody member_email,
             @Part("feed_id") RequestBody feed_id);
 

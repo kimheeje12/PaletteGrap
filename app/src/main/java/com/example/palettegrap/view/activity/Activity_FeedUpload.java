@@ -198,7 +198,6 @@ public class Activity_FeedUpload extends AppCompatActivity {
             }
         });
 
-
         //피드 최종 업로드(이미지 & text)
         feed_upload.setOnClickListener(new View.OnClickListener() {
             @Override

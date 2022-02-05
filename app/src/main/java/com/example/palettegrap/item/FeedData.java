@@ -3,7 +3,7 @@ package com.example.palettegrap.item;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 public class FeedData implements Serializable {
 
@@ -43,6 +43,19 @@ public class FeedData implements Serializable {
     @SerializedName("reply_count") //댓글 갯수
     private String reply_count;
 
+    @SerializedName("reply_content") //댓글 text
+    private String reply_content;
+
+    @SerializedName("reply_created") //댓글 작성시간
+    private String reply_created;
+
+    @SerializedName("reply_order") //댓글 순서
+    private String reply_order;
+
+    @SerializedName("reply_groupnum") //댓글 그룹
+    private String reply_groupnum;
+
+
     public void setMember_email(String member_email){this.member_email = member_email;}
     public void setmember_image(String member_image){
         this.member_image = member_image;
@@ -63,6 +76,10 @@ public class FeedData implements Serializable {
     public void setFeed_category(String feed_category){this.feed_category=feed_category;}
     public void setLike_count(String like_count){this.like_count=like_count;}
     public void setReply_count(String reply_count){this.reply_count=reply_count;}
+    public void setReply_content(String reply_content){this.reply_content=reply_content;}
+    public void setReply_created(String reply_created){this.reply_created=reply_created;}
+    public void setReply_order(String reply_order){this.reply_order=reply_order;}
+    public void setReply_groupnum(String reply_groupnum){this.reply_groupnum=reply_groupnum;}
 
     public String getMember_email(){return member_email;}
     public String getfeed_id(){ return feed_id; }
@@ -82,4 +99,8 @@ public class FeedData implements Serializable {
     public String getFeed_category(){return feed_category;}
     public String getLike_count(){return like_count;}
     public String getReply_count(){return reply_count;}
+    public String getReply_content(){return reply_content;}
+    public String getReply_created(){return reply_created;}
+    public String getReply_order(){return reply_order;}
+    public String getReply_groupnum(){return reply_groupnum;}
 }

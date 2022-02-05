@@ -16,5 +16,7 @@ public interface ReplyDelete {
     @POST("ReplyDelete.php") //api 주소
     Call<String> ReplyDelete(
             @Part("member_email") RequestBody member_email,
-            @Part("feed_id") RequestBody feed_id);
+            @Part("feed_id") RequestBody feed_id,
+            @Part("reply_order") RequestBody reply_order,
+            @Part("reply_groupnum") RequestBody reply_groupnum);
 }
