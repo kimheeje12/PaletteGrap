@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="오늘의 여러분의 하루는 어땠나요?"
+        android:text="오늘 여러분의 하루는 어땠나요?"
         android:textSize="17dp"
         android:textColor="@color/white"
         android:textStyle="bold"

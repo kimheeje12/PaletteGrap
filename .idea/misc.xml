@@ -44,6 +44,7 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_pw_edit.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_pwcheck.xml" value="0.359375" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_pwreset.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_reply.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_scrap.xml" value="0.28289473684210525" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_sell_record.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_splash.xml" value="0.36666666666666664" />
@@ -74,6 +75,8 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_image_upload.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_myfeed.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_mystory.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_reply.xml" value="0.3087719298245614" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_reply2.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_viewpager.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/terms_of_service_map.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/terms_of_service_privateinfo.xml" value="0.36666666666666664" />

@@ -71,13 +71,14 @@ public class Activity_MyStory extends AppCompatActivity {
         TextView feed_created = (TextView) findViewById(R.id.feed_created); //작성일
         TextView setting = (TextView) findViewById(R.id.setting); //설정
         TextView likecount = (TextView) findViewById(R.id.likecount); //좋아요 갯수
+        TextView replycount = (TextView) findViewById(R.id.replycount); //댓글 갯수
 
         ImageView feed_setting = (ImageView) findViewById(R.id.feed_setting); //설정
         ImageView scrap = (ImageView) findViewById(R.id.scrap); //스크랩(스크랩 하지 않았을 때)
         ImageView scrap2 = (ImageView) findViewById(R.id.scrap2); //스크랩2(스크랩 했을 때)
         ImageView like = (ImageView) findViewById(R.id.like); //좋아요(클릭 했을 때)
         ImageView unlike = (ImageView) findViewById(R.id.unlike); //무응답(클릭 하지 않았을 때)
-
+        ImageView reply = (ImageView) findViewById(R.id.reply); //댓글
 
         viewPager2 = findViewById(R.id.viewpager2);
         layoutIndicator = findViewById(R.id.layoutIndicators);
@@ -485,6 +486,21 @@ public class Activity_MyStory extends AppCompatActivity {
                 //좋아요 click/unclick
                 like.setVisibility(View.VISIBLE);
                 unlike.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        //댓글 갯수 카운팅
+
+
+
+        //댓글 이동
+        reply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Activity_MyStory.this, Activity_Reply.class);
+                startActivity(intent);
+
             }
         });
 
