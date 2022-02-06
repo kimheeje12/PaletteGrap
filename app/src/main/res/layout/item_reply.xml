@@ -64,11 +64,6 @@
             app:layout_constraintStart_toStartOf="@+id/reply_text"
             app:layout_constraintTop_toBottomOf="@+id/reply_text" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_reply2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 
     <TextView

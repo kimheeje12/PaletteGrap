@@ -56,7 +56,6 @@ public class Activity_MyStory extends AppCompatActivity {
     private ImageSliderAdapter imageSliderAdapter;
     private LinearLayout layoutIndicator;
 
-
     //바로바로 최신화하기 위해!(생명주기)
     @Override
     protected void onStart() {
@@ -128,7 +127,7 @@ public class Activity_MyStory extends AppCompatActivity {
         member_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(member_nick.equals(nickname)){
+                if(member_nick.getText().toString().equals(nickname)){
                     Intent intent = new Intent(Activity_MyStory.this, Activity_Main.class);
                     intent.putExtra("mypage",1);
                     startActivity(intent);

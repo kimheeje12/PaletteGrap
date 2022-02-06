@@ -23,15 +23,18 @@ import android.widget.Toast;
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.GetFeed;
 import com.example.palettegrap.etc.GetReply;
+import com.example.palettegrap.etc.GetReply2;
 import com.example.palettegrap.etc.GetScrap;
 import com.example.palettegrap.etc.Reply2Input;
 import com.example.palettegrap.etc.ReplyDelete;
 import com.example.palettegrap.etc.ReplyInput;
 import com.example.palettegrap.etc.ScrapDelete;
 import com.example.palettegrap.item.FeedData;
+import com.example.palettegrap.item.ReplyData;
 import com.example.palettegrap.view.adapter.FeedUploadAdapter;
 import com.example.palettegrap.view.adapter.ImageSliderAdapter;
 import com.example.palettegrap.view.adapter.MyFeedUploadAdapter;
+import com.example.palettegrap.view.adapter.Reply2Adapter;
 import com.example.palettegrap.view.adapter.ReplyAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,6 +53,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Activity_Reply extends AppCompatActivity {
 
     private ReplyAdapter replyAdapter;
+    private Reply2Adapter reply2Adapter;
     private RecyclerView recyclerView;
     public List<FeedData> FeedList;
 
@@ -92,7 +96,6 @@ public class Activity_Reply extends AppCompatActivity {
             }
         });
 
-
         //댓글 입력란에 text가 입력되었을 때 댓글 입력 버튼 '활성화'
         replyinput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -117,7 +120,6 @@ public class Activity_Reply extends AppCompatActivity {
             }
         });
 
-
         //댓글 현황(리사이클러뷰)
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -139,7 +141,7 @@ public class Activity_Reply extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.e("Success", "댓글 데이터 받아오기 정상!");
 
-                    generateFeedList(response.body());
+                    generateFeedList(response.body()); //댓글 현황(리사이클러뷰로 나타내기)
 
                     //롱클릭시 삭제!
                     replyAdapter.setOnItemLongClickListener(new ReplyAdapter.OnItemLongClickListener() {
@@ -307,9 +309,45 @@ public class Activity_Reply extends AppCompatActivity {
                             });
                         }
                     });
+
+                    //대댓글 현황 리사이클러뷰로 나타내기
+                    Gson gson = new GsonBuilder().setLenient().create();
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(GetReply2.GetReply2_URL)
+                            .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .build();
+
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+                    RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 일련번호
+
+                    GetReply2 api = retrofit.create(GetReply2.class);
+                    Call<List<ReplyData>> call2 = api.GetReply2(requestBody, requestBody2);
+                    call2.enqueue(new Callback<List<ReplyData>>() //enqueue: 데이터를 입력하는 함수
+                    {
+                        @Override
+                        public void onResponse(@NonNull Call<List<ReplyData>> call, @NonNull Response<List<ReplyData>> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Log.e("Success", "대댓글 데이터 받아오기 정상!");
+
+                                //대댓글 현황 리사이클러뷰로 나타내기
+                                
+
+
+
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<List<ReplyData>> call, Throwable t) {
+                            Log.e("Fail", "call back 실패" + t.getMessage());
+
+                        }
+                    });
                 }
             }
 
+            //댓글 리사이클러뷰 함수
             private void generateFeedList(List<FeedData> body){
                 //리사이클러뷰 형성
                 recyclerView = (RecyclerView) findViewById(R.id.recycler_reply);
@@ -337,7 +375,6 @@ public class Activity_Reply extends AppCompatActivity {
                 recyclerView.setAdapter(replyAdapter);
 
                 replyAdapter.notifyDataSetChanged();
-
             }
 
             @Override

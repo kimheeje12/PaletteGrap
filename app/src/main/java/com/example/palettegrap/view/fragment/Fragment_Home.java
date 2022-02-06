@@ -1,5 +1,7 @@
 package com.example.palettegrap.view.fragment;
 
+import static org.chromium.base.ContextUtils.getApplicationContext;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,17 +52,18 @@ public class Fragment_Home extends Fragment{
 
     public List<FeedData> FeedList;
 
+    ViewGroup rootView;
+
     public Fragment_Home(){
 
     }
 
-    @Nullable
-    @Override //fragment를 Mainfragment와 묶어주는 역할을 하는 메서드
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //(사용할 자원, 자원 담을 곳, T/F) -> 메인에 직접 들어가면 T / 프래그먼트에 있으면 F
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+    //생명주기! (최신화)
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        Button add = (Button) rootView.findViewById(R.id.add); // 피드 추가 버튼
+        //홈 화면(전체)
         Button category10 = (Button) rootView.findViewById(R.id.category10); // 전체
         Button category0 = (Button) rootView.findViewById(R.id.category0); // 일러스트
         Button category1 = (Button) rootView.findViewById(R.id.category1); // 소묘
@@ -81,83 +86,80 @@ public class Fragment_Home extends Fragment{
 
         String loginemail = pref.getString("inputemail", null);
 
+        Gson gson = new GsonBuilder().setLenient().create();
 
-        //홈 화면(전체)
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GetFeed.GetFeed_URL)
+                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
 
-            Gson gson = new GsonBuilder().setLenient().create();
+        GetFeed api = retrofit.create(GetFeed.class);
+        Call<List<FeedData>> call = api.getFeed(loginemail,"10","","","","","","","","","","");
+        call.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
+        {
+            @Override
+            public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "call back 정상!");
+                    Log.e("피드 array", "무엇이 담겨있나?"+response.body());
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(GetFeed.GetFeed_URL)
-                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
+                    generateFeedList(response.body());
 
-            GetFeed api = retrofit.create(GetFeed.class);
-            Call<List<FeedData>> call = api.getFeed(loginemail,"10","","","","","","","","","","");
-            call.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
-            {
-                @Override
-                public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Log.e("Success", "call back 정상!");
-                        Log.e("피드 array", "무엇이 담겨있나?"+response.body());
+                    feedUploadAdapter.setOnItemClickListener(new FeedUploadAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
 
-                        generateFeedList(response.body());
+                            FeedData feedData = response.body().get(position);
 
-                        feedUploadAdapter.setOnItemClickListener(new FeedUploadAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
+                            Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                            intent.putExtra("member_email", feedData.getMember_email());
+                            intent.putExtra("feed_id", feedData.getfeed_id());
+                            intent.putExtra("member_image", feedData.getmember_image());
+                            intent.putExtra("member_nick", feedData.getmember_nick());
+                            intent.putExtra("feed_text", feedData.getfeed_text());
+                            intent.putExtra("feed_drawingtool", feedData.getfeed_drawingtool());
+                            intent.putExtra("feed_drawingtime", feedData.getfeed_drawingtime());
+                            intent.putExtra("feed_created", feedData.getfeed_created());
+                            intent.putExtra("feed_category", feedData.getFeed_category());
+                            intent.putExtra("position",position);
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
 
-                                FeedData feedData = response.body().get(position);
+            private void generateFeedList(List<FeedData> body){
+                //리사이클러뷰 형성
+                recyclerView = (RecyclerView) rootView.findViewById(R.id.Recycler_feed);
+                recyclerView.setHasFixedSize(true);
 
-                                Intent intent = new Intent(getActivity(),Activity_MyStory.class);
-                                intent.putExtra("member_email", feedData.getMember_email());
-                                intent.putExtra("feed_id", feedData.getfeed_id());
-                                intent.putExtra("member_image", feedData.getmember_image());
-                                intent.putExtra("member_nick", feedData.getmember_nick());
-                                intent.putExtra("feed_text", feedData.getfeed_text());
-                                intent.putExtra("feed_drawingtool", feedData.getfeed_drawingtool());
-                                intent.putExtra("feed_drawingtime", feedData.getfeed_drawingtime());
-                                intent.putExtra("feed_created", feedData.getfeed_created());
-                                intent.putExtra("feed_category", feedData.getFeed_category());
-                                intent.putExtra("position",position);
-                                startActivity(intent);
-                            }
-                        });
-                    }
+                feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
+                recyclerView.setAdapter(feedUploadAdapter);
+
+                //게시글이 비었을 때
+                if(body.size()!=0){
+                    empty.setVisibility(View.INVISIBLE);
+                    empty2.setVisibility(View.INVISIBLE);
+
+                }else{
+                    empty.setVisibility(View.VISIBLE);
+                    empty2.setVisibility(View.VISIBLE);
                 }
 
-                private void generateFeedList(List<FeedData> body){
-                    //리사이클러뷰 형성
-                    recyclerView = (RecyclerView) rootView.findViewById(R.id.Recycler_feed);
-                    recyclerView.setHasFixedSize(true);
+                //리사이클러뷰 연결
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
+                recyclerView.setLayoutManager(gridLayoutManager);
+                feedUploadAdapter.notifyDataSetChanged();
 
-                    feedUploadAdapter = new FeedUploadAdapter(getActivity(), body);
-                    recyclerView.setAdapter(feedUploadAdapter);
+            }
 
-                    //게시글이 비었을 때
-                    if(body.size()!=0){
-                        empty.setVisibility(View.INVISIBLE);
-                        empty2.setVisibility(View.INVISIBLE);
+            @Override
+            public void onFailure(Call<List<FeedData>> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
 
-                    }else{
-                        empty.setVisibility(View.VISIBLE);
-                        empty2.setVisibility(View.VISIBLE);
-                    }
-
-                    //리사이클러뷰 연결
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2, GridLayoutManager.VERTICAL, false);
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    feedUploadAdapter.notifyDataSetChanged();
-
-                }
-
-                @Override
-                public void onFailure(Call<List<FeedData>> call, Throwable t) {
-                    Log.e("Fail", "call back 실패" + t.getMessage());
-
-                }
-            });
+            }
+        });
 
         //전체
         category10.setOnClickListener(new View.OnClickListener() {
@@ -1214,6 +1216,17 @@ public class Fragment_Home extends Fragment{
                 });
             }
         });
+    }
+
+
+    @Nullable
+    @Override //fragment를 Mainfragment와 묶어주는 역할을 하는 메서드
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //(사용할 자원, 자원 담을 곳, T/F) -> 메인에 직접 들어가면 T / 프래그먼트에 있으면 F
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+
+        Button add = (Button) rootView.findViewById(R.id.add); // 피드 추가 버튼
+
         //피드 추가
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1240,7 +1253,6 @@ public class Fragment_Home extends Fragment{
         return rootView;
     }
 }
-
 
 // TODO: 2022-01-25 리사이클러뷰 활용
 

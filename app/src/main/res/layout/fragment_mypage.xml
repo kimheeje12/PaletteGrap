@@ -8,15 +8,16 @@
 
     <TextView
         android:id="@+id/nickname"
-        android:layout_width="170dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:fontFamily="@font/allura_regular"
+        android:gravity="center"
         android:hint="Nickname"
         android:textColor="@color/white"
         android:textSize="35dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/setting"
-        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

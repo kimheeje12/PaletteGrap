@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
 import com.example.palettegrap.item.FeedData;
+import com.example.palettegrap.item.ReplyData;
 import com.example.palettegrap.view.activity.Activity_Reply;
 
 import java.text.ParseException;
@@ -23,12 +24,12 @@ import java.util.List;
 public class Reply2Adapter extends RecyclerView.Adapter<Reply2Adapter.ViewHolder> {
 
     private Context context;
-    private List<FeedData> feedlist;
+    private List<ReplyData> replylist;
 
-    public Reply2Adapter(Context context, List<FeedData> feedlist) {
+    public Reply2Adapter(Context context, List<ReplyData> replylist) {
 
         this.context = context;
-        this.feedlist = feedlist;
+        this.replylist = replylist;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class Reply2Adapter extends RecyclerView.Adapter<Reply2Adapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull Reply2Adapter.ViewHolder holder, int position) {
-        FeedData feeditemposition = feedlist.get(position); //데이터 리스트 객체에서 어떤 것을 가져올 지 위치로 추출하기
+        ReplyData feeditemposition = replylist.get(position); //데이터 리스트 객체에서 어떤 것을 가져올 지 위치로 추출하기
         Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_image); // 프로필 이미지
         holder.nickname.setText(feeditemposition.getmember_nick()); //닉네임
         holder.reply_text.setText(feeditemposition.getReply_content()); //댓글 text
@@ -78,12 +79,12 @@ public class Reply2Adapter extends RecyclerView.Adapter<Reply2Adapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return (null!=feedlist?feedlist.size():0);
+        return (null!=replylist?replylist.size():0);
     }
 
     public void remove(int position){
         try{
-            feedlist.remove(position);
+            replylist.remove(position);
             notifyDataSetChanged();
         }catch(IndexOutOfBoundsException ex){
             ex.printStackTrace();
