@@ -8,7 +8,6 @@ import retrofit2.http.Part;
 
 public interface ReplyDelete {
 
-
     String ReplyDelete_URL = "http://3.35.11.53/";
 
     @Multipart
@@ -17,6 +16,5 @@ public interface ReplyDelete {
     Call<String> ReplyDelete(
             @Part("member_email") RequestBody member_email,
             @Part("feed_id") RequestBody feed_id,
-            @Part("reply_order") RequestBody reply_order,
-            @Part("reply_groupnum") RequestBody reply_groupnum);
+            @Part("reply_id") RequestBody reply_id);
 }
