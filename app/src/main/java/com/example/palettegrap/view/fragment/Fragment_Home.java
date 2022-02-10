@@ -79,7 +79,6 @@ public class Fragment_Home extends Fragment{
         TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시(현재 게시글이 없습니다)
         ImageView empty2 = (ImageView) rootView.findViewById(R.id.empty2); //게시글이 비었을 때 표시(이미지)
 
-
         SharedPreferences pref = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);
         SharedPreferences pref2 = this.getActivity().getSharedPreferences("category", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref2.edit();

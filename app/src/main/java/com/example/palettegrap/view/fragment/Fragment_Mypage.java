@@ -72,6 +72,8 @@ public class Fragment_Mypage extends Fragment {
         TextView following = (TextView) rootView.findViewById(R.id.following); //팔로잉
         TextView follower = (TextView) rootView.findViewById(R.id.follower); //팔로우
         TextView board_count = (TextView) rootView.findViewById(R.id.board_count); //게시글 갯수
+        TextView following_count = (TextView) rootView.findViewById(R.id.following_num); //팔로잉 갯수
+        TextView follower_count = (TextView) rootView.findViewById(R.id.follower_num); //팔로워 갯수
         TextView nickname = (TextView) rootView.findViewById(R.id.nickname); //회원 닉네임
         TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시
 
@@ -79,78 +81,8 @@ public class Fragment_Mypage extends Fragment {
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);
 
-        //프로필 닉네임 설정
-        String loginemail = pref.getString("inputemail", null);
 
-        Gson gson = new GsonBuilder().setLenient().create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GetNickName.GetNickName_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        GetNickName api = retrofit.create(GetNickName.class);
-        Call<String> call = api.getNickName(loginemail);
-        call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
-        {
-            @Override
-            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.e("Success", "call back 정상! 닉네임 획득");
-                    String jsonResponse = response.body();
-                    nickname.setText(jsonResponse);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e("Fail", "call back 실패" + t.getMessage());
-
-            }
-        });
-
-
-        //프로필 이미지 설정
-        if(profileImage.getDrawable() != null){
-            String loginemail2=pref.getString("inputemail",null);
-
-            Gson gson2 = new GsonBuilder().setLenient().create();
-
-            Retrofit retrofit2 = new Retrofit.Builder()
-                    .baseUrl(GetImage.GetImage_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson2))
-                    .build();
-
-            GetImage api2 = retrofit2.create(GetImage.class);
-            Call<String> call2 = api2.getImage(loginemail2);
-            call2.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
-            {
-                @Override
-                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Log.e("Success", "call back 정상! 이미지 획득");
-                        String jsonResponse = response.body();
-
-                        Glide.with(Fragment_Mypage.this).load(jsonResponse).circleCrop().into(profileImage);
-
-
-                        //프로필 이미지 편집할 때 활용
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("inputimage", jsonResponse);
-                        editor.apply();
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Log.e("Fail", "call back 실패" + t.getMessage());
-
-                }
-            });
-        }
-
-        //마이페이지 피드 게시글 형성
+        //마이페이지 형성
         String loginemail3 = pref.getString("inputemail", null);
 
         Gson gson3 = new GsonBuilder().setLenient().create();
@@ -171,6 +103,11 @@ public class Fragment_Mypage extends Fragment {
                     Log.e("Success", "call back 정상!");
 
                     generateFeedList(response.body());
+                    FeedData feedData = response.body().get(0);
+                    nickname.setText(feedData.getmember_nick()); //닉네임
+                    Glide.with(Fragment_Mypage.this).load(feedData.getmember_image()).circleCrop().into(profileImage); //프로필 이미지
+                    follower_count.setText(feedData.getFollower_count()); //팔로워 카운팅
+                    following_count.setText(feedData.getFollowing_count()); //팔로잉 카운팅
 
                     myFeedUploadAdapter.setOnItemClickListener(new MyFeedUploadAdapter.OnItemClickListener() {
                         @Override
@@ -252,6 +189,7 @@ public class Fragment_Mypage extends Fragment {
                 Intent intent = new Intent(getActivity(), Activity_Follower.class);
                 startActivity(intent);
 
+
             }
         });
 
@@ -262,6 +200,7 @@ public class Fragment_Mypage extends Fragment {
                 Intent intent = new Intent(getActivity(), Activity_Following.class);
                 startActivity(intent);
 
+
             }
         });
 
@@ -271,6 +210,7 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Activity_Scrap.class);
                 startActivity(intent);
+
             }
         });
 

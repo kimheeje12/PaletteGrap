@@ -15,6 +15,8 @@ public interface Reply2Input {
     @POST("Reply2Input.php") //api 주소
     Call<String> Reply2Input(
             @Part("member_email") RequestBody member_email,
+            @Part("member_nick") RequestBody member_nick,
+            @Part("member_nick2") RequestBody member_nick2,
             @Part("feed_id") RequestBody feed_id,
             @Part("reply_id") RequestBody reply_id,
             @Part("reply2_content") RequestBody reply2_content);

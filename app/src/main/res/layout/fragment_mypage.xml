@@ -90,22 +90,22 @@
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/follwer_num"
+        app:layout_constraintEnd_toEndOf="@+id/follower_num"
         app:layout_constraintHorizontal_bias="0.422"
-        app:layout_constraintStart_toStartOf="@+id/follwer_num"
-        app:layout_constraintTop_toBottomOf="@+id/follwer_num" />
+        app:layout_constraintStart_toStartOf="@+id/follower_num"
+        app:layout_constraintTop_toBottomOf="@+id/follower_num" />
 
     <TextView
-        android:id="@+id/follwer_num"
+        android:id="@+id/follower_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="60dp"
         android:hint="0"
         android:textColor="@color/white"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/following_num"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/following_num"
+        app:layout_constraintBottom_toBottomOf="@+id/board_count"
+        app:layout_constraintEnd_toStartOf="@+id/following_num"
+        app:layout_constraintTop_toTopOf="@+id/board_count"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -139,14 +139,14 @@
         android:id="@+id/following_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="44dp"
         android:hint="0"
         android:textColor="@color/white"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profileimage"
-        app:layout_constraintEnd_toStartOf="@+id/follwer_num"
-        app:layout_constraintTop_toTopOf="@+id/profileimage"
-        app:layout_constraintVertical_bias="0.215" />
+        app:layout_constraintBottom_toBottomOf="@+id/follower_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/follower_num"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/board_count"
@@ -167,9 +167,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
         android:text="현재 게시글이 없습니다"
-        android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="25dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"

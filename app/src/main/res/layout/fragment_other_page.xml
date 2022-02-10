@@ -8,15 +8,17 @@
 
     <TextView
         android:id="@+id/nickname"
-        android:layout_width="170dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/allura_regular"
+        android:gravity="center"
         android:hint="Nickname"
         android:textColor="@color/white"
         android:textSize="35dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/setting"
-        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,55 +61,71 @@
         app:srcCompat="@drawable/profilebasic" />
 
     <Button
-        android:id="@+id/follow"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_follow"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:layout_marginTop="8dp"
+        android:background="#1e90ff"
         android:text="팔로우"
+        android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/send_message"
-        app:layout_constraintHorizontal_bias="0.189"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileimage" />
+
+    <Button
+        android:id="@+id/btn_following"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle"
+        android:text="팔로잉"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/send_message"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileimage" />
 
     <Button
         android:id="@+id/send_message"
-        android:layout_width="170dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:drawableLeft="@drawable/send_message_resize"
         android:text="메시지"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/follow"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_follow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/follow"
+        app:layout_constraintTop_toTopOf="@+id/btn_follow"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <TextView
+        android:id="@+id/follower_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:hint="0"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/board_count"
+        app:layout_constraintEnd_toStartOf="@+id/following_num"
+        app:layout_constraintTop_toTopOf="@+id/board_count"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/follower"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="팔로워"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/follwer_num"
-        app:layout_constraintHorizontal_bias="0.422"
-        app:layout_constraintStart_toStartOf="@+id/follwer_num"
-        app:layout_constraintTop_toBottomOf="@+id/follwer_num" />
-
-    <TextView
-        android:id="@+id/follwer_num"
+        android:id="@+id/following_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="44dp"
         android:hint="0"
         android:textColor="@color/white"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/following_num"
+        app:layout_constraintBottom_toBottomOf="@+id/follower_num"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/following_num"
+        app:layout_constraintTop_toTopOf="@+id/follower_num"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -120,9 +138,23 @@
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/following_num"
-        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="@+id/following_num"
         app:layout_constraintTop_toBottomOf="@+id/following_num" />
+
+    <TextView
+        android:id="@+id/follower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="팔로워"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/follower_num"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="@+id/follower_num"
+        app:layout_constraintTop_toBottomOf="@+id/follower_num" />
 
     <TextView
         android:id="@+id/board"
@@ -136,19 +168,6 @@
         app:layout_constraintEnd_toEndOf="@+id/board_count"
         app:layout_constraintStart_toStartOf="@+id/board_count"
         app:layout_constraintTop_toBottomOf="@+id/board_count" />
-
-    <TextView
-        android:id="@+id/following_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
-        android:hint="0"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profileimage"
-        app:layout_constraintEnd_toStartOf="@+id/follwer_num"
-        app:layout_constraintTop_toTopOf="@+id/profileimage"
-        app:layout_constraintVertical_bias="0.215" />
 
     <TextView
         android:id="@+id/board_count"
@@ -169,12 +188,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
         android:text="현재 게시글이 없습니다"
-        android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="25dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/follow" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_follow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

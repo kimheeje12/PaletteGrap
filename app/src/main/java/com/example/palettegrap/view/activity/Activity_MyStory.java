@@ -38,7 +38,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -55,6 +61,7 @@ public class Activity_MyStory extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private ImageSliderAdapter imageSliderAdapter;
     private LinearLayout layoutIndicator;
+
 
     //바로바로 최신화하기 위해!(생명주기)
     @Override
@@ -123,7 +130,7 @@ public class Activity_MyStory extends AppCompatActivity {
             setting.setVisibility(View.INVISIBLE);
         }
 
-        //프로필 클릭시 마이페이지로 이동!
+        //프로필 클릭시 '마이페이지'로 이동!
         member_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,9 +142,8 @@ public class Activity_MyStory extends AppCompatActivity {
                     //다른 회원 닉네임 정보 넘기기(다른 회원 마이페이지 이동했을 때 데이터를 불러오기 위해)
                     SharedPreferences pref = getSharedPreferences("otherprofile", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("othernick", member_nick.getText().toString());
+                    editor.putString("otheremail", member_email);
                     editor.apply();
-                    Log.e("member_nick", "member_nick"+member_nick.getText().toString());
                     Intent intent = new Intent(Activity_MyStory.this, Activity_Main.class);
                     intent.putExtra("mypage",2);
                     startActivity(intent);
@@ -162,6 +168,7 @@ public class Activity_MyStory extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.e("Success", "call back 정상!");
+
                     myList = response.body();
 
                     FeedData feedData = myList.get(0);
@@ -171,7 +178,17 @@ public class Activity_MyStory extends AppCompatActivity {
                     feed_text.setText(feedData.getfeed_text()); //피드 text
                     feed_drawingtool.setText(feedData.getfeed_drawingtool()); //소요도구
                     feed_drawingtime.setText(feedData.getfeed_drawingtime()); //소요시간
-                    feed_created.setText(feedData.getfeed_created()); //작성일
+
+                    //작성일
+                    String stringDate = feedData.getfeed_created();
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        Date date = format.parse(stringDate);
+                        DateFormat format2 = new SimpleDateFormat("yyyy년 M월 d일");
+                        feed_created.setText(format2.format(date)); //작성일
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
                     //수정을 위해 쉐어드에 담아놓기!
                     SharedPreferences pref = getSharedPreferences("mystoryedit", MODE_PRIVATE);
@@ -200,6 +217,8 @@ public class Activity_MyStory extends AppCompatActivity {
                     imageSliderAdapter.setimagelist(myList);
                     setupIndicators(myList.size());
                     imageSliderAdapter.notifyDataSetChanged();
+
+
 
                 }
             }
@@ -488,7 +507,6 @@ public class Activity_MyStory extends AppCompatActivity {
             }
         });
 
-
         //댓글 갯수 카운팅
         Gson gson5 = new GsonBuilder().setLenient().create();
 
@@ -669,6 +687,8 @@ public class Activity_MyStory extends AppCompatActivity {
 
         params.setMargins(16, 8, 16, 8);
 
+        layoutIndicator.removeAllViews();
+
         for (int i = 0; i < indicators.length; i++) {
             indicators[i] = new ImageView(this);
             indicators[i].setImageDrawable(ContextCompat.getDrawable(this,
@@ -680,7 +700,9 @@ public class Activity_MyStory extends AppCompatActivity {
     }
 
     private void setCurrentIndicator (int position){
+
         int childCount = layoutIndicator.getChildCount();
+
         for (int i = 0; i < childCount; i++) {
             ImageView imageView = (ImageView) layoutIndicator.getChildAt(i);
             if (i == position) {

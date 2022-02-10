@@ -11,11 +11,10 @@
         android:id="@+id/member_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
-        android:layout_width="210dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -49,20 +48,53 @@
             app:layout_constraintStart_toStartOf="@+id/nickname"
             app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
-        <TextView
-            android:id="@+id/reply2"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:hint="답글달기"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/reply_text"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/reply_text"
-            app:layout_constraintTop_toBottomOf="@+id/reply_text" />
+            >
+
+
+            <ImageView
+                android:id="@+id/reply2"
+                android:layout_marginLeft="8dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/chat2" />
+
+            <TextView
+                android:id="@+id/reply2_title"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:text="답글" />
+
+            <TextView
+                android:id="@+id/reply2_count"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:hint="0" />
+
+            <TextView
+                android:id="@+id/reply2_counting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="개"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

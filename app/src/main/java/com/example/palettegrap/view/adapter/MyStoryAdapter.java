@@ -64,7 +64,6 @@ public class MyStoryAdapter extends RecyclerView.Adapter<MyStoryAdapter.ViewHold
     public void onBindViewHolder(@NonNull MyStoryAdapter.ViewHolder holder, int position) {
         FeedData feeditemposition = mylist.get(position); //데이터 리스트 객체에서 어떤 것을 가져올 지 위치로 추출하기
 
-
         Glide.with(context).load(feeditemposition.getimage_path()).into(holder.feedimage); // 피드 이미지
         Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_profile); // 프로필 이미지
 

@@ -16,6 +16,7 @@ public interface Reply2Delete {
     Call<String> Reply2Delete(
             @Part("member_email") RequestBody member_email,
             @Part("feed_id") RequestBody feed_id,
-            @Part("reply_groupnum") RequestBody reply_groupnum);
+            @Part("reply_id") RequestBody reply_id,
+            @Part("reply2_id") RequestBody reply2_id);
 
 }

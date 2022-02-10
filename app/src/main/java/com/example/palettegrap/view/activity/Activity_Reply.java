@@ -2,7 +2,6 @@ package com.example.palettegrap.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,20 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.palettegrap.R;
-import com.example.palettegrap.etc.GetFeed;
 import com.example.palettegrap.etc.GetReply;
-import com.example.palettegrap.etc.GetReply2;
-import com.example.palettegrap.etc.GetScrap;
 import com.example.palettegrap.etc.Reply2Input;
 import com.example.palettegrap.etc.ReplyDelete;
 import com.example.palettegrap.etc.ReplyInput;
-import com.example.palettegrap.etc.ScrapDelete;
 import com.example.palettegrap.item.FeedData;
-import com.example.palettegrap.item.ReplyData;
-import com.example.palettegrap.view.adapter.FeedUploadAdapter;
-import com.example.palettegrap.view.adapter.ImageSliderAdapter;
-import com.example.palettegrap.view.adapter.MyFeedUploadAdapter;
-import com.example.palettegrap.view.adapter.Reply2Adapter;
 import com.example.palettegrap.view.adapter.ReplyAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,7 +43,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Activity_Reply extends AppCompatActivity {
 
     private ReplyAdapter replyAdapter;
-    private Reply2Adapter reply2Adapter;
     private RecyclerView recyclerView;
     public List<FeedData> FeedList;
 
@@ -141,7 +130,19 @@ public class Activity_Reply extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.e("Success", "댓글 데이터 받아오기 정상!");
 
-                    generateFeedList(response.body()); //댓글 현황(리사이클러뷰로 나타내기)
+                    generateFeedList(response.body());
+
+                    //댓글이 비었을 때
+                    if(response.body().size()!=0){
+                        empty.setVisibility(View.INVISIBLE);
+                        empty2.setVisibility(View.INVISIBLE);
+                        empty3.setVisibility(View.INVISIBLE);
+
+                    }else{
+                        empty.setVisibility(View.VISIBLE);
+                        empty2.setVisibility(View.VISIBLE);
+                        empty3.setVisibility(View.VISIBLE);
+                    }
 
                     //롱클릭시 삭제!
                     replyAdapter.setOnItemLongClickListener(new ReplyAdapter.OnItemLongClickListener() {
@@ -227,121 +228,52 @@ public class Activity_Reply extends AppCompatActivity {
                     });
 
                     //답글달기(대댓글)
-                    replyAdapter.setOnItemClickListener(new ReplyAdapter.OnItemClickListener() {
+                    replyAdapter.setOnItemClickListener1(new ReplyAdapter.OnItemClickListener1() {
                         @Override
                         public void onItemClick(View view, int position) {
 
-                            //해당 포지션 댓글 삭제를 위해 서버로 댓글 일련번호 보내기
+                            //대댓글 작성을 위해 댓글 정보 넘기기
                             FeedData feedData = response.body().get(position);
-                            String reply_id = feedData.getReply_id();
 
-                            reply2input.setVisibility(View.VISIBLE); //대댓글 입력란 보이기
+                            Intent intent = new Intent(Activity_Reply.this, Activity_Reply2.class);
+                            intent.putExtra("feed_id",feedData.getfeed_id());
+                            intent.putExtra("reply_id", feedData.getReply_id());
+                            intent.putExtra("member_email", feedData.getMember_email());
+                            intent.putExtra("member_nick", feedData.getmember_nick());
+                            intent.putExtra("member_image", feedData.getmember_image());
+                            intent.putExtra("reply_text", feedData.getReply_content());
+                            intent.putExtra("reply_created", feedData.getReply_created());
+                            intent.putExtra("position", position);
 
-                            //대댓글 입력란에 text가 입력되었을 때 댓글 입력 버튼 '활성화'
-                            reply2input.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable editable) {
-                                    if (editable.length() > 0) {
-                                        replysend.setVisibility(View.INVISIBLE);
-                                        replysend2.setVisibility(View.INVISIBLE); //댓글버튼 비활성화
-                                        replysend3.setVisibility(View.VISIBLE); //대댓글버튼 활성화
-                                    } else {
-                                        replysend.setVisibility(View.VISIBLE);
-                                        replysend2.setVisibility(View.INVISIBLE); //댓글버튼 비활성화
-                                        replysend3.setVisibility(View.INVISIBLE); //대댓글버튼 비활성화
-                                    }
-                                }
-                            });
-
-                            //대댓글 입력(답글달기)
-                            replysend3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                    Gson gson = new GsonBuilder().setLenient().create();
-
-                                    Retrofit retrofit = new Retrofit.Builder()
-                                            .baseUrl(Reply2Input.Reply2Input_URL)
-                                            .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
-                                            .addConverterFactory(GsonConverterFactory.create(gson))
-                                            .build();
-
-                                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
-                                    RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 일련번호
-                                    RequestBody requestBody3 = RequestBody.create(MediaType.parse("text/plain"), reply_id); //댓글 일련번호
-                                    RequestBody requestBody4 = RequestBody.create(MediaType.parse("text/plain"), reply2input.getText().toString()); //대댓글 입력란
-
-                                    Reply2Input api = retrofit.create(Reply2Input.class);
-                                    Call<String> call = api.Reply2Input(requestBody, requestBody2, requestBody3, requestBody4);
-                                    call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
-                                    {
-                                        @Override
-                                        public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-                                            if (response.isSuccessful() && response.body() != null) {
-                                                Log.e("Success", "reply 입력 정상!");
-                                                //댓글 입력 후 새로고침
-                                                finish();//인텐트 종료
-                                                overridePendingTransition(0, 0);//인텐트 효과 없애기
-                                                Intent intent = getIntent(); //인텐트
-                                                startActivity(intent); //액티비티 열기
-                                                overridePendingTransition(0, 0);//인텐트 효과 없애기
-                                                Toast.makeText(getApplicationContext(), "댓글이 정상적으로 등록되었습니다", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<String> call, Throwable t) {
-                                            Log.e("Fail", "call back 실패" + t.getMessage());
-
-                                        }
-                                    });
-                                }
-                            });
+                            startActivity(intent);
                         }
                     });
 
-                    //대댓글 현황 리사이클러뷰로 나타내기
-                    Gson gson = new GsonBuilder().setLenient().create();
-
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(GetReply2.GetReply2_URL)
-                            .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
-                            .addConverterFactory(GsonConverterFactory.create(gson))
-                            .build();
-
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
-                    RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 일련번호
-
-                    GetReply2 api = retrofit.create(GetReply2.class);
-                    Call<List<ReplyData>> call2 = api.GetReply2(requestBody, requestBody2);
-                    call2.enqueue(new Callback<List<ReplyData>>() //enqueue: 데이터를 입력하는 함수
-                    {
+                    //회원 프로필로 이동
+                    replyAdapter.setOnItemClickListener2(new ReplyAdapter.OnItemClickListener2() {
                         @Override
-                        public void onResponse(@NonNull Call<List<ReplyData>> call, @NonNull Response<List<ReplyData>> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                Log.e("Success", "대댓글 데이터 받아오기 정상!");
+                        public void onItemClick(View view, int position) {
 
-                                //대댓글 현황 리사이클러뷰로 나타내기
-                                
+                            //대댓글 작성을 위해 댓글 정보 넘기기
+                            FeedData feedData = response.body().get(position);
+
+                            Log.e("email", "email"+feedData.getMember_email());
 
 
-
+                            if(feedData.getMember_email().equals(email)){
+                                Intent intent2 = new Intent(Activity_Reply.this, Activity_Main.class);
+                                intent2.putExtra("mypage",1);
+                                startActivity(intent2);
+                            }else{
+                                //다른 회원 닉네임 정보 넘기기(다른 회원 마이페이지 이동했을 때 데이터를 불러오기 위해)
+                                SharedPreferences pref = getSharedPreferences("otherprofile", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString("othernick", feedData.getmember_nick());
+                                editor.apply();
+                                Intent intent3 = new Intent(Activity_Reply.this, Activity_Main.class);
+                                intent3.putExtra("mypage",2);
+                                startActivity(intent3);
                             }
-                        }
-                        @Override
-                        public void onFailure(Call<List<ReplyData>> call, Throwable t) {
-                            Log.e("Fail", "call back 실패" + t.getMessage());
-
                         }
                     });
                 }
@@ -353,22 +285,8 @@ public class Activity_Reply extends AppCompatActivity {
                 recyclerView = (RecyclerView) findViewById(R.id.recycler_reply);
                 recyclerView.setHasFixedSize(true);
 
-                //댓글이 비었을 때
-                if(body.size()!=0){
-                    empty.setVisibility(View.INVISIBLE);
-                    empty2.setVisibility(View.INVISIBLE);
-                    empty3.setVisibility(View.INVISIBLE);
-
-                }else{
-                    empty.setVisibility(View.VISIBLE);
-                    empty2.setVisibility(View.VISIBLE);
-                    empty3.setVisibility(View.VISIBLE);
-                }
-
                 //리사이클러뷰 연결
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity_Reply.this);
-                linearLayoutManager.setReverseLayout(true);
-                linearLayoutManager.setStackFromEnd(true);
                 recyclerView.setLayoutManager(linearLayoutManager);
 
                 replyAdapter = new ReplyAdapter(Activity_Reply.this, body);
@@ -433,7 +351,6 @@ public class Activity_Reply extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
-
 
 
     }

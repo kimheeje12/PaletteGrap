@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +18,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
+import com.example.palettegrap.etc.FollowCancel;
+import com.example.palettegrap.etc.FollowCheck;
+import com.example.palettegrap.etc.FollowClick;
 import com.example.palettegrap.etc.GetImage;
 import com.example.palettegrap.etc.GetMyFeed;
+import com.example.palettegrap.etc.GetMyStory;
 import com.example.palettegrap.etc.GetNickName;
 import com.example.palettegrap.etc.GetOtherFeed;
 import com.example.palettegrap.etc.GetOtherImage;
@@ -29,15 +35,23 @@ import com.example.palettegrap.etc.GetOtherNickName;
 import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.view.activity.Activity_Follower;
 import com.example.palettegrap.view.activity.Activity_Following;
+import com.example.palettegrap.view.activity.Activity_Main;
 import com.example.palettegrap.view.activity.Activity_MyStory;
 import com.example.palettegrap.view.activity.Activity_MypageSetting;
 import com.example.palettegrap.view.activity.Activity_ProfileEdit;
+import com.example.palettegrap.view.adapter.ImageSliderAdapter;
 import com.example.palettegrap.view.adapter.MyFeedUploadAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,26 +61,35 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Fragment_OtherPage extends Fragment {
 
-    public static List<FeedData> feedList;
     private MyFeedUploadAdapter myFeedUploadAdapter;
     private RecyclerView recyclerView;
 
+    ViewGroup rootView;
+
     public Fragment_OtherPage() {
 
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_other_page, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_other_page, container, false);
+
+        return rootView;
+    }
+
+    //생명주기!
+    @Override
+    public void onStart() {
+        super.onStart();
 
         Button btn_setting = (Button) rootView.findViewById(R.id.setting); //설정
-        Button follow = (Button) rootView.findViewById(R.id.follow); //팔로우 버튼
-
-        TextView following = (TextView) rootView.findViewById(R.id.following); //팔로잉 숫자
-        TextView follower = (TextView) rootView.findViewById(R.id.follower); //팔로워 숫자
+        Button btn_follow = (Button) rootView.findViewById(R.id.btn_follow); //팔로우 버튼(파랑)
+        Button btn_following = (Button) rootView.findViewById(R.id.btn_following); //팔로잉 버튼
+        TextView following = (TextView) rootView.findViewById(R.id.following); //팔로잉
+        TextView following_count = (TextView) rootView.findViewById(R.id.following_num); //팔로잉 count
+        TextView follower = (TextView) rootView.findViewById(R.id.follower); //팔로워
+        TextView follower_count = (TextView) rootView.findViewById(R.id.follower_num); //팔로워 count
         TextView board_count = (TextView) rootView.findViewById(R.id.board_count); //게시글 숫자
         TextView nickname = (TextView) rootView.findViewById(R.id.nickname); //게시글 숫자
         TextView empty = (TextView) rootView.findViewById(R.id.empty); //게시글이 비었을 때 표시
@@ -74,91 +97,35 @@ public class Fragment_OtherPage extends Fragment {
         ImageView profileImage = (ImageView) rootView.findViewById(R.id.profileimage); //프로필 이미지
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("otherprofile", Context.MODE_PRIVATE);
+        SharedPreferences pref2 = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);
+        String login_email = pref2.getString("inputemail",null);
 
-        //다른 회원 프로필 닉네임 설정
+        //다른 회원 마이페이지 닉네임, 프로필이미지 / 팔로우&팔로잉 / 게시글 형성
         String othernick=pref.getString("othernick",null);
-
-        Gson gson = new GsonBuilder().setLenient().create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GetOtherNickName.GetOtherNickName_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        GetOtherNickName api = retrofit.create(GetOtherNickName.class);
-        Call<String> call = api.getOtherNickName(othernick);
-        call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
-        {
-            @Override
-            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.e("Success", "call back 정상! 닉네임 획득");
-                    String jsonResponse = response.body();
-                    nickname.setText(jsonResponse);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e("Fail", "call back 실패" + t.getMessage());
-
-            }
-        });
-
-        //다른 회원 프로필 이미지 설정
-        if(profileImage.getDrawable() != null){
-            String othernick2=pref.getString("othernick",null);
-
-            Gson gson2 = new GsonBuilder().setLenient().create();
-
-            Retrofit retrofit2 = new Retrofit.Builder()
-                    .baseUrl(GetOtherImage.GetOtherImage_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson2))
-                    .build();
-
-            GetOtherImage api2 = retrofit2.create(GetOtherImage.class);
-            Call<String> call2 = api2.getOtherImage(othernick2);
-            call2.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
-            {
-                @Override
-                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        Log.e("Success", "call back 정상! 이미지 획득");
-                        String jsonResponse = response.body();
-                        Glide.with(Fragment_OtherPage.this).load(jsonResponse).circleCrop().into(profileImage);
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Log.e("Fail", "call back 실패" + t.getMessage());
-
-                }
-            });
-        }
-
-        //다른 회원 마이페이지 게시글 형성
-        String othernick3=pref.getString("othernick",null);
 
         Gson gson3 = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit3 = new Retrofit.Builder()
-                .baseUrl(GetMyFeed.GetMyFeed_URL)
+                .baseUrl(GetOtherFeed.GetOtherFeed_URL)
                 .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
                 .addConverterFactory(GsonConverterFactory.create(gson3))
                 .build();
 
         GetOtherFeed api3 = retrofit3.create(GetOtherFeed.class);
-        Call<List<FeedData>> call3 = api3.getOtherFeed(othernick3);
+        Call<List<FeedData>> call3 = api3.getOtherFeed(othernick);
         call3.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
         {
             @Override
             public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.e("Success", "call back 정상!");
+                    Log.e("Success", "다른 회원 마이페이지 데이터 불러오기 정상!");
 
                     generateFeedList(response.body());
+                    FeedData feedData = response.body().get(0);
+                    nickname.setText(feedData.getmember_nick()); //닉네임
+                    Glide.with(Fragment_OtherPage.this).load(feedData.getmember_image()).circleCrop().into(profileImage); //프로필 이미지
+                    follower_count.setText(feedData.getFollower_count()); //팔로워 카운팅
+                    following_count.setText(feedData.getFollowing_count()); //팔로잉 카운팅
 
                     myFeedUploadAdapter.setOnItemClickListener(new MyFeedUploadAdapter.OnItemClickListener() {
                         @Override
@@ -176,6 +143,148 @@ public class Fragment_OtherPage extends Fragment {
                             intent.putExtra("feed_category", feedData.getFeed_category());
                             intent.putExtra("position", position);
                             startActivity(intent);
+                        }
+                    });
+
+                    //팔로우 & 팔로잉 체크
+                    Gson gson = new GsonBuilder().setLenient().create();
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(FollowCheck.FollowCheck_URL)
+                            .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .build();
+
+                    RequestBody requestBody5 = RequestBody.create(MediaType.parse("text/plain"), login_email); //현재 로그인 중인 이메일
+                    RequestBody requestBody6 = RequestBody.create(MediaType.parse("text/plain"), feedData.getMember_email()); //화면에 띄워진 회원의 이메일
+
+                    FollowCheck api = retrofit.create(FollowCheck.class);
+                    Call<String> call2 = api.FollowCheck(requestBody5, requestBody6);
+                    call2.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                    {
+                        @Override
+                        public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                Log.e("Success", "followClick 정상!");
+
+                                if (response.body().contains("match")) { //팔로잉(검정)
+                                    btn_following.setVisibility(View.VISIBLE);
+                                    btn_follow.setVisibility(View.INVISIBLE);
+                                }if(response.body().contains("missmatch")){ //팔로우(파랑)
+                                    btn_following.setVisibility(View.INVISIBLE);
+                                    btn_follow.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Log.e("Fail", "call back 실패" + t.getMessage());
+
+                        }
+                    });
+
+                    //팔로우(파랑)
+                    btn_follow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Gson gson = new GsonBuilder().setLenient().create();
+
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(FollowClick.FollowClick_URL)
+                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                    .addConverterFactory(GsonConverterFactory.create(gson))
+                                    .build();
+
+                            RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), login_email); //현재 로그인 중인 이메일
+                            RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feedData.getMember_email()); //타깃 이메일
+
+                            FollowClick api = retrofit.create(FollowClick.class);
+                            Call<String> call = api.FollowClick(requestBody,requestBody2);
+                            call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                            {
+                                @Override
+                                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        Log.e("Success", "followClick 정상!");
+
+                                        btn_following.setVisibility(View.VISIBLE); //팔로우 누르면 팔로잉으로 바뀌도록
+                                        btn_follow.setVisibility(View.INVISIBLE);
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    Log.e("Fail", "call back 실패" + t.getMessage());
+
+                                }
+                            });
+                        }
+                    });
+
+                    //팔로잉 클릭 시 취소(검정->파랑)
+                    btn_following.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Gson gson = new GsonBuilder().setLenient().create();
+
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(FollowCancel.FollowCancel_URL)
+                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                    .addConverterFactory(GsonConverterFactory.create(gson))
+                                    .build();
+
+                            RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), login_email); //현재 로그인 중인 이메일
+                            RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feedData.getMember_email()); //타깃 이메일
+
+                            FollowCancel api = retrofit.create(FollowCancel.class);
+                            Call<String> call = api.FollowCancel(requestBody,requestBody2);
+                            call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                            {
+                                @Override
+                                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        Log.e("Success", "followClick 정상!");
+
+                                        btn_follow.setVisibility(View.VISIBLE); //팔로잉 누르면 팔로우로 바뀌도록(검정->파랑)
+                                        btn_following.setVisibility(View.INVISIBLE);
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    Log.e("Fail", "call back 실패" + t.getMessage());
+
+                                }
+                            });
+                        }
+                    });
+
+                    //팔로워
+                    follower.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), Activity_Follower.class);
+                            intent.putExtra("member_email", feedData.getMember_email());
+                            startActivity(intent);
+
+
+                        }
+                    });
+
+                    //팔로잉
+                    following.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), Activity_Following.class);
+                            intent.putExtra("member_email", feedData.getMember_email());
+                            startActivity(intent);
+
+
                         }
                     });
                 }
@@ -221,36 +330,6 @@ public class Fragment_OtherPage extends Fragment {
             }
         });
 
-        //팔로우
-        follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-
-            }
-        });
-
-        //팔로워
-        follower.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Follower.class);
-                startActivity(intent);
-
-            }
-        });
-
-        //팔로잉
-        following.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Following.class);
-                startActivity(intent);
-
-            }
-        });
-
-        return rootView;
     }
 }

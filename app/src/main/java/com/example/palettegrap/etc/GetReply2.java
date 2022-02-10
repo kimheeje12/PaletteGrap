@@ -18,8 +18,9 @@ public interface GetReply2 {
     @Multipart
     //HTTP를 통해 FILE을 SERVER로 전송하기 위해 사용되는 Content-Type입니다. Body에 들어가는 데이터 타입을 명시해주는 게 Content-type입니다.
     @POST("GetReply2.php") //api 주소
-    Call<List<ReplyData>> GetReply2(
+    Call<List<FeedData>> GetReply2(
             @Part("member_email") RequestBody member_email,
-            @Part("feed_id") RequestBody feed_id);
+            @Part("feed_id") RequestBody feed_id,
+            @Part("reply_id") RequestBody reply_id);
 
 }

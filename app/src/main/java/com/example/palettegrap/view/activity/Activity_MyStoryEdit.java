@@ -268,7 +268,6 @@ public class Activity_MyStoryEdit extends AppCompatActivity {
             }
         });
 
-
         //피드 수정 최종 업로드(이미지 & text)
         feed_upload.setOnClickListener(new View.OnClickListener() {
             @Override
