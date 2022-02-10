@@ -16,6 +16,7 @@ public interface GetFollower {
     @FormUrlEncoded
     @POST("GetFollower.php")
     Call<List<FeedData>> GetFollower(
-            @Field("member_email") String member_email);
+            @Field("member_email") String member_email,
+            @Field("login_email") String login_email);
 
 }

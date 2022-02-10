@@ -193,7 +193,7 @@ public class Fragment_OtherPage extends Fragment {
 
                             Retrofit retrofit = new Retrofit.Builder()
                                     .baseUrl(FollowClick.FollowClick_URL)
-                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                    .addConverterFactory(ScalarsConverterFactory.create()) //Response를 String 형태로 받고 싶다면 사용하기!
                                     .addConverterFactory(GsonConverterFactory.create(gson))
                                     .build();
 
@@ -270,8 +270,8 @@ public class Fragment_OtherPage extends Fragment {
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Follower.class);
                             intent.putExtra("member_email", feedData.getMember_email());
+//                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
                             startActivity(intent);
-
 
                         }
                     });
@@ -282,8 +282,8 @@ public class Fragment_OtherPage extends Fragment {
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Following.class);
                             intent.putExtra("member_email", feedData.getMember_email());
+//                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
                             startActivity(intent);
-
 
                         }
                     });

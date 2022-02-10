@@ -77,6 +77,17 @@ public class FeedData implements Serializable {
     @SerializedName("follow_id") //팔로우 일련번호
     private String follow_id;
 
+    @SerializedName("login_email") //현재 로그인된 이메일(팔로우/팔로잉 체크용)
+    private String login_email;
+
+    public String getLogin_email() {
+        return login_email;
+    }
+
+    public void setLogin_email(String login_email) {
+        this.login_email = login_email;
+    }
+
     public String getFollow_id() {
         return follow_id;
     }

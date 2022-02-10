@@ -9,22 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
 import com.example.palettegrap.item.FeedData;
-import com.example.palettegrap.view.fragment.Fragment_Mypage;
 
 import java.util.List;
 
-public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHolder> {
+public class Follow2Adapter extends RecyclerView.Adapter<Follow2Adapter.ViewHolder> {
 
     private Context context;
     private List<FeedData> feedlist;
 
-    public FollowerAdapter(Context context, List<FeedData> feedlist){
+    public Follow2Adapter(Context context, List<FeedData> feedlist){
         this.context = context;
         this.feedlist = feedlist;
 
@@ -40,40 +38,55 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHo
 
     }
 
-    private FollowerAdapter.OnItemClickListener mListener;
-    private FollowerAdapter.OnItemClickListener mListener2;
+    private Follow2Adapter.OnItemClickListener mListener;
+    private Follow2Adapter.OnItemClickListener mListener2;
+    private Follow2Adapter.OnItemClickListener mListener3;
 
-    public void setOnItemClickListener(FollowerAdapter.OnItemClickListener listener){
+    public void setOnItemClickListener(Follow2Adapter.OnItemClickListener listener){
         this.mListener = listener;
     }
 
-    public void setOnItemClickListener2(FollowerAdapter.OnItemClickListener listener2){
+    public void setOnItemClickListener2(Follow2Adapter.OnItemClickListener listener2){
         this.mListener2 = listener2;
+    }
+
+    public void setOnItemClickListener3(Follow2Adapter.OnItemClickListener listener3){
+        this.mListener3 = listener3;
     }
 
     @NonNull
     @Override
-    public FollowerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Follow2Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_follower,parent,false);
-        FollowerAdapter.ViewHolder vh = new FollowerAdapter.ViewHolder(view);
+        View view = inflater.inflate(R.layout.item_following,parent,false);
+        Follow2Adapter.ViewHolder vh = new Follow2Adapter.ViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FollowerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Follow2Adapter.ViewHolder holder, int position) {
         FeedData feeditemposition = feedlist.get(position); //데이터 리스트 객체에서 어떤 것을 가져올 지 위치로 추출하기
 
         Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_image); // 프로필 이미지
         holder.nickname.setText(feeditemposition.getmember_nick()); // 닉네임
+
+        if(feeditemposition.getFollow_id()==null){//follow id가 없다는 말은 서로 follow 되어 있지 않다!
+            holder.btn_follow.setVisibility(View.INVISIBLE);//팔로잉(검정) off
+            holder.btn_following.setVisibility(View.VISIBLE);//팔로우(파랑) on
+        }if(feeditemposition.getMember_email().equals(feeditemposition.getLogin_email())){ //해당 포지션 이메일과 로그인된 나의 이메일이 같을 경우!(버튼 없애기)
+            holder.btn_following.setVisibility(View.INVISIBLE);//팔로잉(검정) off
+            holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
+        }else{
+            holder.btn_following.setVisibility(View.VISIBLE);//팔로잉(검정) on
+            holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
+        }
 
 //        holder.member_image.setOnClickListener(new View.OnClickListener(){
 //
 //            @Override
 //            public void onClick(View view) {
 //                ((FragmentActivity) view.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Fragment_Mypage()).commit();
-//
 //            }
 //        });
     }
@@ -83,18 +96,27 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHo
         return (null!=feedlist?feedlist.size():0);
     }
 
+    public void remove(int position){
+        try{
+            feedlist.remove(position);
+            notifyDataSetChanged();
+        }catch(IndexOutOfBoundsException ex){
+            ex.printStackTrace();
+        }
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         ImageView member_image;
         TextView nickname;
-        Button btn_delete;
+        Button btn_following, btn_follow;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             member_image = (ImageView) itemView.findViewById(R.id.member_image); //프로필 이미지
             nickname = (TextView) itemView.findViewById(R.id.nickname); //닉네임
-            btn_delete = (Button) itemView.findViewById(R.id.btn_delete); //팔로우 삭제
+            btn_follow = (Button) itemView.findViewById(R.id.btn_follow); //팔로우(파랑)
+            btn_following = (Button) itemView.findViewById(R.id.btn_following); //팔로잉(검정)
 
             member_image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,7 +130,7 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHo
                 }
             });
 
-            btn_delete.setOnClickListener(new View.OnClickListener() {
+            btn_following.setOnClickListener(new View.OnClickListener() { //팔로잉(검정)->팔로우(파랑) - 팔로잉 '취소'할 때
                 @Override
                 public void onClick(View view) {
                     int pos = getAbsoluteAdapterPosition();
@@ -117,6 +139,22 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHo
                             mListener2.onItemClick(view, pos);
                         }
                     }
+                    btn_following.setVisibility(View.INVISIBLE);
+                    btn_follow.setVisibility(View.VISIBLE);
+                }
+            });
+
+            btn_follow.setOnClickListener(new View.OnClickListener() { //팔로우(파랑)->팔로잉(검정) - 팔로잉 할 때
+                @Override
+                public void onClick(View view) {
+                    int pos = getAbsoluteAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION){
+                        if(mListener3 != null){
+                            mListener3.onItemClick(view, pos);
+                        }
+                    }
+                    btn_follow.setVisibility(View.INVISIBLE);
+                    btn_following.setVisibility(View.VISIBLE);
                 }
             });
         }

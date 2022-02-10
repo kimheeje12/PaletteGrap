@@ -62,7 +62,6 @@ public class Activity_MyStory extends AppCompatActivity {
     private ImageSliderAdapter imageSliderAdapter;
     private LinearLayout layoutIndicator;
 
-
     //바로바로 최신화하기 위해!(생명주기)
     @Override
     protected void onStart() {
@@ -142,7 +141,7 @@ public class Activity_MyStory extends AppCompatActivity {
                     //다른 회원 닉네임 정보 넘기기(다른 회원 마이페이지 이동했을 때 데이터를 불러오기 위해)
                     SharedPreferences pref = getSharedPreferences("otherprofile", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("otheremail", member_email);
+                    editor.putString("othernick", membernick);
                     editor.apply();
                     Intent intent = new Intent(Activity_MyStory.this, Activity_Main.class);
                     intent.putExtra("mypage",2);

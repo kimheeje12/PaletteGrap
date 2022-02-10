@@ -81,7 +81,6 @@ public class Fragment_Mypage extends Fragment {
 
         SharedPreferences pref = this.getActivity().getSharedPreferences("autologin", Context.MODE_PRIVATE);
 
-
         //마이페이지 형성
         String loginemail3 = pref.getString("inputemail", null);
 
@@ -125,6 +124,31 @@ public class Fragment_Mypage extends Fragment {
                             intent.putExtra("feed_created", feedData.getfeed_created());
                             intent.putExtra("feed_category", feedData.getFeed_category());
                             intent.putExtra("position", position);
+                            startActivity(intent);
+                        }
+                    });
+
+
+                    //팔로워
+                    follower.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), Activity_Follower.class);
+                            intent.putExtra("member_email", feedData.getMember_email());
+//                            intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
+                            startActivity(intent);
+
+                        }
+                    });
+
+                    //팔로잉
+                    following.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), Activity_Following.class);
+                            intent.putExtra("member_email", feedData.getMember_email());
+//                            intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서  눌렀을 때
+
                             startActivity(intent);
                         }
                     });
@@ -179,28 +203,6 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),Activity_ProfileEdit.class);
                 startActivity(intent);
-            }
-        });
-
-        //팔로우
-        follower.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Follower.class);
-                startActivity(intent);
-
-
-            }
-        });
-
-        //팔로잉
-        following.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Following.class);
-                startActivity(intent);
-
-
             }
         });
 
