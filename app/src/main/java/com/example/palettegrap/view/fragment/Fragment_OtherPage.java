@@ -208,7 +208,7 @@ public class Fragment_OtherPage extends Fragment {
                                 public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                                     if (response.isSuccessful() && response.body() != null) {
                                         Log.e("Success", "followClick 정상!");
-
+                                        follower_count.setText("1"); //팔로워 카운팅
                                         btn_following.setVisibility(View.VISIBLE); //팔로우 누르면 팔로잉으로 바뀌도록
                                         btn_follow.setVisibility(View.INVISIBLE);
 
@@ -248,7 +248,7 @@ public class Fragment_OtherPage extends Fragment {
                                 public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                                     if (response.isSuccessful() && response.body() != null) {
                                         Log.e("Success", "followClick 정상!");
-
+                                        follower_count.setText("0"); //팔로워 카운팅
                                         btn_follow.setVisibility(View.VISIBLE); //팔로잉 누르면 팔로우로 바뀌도록(검정->파랑)
                                         btn_following.setVisibility(View.INVISIBLE);
 

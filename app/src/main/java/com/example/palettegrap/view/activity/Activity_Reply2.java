@@ -274,7 +274,7 @@ public class Activity_Reply2 extends AppCompatActivity {
                                 //다른 회원 닉네임 정보 넘기기(다른 회원 마이페이지 이동했을 때 데이터를 불러오기 위해)
                                 SharedPreferences pref = getSharedPreferences("otherprofile", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("othernick", feedData.getmember_nick2());
+                                editor.putString("othernick", feedData.getmember_nick());
                                 editor.apply();
                                 Intent intent3 = new Intent(Activity_Reply2.this, Activity_Main.class);
                                 intent3.putExtra("mypage",2);
@@ -302,7 +302,7 @@ public class Activity_Reply2 extends AppCompatActivity {
                                 //다른 회원 닉네임 정보 넘기기(다른 회원 마이페이지 이동했을 때 데이터를 불러오기 위해)
                                 SharedPreferences pref = getSharedPreferences("otherprofile", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("othernick2", feedData.getmember_nick2());
+                                editor.putString("othernick", feedData.getmember_nick2());
                                 editor.apply();
                                 Intent intent3 = new Intent(Activity_Reply2.this, Activity_Main.class);
                                 intent3.putExtra("mypage",2);

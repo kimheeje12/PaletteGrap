@@ -16,14 +16,19 @@ import android.widget.Toast;
 
 import com.example.palettegrap.etc.Login;
 import com.example.palettegrap.R;
+import com.example.palettegrap.item.FeedData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Activity_Login extends AppCompatActivity {
@@ -31,13 +36,16 @@ public class Activity_Login extends AppCompatActivity {
     private final String TAG = "Activity_login";
 //    private EditText email, pw;
 
+    EditText email, pw;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        EditText email = (EditText) findViewById(R.id.email); //이메일 입력
-        EditText pw = (EditText) findViewById(R.id.pw); //패스워드 입력
+        email = (EditText) findViewById(R.id.email); //이메일 입력
+        pw = (EditText) findViewById(R.id.pw); //패스워드 입력
         Button btn_login = (Button) findViewById(R.id.btn_login); //로그인
         Button btn_join = (Button) findViewById(R.id.btn_join); //회원가입
         TextView findpw = (TextView) findViewById(R.id.findpw); //비밀번호 찾기
@@ -91,37 +99,42 @@ public class Activity_Login extends AppCompatActivity {
         String member_nick = pref.getString("member_nick","_");
         String member_image = pref.getString("member_image","_");
 
-        EditText email = (EditText) findViewById(R.id.email);
-        EditText pw = (EditText) findViewById(R.id.pw);
+        email = (EditText) findViewById(R.id.email);
+        pw = (EditText) findViewById(R.id.pw);
+
+
+        Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Login.Login_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         Login api = retrofit.create(Login.class);
-        Call<String> call = api.getUserLogin(email.getText().toString(), getHash(pw.getText().toString()));
-        call.enqueue(new Callback<String>() // 비동기 통신
+        Call<List<FeedData>> call = api.getUserLogin(email.getText().toString(), getHash(pw.getText().toString()));
+        call.enqueue(new Callback<List<FeedData>>() // 비동기 통신
         {
             @Override
-            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response)
+            public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response)
             {
-                if (response.isSuccessful() && response.body() != null) //onResponse 통신 성공시 Callback
-                {
-                    Log.e("onSuccess", response.body());
+                if (response.isSuccessful() && response.body() != null) {
+
+                    FeedData feedData = response.body().get(0);
+
                     if(email.getText().toString().equals("")){
                         Toast.makeText(getApplicationContext(),"이메일을 입력해주세요", Toast.LENGTH_SHORT).show();
                     }else if(pw.getText().toString().equals("")){
                         Toast.makeText(getApplicationContext(),"비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
-                    }else if(response.body().contains("success")){
+                    }else if(feedData.getMember_email().equals(email.getText().toString())){
 
                         //자동로그인을 위해, 로그인 이후 정보 수정을 위해 쉐어드에 데이터 저장
                         SharedPreferences sharedPreferences = getSharedPreferences("autologin", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor autoLogin = sharedPreferences.edit();
                         autoLogin.putString("inputemail",email.getText().toString());
                         autoLogin.putString("inputpw",pw.getText().toString());
-                        autoLogin.putString("inputnick",member_nick);
-                        autoLogin.putString("inputimage",member_image);
+                        autoLogin.putString("inputnick",feedData.getmember_nick());
+                        autoLogin.putString("inputimage",feedData.getmember_image());
                         autoLogin.apply();
                             Toast.makeText(getApplicationContext(), "로그인 되었습니다", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Activity_Login.this, Activity_Main.class);
@@ -134,7 +147,7 @@ public class Activity_Login extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) //onFailure 통신 실패시 Callback
+            public void onFailure(@NonNull Call<List<FeedData>> call, @NonNull Throwable t) //onFailure 통신 실패시 Callback
             {
                 Log.e(TAG, "에러 = " + t.getMessage());
             }

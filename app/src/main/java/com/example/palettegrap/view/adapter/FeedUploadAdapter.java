@@ -90,13 +90,13 @@ public class FeedUploadAdapter extends RecyclerView.Adapter<FeedUploadAdapter.Vi
             holder.unlike.setVisibility(View.VISIBLE);
         }
 
-        holder.member_profile.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                ((FragmentActivity) view.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Fragment_Mypage()).commit();
-
-            }
-        });
+//        holder.member_profile.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                ((FragmentActivity) view.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Fragment_Mypage()).commit();
+//
+//            }
+//        });
     }
 
     @Override

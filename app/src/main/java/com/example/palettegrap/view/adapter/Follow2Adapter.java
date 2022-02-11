@@ -71,24 +71,16 @@ public class Follow2Adapter extends RecyclerView.Adapter<Follow2Adapter.ViewHold
         Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_image); // 프로필 이미지
         holder.nickname.setText(feeditemposition.getmember_nick()); // 닉네임
 
-        if(feeditemposition.getFollow_id()==null){//follow id가 없다는 말은 서로 follow 되어 있지 않다!
-            holder.btn_follow.setVisibility(View.INVISIBLE);//팔로잉(검정) off
-            holder.btn_following.setVisibility(View.VISIBLE);//팔로우(파랑) on
-        }if(feeditemposition.getMember_email().equals(feeditemposition.getLogin_email())){ //해당 포지션 이메일과 로그인된 나의 이메일이 같을 경우!(버튼 없애기)
+        if(feeditemposition.getFollow_id()==null){ //follow id가 없다는 말은 서로 follow 되어 있지 않다!
+            holder.btn_follow.setVisibility(View.VISIBLE);//팔로잉(파랑) on
+            holder.btn_following.setVisibility(View.INVISIBLE);//팔로우(검정) off
+        }else if(feeditemposition.getMember_email().equals(feeditemposition.getLogin_email())){ //해당 포지션 이메일과 로그인된 나의 이메일이 같을 경우!(버튼 없애기)
             holder.btn_following.setVisibility(View.INVISIBLE);//팔로잉(검정) off
             holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
-        }else{
+        }else if(feeditemposition.getFollow_id()!=null){ //follow id가 있다? == 서로 팔로잉 되어있다.
             holder.btn_following.setVisibility(View.VISIBLE);//팔로잉(검정) on
             holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
         }
-
-//        holder.member_image.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View view) {
-//                ((FragmentActivity) view.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Fragment_Mypage()).commit();
-//            }
-//        });
     }
 
     @Override

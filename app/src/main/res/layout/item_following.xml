@@ -45,7 +45,7 @@
 
         <Button
             android:id="@+id/btn_following"
-            android:layout_width="140dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:background="@drawable/rectangle"
             android:text="팔로잉"
@@ -57,7 +57,7 @@
 
         <Button
             android:id="@+id/btn_follow"
-            android:layout_width="140dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:background="#1e90ff"
             android:text="팔로우"

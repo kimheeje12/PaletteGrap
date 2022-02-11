@@ -44,6 +44,7 @@ public class Activity_Main extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.mypage);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             Fragment_Mypage fragment_mypage= new Fragment_Mypage();
+            transaction.remove(fragment_mypage);
             transaction.replace(R.id.frame, fragment_mypage);
             transaction.addToBackStack(null);
             transaction.commit();
@@ -51,6 +52,7 @@ public class Activity_Main extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.home);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             Fragment_OtherPage fragment_otherPage= new Fragment_OtherPage();
+            transaction.remove(fragment_otherPage);
             transaction.replace(R.id.frame, fragment_otherPage);
             transaction.addToBackStack(null);
             transaction.commit();
@@ -72,6 +74,7 @@ public class Activity_Main extends AppCompatActivity {
                     case R.id.home:
                         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
                         Fragment_Home fragment_home= new Fragment_Home();
+                        transaction1.remove(fragment_home);
                         transaction1.replace(R.id.frame, fragment_home);
                         transaction1.addToBackStack(null);
                         transaction1.commit(); //저장을 해라(새로고침)
@@ -79,6 +82,7 @@ public class Activity_Main extends AppCompatActivity {
                     case R.id.artstory:
                         FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
                         Fragment_ArtStory fragment_artstory= new Fragment_ArtStory();
+                        transaction2.remove(fragment_artstory);
                         transaction2.replace(R.id.frame, fragment_artstory);
                         transaction2.addToBackStack(null);
                         transaction2.commit(); //저장을 해라(새로고침)
@@ -86,6 +90,7 @@ public class Activity_Main extends AppCompatActivity {
                     case R.id.chat:
                         FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
                         Fragment_Chat fragment_chat= new Fragment_Chat();
+                        transaction3.remove(fragment_chat);
                         transaction3.replace(R.id.frame, fragment_chat);
                         transaction3.addToBackStack(null);
                         transaction3.commit(); //저장을 해라(새로고침)
@@ -93,6 +98,7 @@ public class Activity_Main extends AppCompatActivity {
                     case R.id.mypage:
                         FragmentTransaction transaction4 = getSupportFragmentManager().beginTransaction();
                         Fragment_Mypage fragment_mypage= new Fragment_Mypage();
+                        transaction4.remove(fragment_mypage);
                         transaction4.replace(R.id.frame, fragment_mypage);
                         transaction4.addToBackStack(null);
                         transaction4.commit(); //저장을 해라(새로고침)

@@ -1,5 +1,9 @@
 package com.example.palettegrap.etc;
 
+import com.example.palettegrap.item.FeedData;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -11,7 +15,7 @@ public interface Login {
 
     @FormUrlEncoded
     @POST("Login.php")
-    Call<String> getUserLogin(
+    Call<List<FeedData>> getUserLogin(
             @Field("member_email") String member_email,
             @Field("member_pw") String member_pw
     );

@@ -39,7 +39,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Activity_Follower extends AppCompatActivity {
 
-
     public static List<FeedData> feedList;
     private Follow2Adapter follow2Adapter;
     private RecyclerView recyclerView;
@@ -56,7 +55,6 @@ public class Activity_Follower extends AppCompatActivity {
         String email = pref.getString("inputemail", null); //현재 로그인된 회원
 
         Intent intent = getIntent();
-        int follow_check = intent.getIntExtra("follow_check", -1);
         String member_email = intent.getStringExtra("member_email"); //해당 회원 이메일
 
         //팔로우 현황 리스트
@@ -130,14 +128,12 @@ public class Activity_Follower extends AppCompatActivity {
                                     if (response.isSuccessful() && response.body() != null) {
                                         Log.e("Success", "followClick 정상!");
 
-
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<String> call, Throwable t) {
                                     Log.e("Fail", "call back 실패" + t.getMessage());
-
 
                                 }
                             });
@@ -170,7 +166,6 @@ public class Activity_Follower extends AppCompatActivity {
                                 public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                                     if (response.isSuccessful() && response.body() != null) {
                                         Log.e("Success", "followClick 정상!");
-
 
                                     }
                                 }

@@ -208,6 +208,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -304,6 +305,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -400,6 +402,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -496,6 +499,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -592,6 +596,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -688,6 +693,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -784,6 +790,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -880,6 +887,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -976,6 +984,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -1072,6 +1081,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
@@ -1168,6 +1178,7 @@ public class Fragment_Home extends Fragment{
                                     FeedData feedData = response.body().get(position);
 
                                     Intent intent = new Intent(getActivity(),Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
                                     intent.putExtra("feed_id", feedData.getfeed_id());
                                     intent.putExtra("member_image", feedData.getmember_image());
                                     intent.putExtra("member_nick", feedData.getmember_nick());
