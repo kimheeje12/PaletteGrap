@@ -33,6 +33,7 @@ import com.example.palettegrap.etc.GetOtherFeed;
 import com.example.palettegrap.etc.GetOtherImage;
 import com.example.palettegrap.etc.GetOtherNickName;
 import com.example.palettegrap.item.FeedData;
+import com.example.palettegrap.view.activity.Activity_Follow;
 import com.example.palettegrap.view.activity.Activity_Follower;
 import com.example.palettegrap.view.activity.Activity_Following;
 import com.example.palettegrap.view.activity.Activity_Main;
@@ -268,7 +269,7 @@ public class Fragment_OtherPage extends Fragment {
                     follower.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(getActivity(), Activity_Follower.class);
+                            Intent intent = new Intent(getActivity(), Activity_Follow.class);
                             intent.putExtra("member_email", feedData.getMember_email());
 //                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
                             startActivity(intent);
@@ -280,7 +281,7 @@ public class Fragment_OtherPage extends Fragment {
                     following.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(getActivity(), Activity_Following.class);
+                            Intent intent = new Intent(getActivity(), Activity_Follow.class);
                             intent.putExtra("member_email", feedData.getMember_email());
 //                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
                             startActivity(intent);

@@ -59,7 +59,7 @@ public class Follow2Adapter extends RecyclerView.Adapter<Follow2Adapter.ViewHold
     public Follow2Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_following,parent,false);
+        View view = inflater.inflate(R.layout.item_follow,parent,false);
         Follow2Adapter.ViewHolder vh = new Follow2Adapter.ViewHolder(view);
         return vh;
     }

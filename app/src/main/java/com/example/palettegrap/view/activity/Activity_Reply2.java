@@ -316,84 +316,96 @@ public class Activity_Reply2 extends AppCompatActivity {
                         @Override
                         public void onItemClick(View view, int position) {
 
-                            view.setBackgroundColor(Color.parseColor("#808080"));
 
                             //해당 포지션 댓글 삭제를 위해 서버로 대댓글 일련번호 보내기
                             FeedData feedData = response.body().get(position);
                             String reply_id = feedData.getReply_id();
                             String reply2_id = feedData.getReply2_id();
 
-                            delete_text.setVisibility(View.VISIBLE); //댓글 삭제 시 나타나는 text
-                            delete_background.setVisibility(View.VISIBLE); //댓글 롱클릭 시 나타나는 배경
-                            delete.setVisibility(View.VISIBLE); //댓글 삭제 버튼
-                            close.setVisibility(View.VISIBLE); //닫기
+                            if(feedData.getMember_email().equals(email)){
+                                view.setBackgroundColor(Color.parseColor("#808080")); //롱클릭 시 해당 포지션 아이템 배경변경(회색)
 
-                            //숨기기
-                            btn_back.setVisibility(View.INVISIBLE); //뒤로가기
-                            reply2.setVisibility(View.INVISIBLE); //댓글 타이틀
+                                delete_text.setVisibility(View.VISIBLE); //댓글 삭제 시 나타나는 text
+                                delete_background.setVisibility(View.VISIBLE); //댓글 롱클릭 시 나타나는 배경
+                                delete.setVisibility(View.VISIBLE); //댓글 삭제 버튼
+                                close.setVisibility(View.VISIBLE); //닫기
 
-                            //닫기(새로고침)
-                            close.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    finish();//인텐트 종료
-                                    overridePendingTransition(0, 0);//인텐트 효과 없애기
-                                    Intent intent = getIntent(); //인텐트
-                                    startActivity(intent); //액티비티 열기
-                                    overridePendingTransition(0, 0);//인텐트 효과 없애기
-                                }
-                            });
+                                //숨기기
+                                btn_back.setVisibility(View.INVISIBLE); //뒤로가기
+                                reply2.setVisibility(View.INVISIBLE); //댓글 타이틀
 
-                           //삭제(댓글 삭제)
-                            delete.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+                                //닫기(새로고침)
+                                close.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        finish();//인텐트 종료
+                                        overridePendingTransition(0, 0);//인텐트 효과 없애기
+                                        Intent intent = getIntent(); //인텐트
+                                        startActivity(intent); //액티비티 열기
+                                        overridePendingTransition(0, 0);//인텐트 효과 없애기
+                                    }
+                                });
 
-                                    Gson gson = new GsonBuilder().setLenient().create();
+                                //삭제(댓글 삭제)
+                                delete.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
 
-                                    Retrofit retrofit = new Retrofit.Builder()
-                                            .baseUrl(Reply2Delete.Reply2Delete_URL)
-                                            .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
-                                            .addConverterFactory(GsonConverterFactory.create(gson))
-                                            .build();
+                                        Gson gson = new GsonBuilder().setLenient().create();
 
-                                    Reply2Delete api = retrofit.create(Reply2Delete.class);
+                                        Retrofit retrofit = new Retrofit.Builder()
+                                                .baseUrl(Reply2Delete.Reply2Delete_URL)
+                                                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                                .addConverterFactory(GsonConverterFactory.create(gson))
+                                                .build();
 
-                                    RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
-                                    RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
-                                    RequestBody requestBody3 = RequestBody.create(MediaType.parse("text/plain"), reply_id); //댓글 일련번호
-                                    RequestBody requestBody4 = RequestBody.create(MediaType.parse("text/plain"), reply2_id); //대댓글 일련번호
+                                        Reply2Delete api = retrofit.create(Reply2Delete.class);
 
-                                    Call<String> call = api.Reply2Delete(requestBody1, requestBody2, requestBody3, requestBody4);
-                                    call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
-                                    {
-                                        @Override
-                                        public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-                                            if (response.isSuccessful() && response.body() != null) {
-                                                Log.e("Success", "reply2 delete 정상!");
+                                        RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), email); //이메일
+                                        RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), feed_id); //피드 아이디
+                                        RequestBody requestBody3 = RequestBody.create(MediaType.parse("text/plain"), reply_id); //댓글 일련번호
+                                        RequestBody requestBody4 = RequestBody.create(MediaType.parse("text/plain"), reply2_id); //대댓글 일련번호
+
+                                        Call<String> call = api.Reply2Delete(requestBody1, requestBody2, requestBody3, requestBody4);
+                                        call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                                        {
+                                            @Override
+                                            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                                                if (response.isSuccessful() && response.body() != null) {
+                                                    Log.e("Success", "reply2 delete 정상!");
+
+                                                }
+                                            }
+                                            @Override
+                                            public void onFailure(Call<String> call, Throwable t) {
+                                                Log.e("Fail", "call back 실패" + t.getMessage());
 
                                             }
-                                        }
-                                        @Override
-                                        public void onFailure(Call<String> call, Throwable t) {
-                                            Log.e("Fail", "call back 실패" + t.getMessage());
+                                        });
 
-                                        }
-                                    });
+                                        //댓글 삭제 시 해당 포지션 제거
+                                        reply2Adapter.remove(position);
+                                        Toast.makeText(getApplicationContext(), "댓글이 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                                        delete_text.setVisibility(View.INVISIBLE); //댓글 삭제 시 나타나는 text
+                                        delete_background.setVisibility(View.INVISIBLE); //댓글 롱클릭 시 나타나는 배경
+                                        delete.setVisibility(View.INVISIBLE); //댓글 삭제 버튼
+                                        close.setVisibility(View.INVISIBLE); //닫기
 
-                                    //댓글 삭제 시 해당 포지션 제거
-                                    reply2Adapter.remove(position);
-                                    Toast.makeText(getApplicationContext(), "댓글이 삭제되었습니다", Toast.LENGTH_SHORT).show();
-                                    delete_text.setVisibility(View.INVISIBLE); //댓글 삭제 시 나타나는 text
-                                    delete_background.setVisibility(View.INVISIBLE); //댓글 롱클릭 시 나타나는 배경
-                                    delete.setVisibility(View.INVISIBLE); //댓글 삭제 버튼
-                                    close.setVisibility(View.INVISIBLE); //닫기
+                                        //다시 보이기
+                                        btn_back.setVisibility(View.VISIBLE); //뒤로가기
+                                        reply2.setVisibility(View.VISIBLE); //댓글 타이틀
+                                    }
+                                });
+                            }else{
+                                delete_text.setVisibility(View.INVISIBLE); //댓글 삭제 시 나타나는 text
+                                delete_background.setVisibility(View.INVISIBLE); //댓글 롱클릭 시 나타나는 배경
+                                delete.setVisibility(View.INVISIBLE); //댓글 삭제 버튼
+                                close.setVisibility(View.INVISIBLE); //닫기
 
-                                    //다시 보이기
-                                    btn_back.setVisibility(View.VISIBLE); //뒤로가기
-                                    reply2.setVisibility(View.VISIBLE); //댓글 타이틀
-                                }
-                            });
+                                //다시 보이기
+                                btn_back.setVisibility(View.VISIBLE); //뒤로가기
+                                reply2.setVisibility(View.VISIBLE); //댓글 타이틀
+                            }
                         }
                     });
                 }
@@ -480,7 +492,7 @@ public class Activity_Reply2 extends AppCompatActivity {
                             Intent intent = getIntent(); //인텐트
                             startActivity(intent); //액티비티 열기
                             overridePendingTransition(0, 0);//인텐트 효과 없애기
-                            Toast.makeText(getApplicationContext(), "댓글이 정상적으로 등록되었습니다", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "답글이 정상적으로 등록되었습니다", Toast.LENGTH_SHORT).show();
                         }
                     }
 

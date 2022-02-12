@@ -27,6 +27,9 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.Activity_Follow"
+            android:exported="true" />
+        <activity
             android:name=".view.activity.Activity_Reply2"
             android:exported="true" />
         <activity

@@ -74,7 +74,6 @@ public class Activity_MyStory extends AppCompatActivity {
         TextView feed_drawingtool = (TextView) findViewById(R.id.feed_drawingtool); //사용도구
         TextView feed_drawingtime = (TextView) findViewById(R.id.feed_drawingtime); //소요시간
         TextView feed_created = (TextView) findViewById(R.id.feed_created); //작성일
-        TextView setting = (TextView) findViewById(R.id.setting); //설정
         TextView likecount = (TextView) findViewById(R.id.likecount); //좋아요 갯수
         TextView replycount = (TextView) findViewById(R.id.replycount); //댓글 갯수
 
@@ -123,10 +122,8 @@ public class Activity_MyStory extends AppCompatActivity {
         //현재 로그인 되어있는 이메일과 동일하지 않을 시 설정창 가리기
         if(member_email.equals(email)){
             feed_setting.setVisibility(View.VISIBLE);
-            setting.setVisibility(View.VISIBLE);
         }else{
             feed_setting.setVisibility(View.INVISIBLE);
-            setting.setVisibility(View.INVISIBLE);
         }
 
         //프로필 클릭시 '마이페이지'로 이동!

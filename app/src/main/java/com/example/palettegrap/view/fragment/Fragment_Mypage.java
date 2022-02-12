@@ -194,6 +194,8 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),Activity_MypageSetting.class);
                 startActivity(intent);
+
+
             }
         });
 
@@ -203,6 +205,9 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),Activity_ProfileEdit.class);
                 startActivity(intent);
+
+
+
             }
         });
 
@@ -212,6 +217,7 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Activity_Scrap.class);
                 startActivity(intent);
+
 
             }
         });

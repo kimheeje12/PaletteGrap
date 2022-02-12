@@ -27,6 +27,7 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_emailedit.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_feed_upload.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_findemail_check.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_follow.xml" value="0.3026315789473684" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_follower.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_following.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_hp.xml" value="0.359375" />
@@ -60,6 +61,8 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment2.xml" value="0.31197916666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment3.xml" value="0.31197916666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment4.xml" value="0.31197916666666664" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment__follower.xml" value="0.29035087719298247" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment__following.xml" value="0.3026315789473684" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment__my_story.xml" value="0.3026315789473684" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment__other_page.xml" value="0.3026315789473684" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/fragment__profile_edit.xml" value="0.36666666666666664" />

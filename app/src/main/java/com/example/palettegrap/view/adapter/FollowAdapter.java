@@ -54,7 +54,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
     public FollowAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_follower,parent,false);
+        View view = inflater.inflate(R.layout.item_follow,parent,false);
         FollowAdapter.ViewHolder vh = new FollowAdapter.ViewHolder(view);
         return vh;
     }
@@ -91,7 +91,6 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
         }
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView member_image;
         TextView nickname;
@@ -102,7 +101,6 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
 
             member_image = (ImageView) itemView.findViewById(R.id.member_image); //프로필 이미지
             nickname = (TextView) itemView.findViewById(R.id.nickname); //닉네임
-            btn_delete = (Button) itemView.findViewById(R.id.btn_delete); //팔로우 삭제
 
             member_image.setOnClickListener(new View.OnClickListener() {
                 @Override
