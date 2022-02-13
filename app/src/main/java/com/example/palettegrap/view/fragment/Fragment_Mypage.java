@@ -29,6 +29,7 @@ import com.example.palettegrap.etc.GetNickName;
 import com.example.palettegrap.etc.SpacesItemDecoration;
 import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.item.MyFeedData;
+import com.example.palettegrap.view.activity.Activity_Follow;
 import com.example.palettegrap.view.activity.Activity_Follower;
 import com.example.palettegrap.view.activity.Activity_Following;
 import com.example.palettegrap.view.activity.Activity_Main;
@@ -128,16 +129,15 @@ public class Fragment_Mypage extends Fragment {
                         }
                     });
 
-
                     //팔로워
                     follower.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(getActivity(), Activity_Follower.class);
+                            Intent intent = new Intent(getActivity(), Activity_Follow.class);
                             intent.putExtra("member_email", feedData.getMember_email());
-//                            intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
+                            intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
+                            intent.putExtra("follow_check2",1); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);
-
                         }
                     });
 
@@ -145,10 +145,10 @@ public class Fragment_Mypage extends Fragment {
                     following.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(getActivity(), Activity_Following.class);
+                            Intent intent = new Intent(getActivity(), Activity_Follow.class);
                             intent.putExtra("member_email", feedData.getMember_email());
-//                            intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서  눌렀을 때
-
+                            intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서  눌렀을 때
+                            intent.putExtra("follow_check2",2); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);
                         }
                     });
@@ -194,8 +194,6 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),Activity_MypageSetting.class);
                 startActivity(intent);
-
-
             }
         });
 
@@ -205,9 +203,6 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),Activity_ProfileEdit.class);
                 startActivity(intent);
-
-
-
             }
         });
 
@@ -217,8 +212,6 @@ public class Fragment_Mypage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Activity_Scrap.class);
                 startActivity(intent);
-
-
             }
         });
 

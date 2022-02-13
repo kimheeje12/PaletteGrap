@@ -17,12 +17,12 @@ import com.example.palettegrap.item.FeedData;
 
 import java.util.List;
 
-public class Follow2Adapter extends RecyclerView.Adapter<Follow2Adapter.ViewHolder> {
+public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.ViewHolder> {
 
     private Context context;
     private List<FeedData> feedlist;
 
-    public Follow2Adapter(Context context, List<FeedData> feedlist){
+    public FollowingAdapter(Context context, List<FeedData> feedlist){
         this.context = context;
         this.feedlist = feedlist;
 
@@ -38,48 +38,53 @@ public class Follow2Adapter extends RecyclerView.Adapter<Follow2Adapter.ViewHold
 
     }
 
-    private Follow2Adapter.OnItemClickListener mListener;
-    private Follow2Adapter.OnItemClickListener mListener2;
-    private Follow2Adapter.OnItemClickListener mListener3;
+    private FollowingAdapter.OnItemClickListener mListener;
+    private FollowingAdapter.OnItemClickListener mListener2;
+    private FollowingAdapter.OnItemClickListener mListener3;
 
-    public void setOnItemClickListener(Follow2Adapter.OnItemClickListener listener){
+    public void setOnItemClickListener(FollowingAdapter.OnItemClickListener listener){
         this.mListener = listener;
     }
 
-    public void setOnItemClickListener2(Follow2Adapter.OnItemClickListener listener2){
+    public void setOnItemClickListener2(FollowingAdapter.OnItemClickListener listener2){
         this.mListener2 = listener2;
     }
 
-    public void setOnItemClickListener3(Follow2Adapter.OnItemClickListener listener3){
+    public void setOnItemClickListener3(FollowingAdapter.OnItemClickListener listener3){
         this.mListener3 = listener3;
     }
 
     @NonNull
     @Override
-    public Follow2Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FollowingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_follow,parent,false);
-        Follow2Adapter.ViewHolder vh = new Follow2Adapter.ViewHolder(view);
+        FollowingAdapter.ViewHolder vh = new FollowingAdapter.ViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Follow2Adapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FollowingAdapter.ViewHolder holder, int position) {
         FeedData feeditemposition = feedlist.get(position); //데이터 리스트 객체에서 어떤 것을 가져올 지 위치로 추출하기
 
-        Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_image); // 프로필 이미지
-        holder.nickname.setText(feeditemposition.getmember_nick()); // 닉네임
 
-        if(feeditemposition.getFollow_id()==null){ //follow id가 없다는 말은 서로 follow 되어 있지 않다!
-            holder.btn_follow.setVisibility(View.VISIBLE);//팔로잉(파랑) on
-            holder.btn_following.setVisibility(View.INVISIBLE);//팔로우(검정) off
-        }else if(feeditemposition.getMember_email().equals(feeditemposition.getLogin_email())){ //해당 포지션 이메일과 로그인된 나의 이메일이 같을 경우!(버튼 없애기)
-            holder.btn_following.setVisibility(View.INVISIBLE);//팔로잉(검정) off
-            holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
-        }else if(feeditemposition.getFollow_id()!=null){ //follow id가 있다? == 서로 팔로잉 되어있다.
-            holder.btn_following.setVisibility(View.VISIBLE);//팔로잉(검정) on
-            holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
+            Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_image); // 프로필 이미지
+            holder.nickname.setText(feeditemposition.getmember_nick()); // 닉네임
+
+        try{
+            if(feeditemposition.getFollow_id()==null){ //follow id가 없다는 말은 서로 follow 되어 있지 않다!
+                holder.btn_follow.setVisibility(View.VISIBLE);//팔로잉(파랑) on
+                holder.btn_following.setVisibility(View.INVISIBLE);//팔로우(검정) off
+            }else if(feeditemposition.getTarget_mem_email().equals(feeditemposition.getLogin_email())){ //해당 포지션 이메일과 로그인된 나의 이메일이 같을 경우!(버튼 없애기)
+                holder.btn_following.setVisibility(View.INVISIBLE);//팔로잉(검정) off
+                holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
+            }else if(feeditemposition.getFollow_id()!=null){ //follow id가 있다? == 서로 팔로잉 되어있다.
+                holder.btn_following.setVisibility(View.VISIBLE);//팔로잉(검정) on
+                holder.btn_follow.setVisibility(View.INVISIBLE);//팔로우(파랑) off
+            }
+        }catch (Exception e){
+
         }
     }
 

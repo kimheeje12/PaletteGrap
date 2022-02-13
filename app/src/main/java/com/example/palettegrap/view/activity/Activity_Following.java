@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.palettegrap.R;
 import com.example.palettegrap.item.FeedData;
-import com.example.palettegrap.view.adapter.Follow2Adapter;
+import com.example.palettegrap.view.adapter.FollowerAdapter;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class Activity_Following extends AppCompatActivity {
 
 
     public static List<FeedData> feedList;
-    private Follow2Adapter followingAdapter;
+    private FollowerAdapter followingAdapter;
     private RecyclerView recyclerView;
 
     @Override

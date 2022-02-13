@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragment.Fragment_Following">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragment.Fragment_Follower">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <EditText
             android:id="@+id/search_follower"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="60dp"
-            android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/resize"
-            android:hint="팔로잉 검색"
+            android:hint="팔로워 검색"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.488"
+            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_following"
+            android:id="@+id/recycler_follower"
             android:layout_width="match_parent"
             android:layout_height="750dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_follower" />
 

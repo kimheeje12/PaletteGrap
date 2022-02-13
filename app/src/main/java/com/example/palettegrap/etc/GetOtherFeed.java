@@ -16,6 +16,6 @@ public interface GetOtherFeed {
     @FormUrlEncoded
     @POST("GetOtherFeed.php")
     Call<List<FeedData>> getOtherFeed(
-            @Field("member_nick") String member_nick);
+            @Field("member_email") String member_email);
 
 }

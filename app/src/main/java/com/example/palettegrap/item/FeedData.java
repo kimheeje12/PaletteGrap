@@ -8,6 +8,10 @@ import java.util.List;
 
 public class FeedData implements Serializable {
 
+
+    @SerializedName("target_mem_email") // 팔로잉 하고 있는 회원 이메일
+    private String target_mem_email;
+
     @SerializedName("member_email") // 회원 이메일
     private String member_email;
 
@@ -79,6 +83,14 @@ public class FeedData implements Serializable {
 
     @SerializedName("login_email") //현재 로그인된 이메일(팔로우/팔로잉 체크용)
     private String login_email;
+
+    public String getTarget_mem_email() {
+        return target_mem_email;
+    }
+
+    public void setTarget_mem_email(String target_mem_email) {
+        this.target_mem_email = target_mem_email;
+    }
 
     public String getLogin_email() {
         return login_email;

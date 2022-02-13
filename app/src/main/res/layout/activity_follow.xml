@@ -15,9 +15,9 @@
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/follower_num2"
-        app:layout_constraintStart_toEndOf="@+id/follower_num2"
-        app:layout_constraintTop_toTopOf="@+id/follower_num2" />
+        app:layout_constraintBottom_toBottomOf="@+id/following_num"
+        app:layout_constraintStart_toEndOf="@+id/following_num"
+        app:layout_constraintTop_toTopOf="@+id/following_num" />
 
     <Button
         android:id="@+id/follow_back"
@@ -37,6 +37,7 @@
         android:textColor="@color/white"
         android:textSize="25dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/follow_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.191"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +86,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/follower_num2"
+        android:id="@+id/following_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -111,14 +112,34 @@
         app:layout_constraintTop_toTopOf="@+id/follower_num"
         app:layout_constraintVertical_bias="0.0" />
 
+    <View
+        android:id="@+id/follower_line"
+        android:layout_width="100dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/textview3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/follower"
+        app:layout_constraintTop_toBottomOf="@+id/follower"/>
+
+    <View
+        android:id="@+id/following_line"
+        android:layout_width="100dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/textview4"
+        app:layout_constraintStart_toStartOf="@+id/following"
+        app:layout_constraintTop_toBottomOf="@+id/following"/>
+
     <FrameLayout
         android:id="@+id/follow_frame"
         android:layout_width="match_parent"
-        android:layout_height="700dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="680dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/follower"></FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/follower_line"></FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

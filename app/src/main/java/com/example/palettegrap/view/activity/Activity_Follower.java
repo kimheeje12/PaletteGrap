@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,12 +15,10 @@ import android.widget.TextView;
 
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.FollowCancel;
-import com.example.palettegrap.etc.FollowCancel2;
 import com.example.palettegrap.etc.FollowClick;
 import com.example.palettegrap.etc.GetFollower;
 import com.example.palettegrap.item.FeedData;
-import com.example.palettegrap.view.adapter.Follow2Adapter;
-import com.example.palettegrap.view.adapter.FollowAdapter;
+import com.example.palettegrap.view.adapter.FollowerAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -40,7 +36,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Activity_Follower extends AppCompatActivity {
 
     public static List<FeedData> feedList;
-    private Follow2Adapter follow2Adapter;
+    private FollowerAdapter follow2Adapter;
     private RecyclerView recyclerView;
 
     @Override
@@ -78,7 +74,7 @@ public class Activity_Follower extends AppCompatActivity {
                     generateFeedList(response.body());
 
                     //회원 프로필 이미지 클릭 시 회원 마이페이지로 이동
-                    follow2Adapter.setOnItemClickListener(new Follow2Adapter.OnItemClickListener() {
+                    follow2Adapter.setOnItemClickListener(new FollowerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
 
@@ -102,7 +98,7 @@ public class Activity_Follower extends AppCompatActivity {
                     });
 
                     //팔로잉 상태일때 -> 팔로잉 '취소'(검정->파랑)
-                    follow2Adapter.setOnItemClickListener2(new Follow2Adapter.OnItemClickListener() {
+                    follow2Adapter.setOnItemClickListener2(new FollowerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
 
@@ -141,7 +137,7 @@ public class Activity_Follower extends AppCompatActivity {
                     });
 
                     //팔로우 상태일때(아직 서로 팔로잉안됨) -> 팔로잉(파랑->검정)
-                    follow2Adapter.setOnItemClickListener3(new Follow2Adapter.OnItemClickListener() {
+                    follow2Adapter.setOnItemClickListener3(new FollowerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
 
@@ -186,7 +182,7 @@ public class Activity_Follower extends AppCompatActivity {
                 //리사이클러뷰 형성
                 recyclerView = (RecyclerView) findViewById(R.id.recycler_follower);
 
-                follow2Adapter = new Follow2Adapter(Activity_Follower.this, body);
+                follow2Adapter = new FollowerAdapter(Activity_Follower.this, body);
                 recyclerView.setAdapter(follow2Adapter);
 
                 follower_count.setText(String.valueOf(body.size())); // 게시글 갯수(사이즈는 int -> String으로 바꾸자!)

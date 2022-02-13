@@ -102,7 +102,7 @@ public class Fragment_OtherPage extends Fragment {
         String login_email = pref2.getString("inputemail",null);
 
         //다른 회원 마이페이지 닉네임, 프로필이미지 / 팔로우&팔로잉 / 게시글 형성
-        String othernick=pref.getString("othernick",null);
+        String otheremail=pref.getString("otheremail",null);
 
         Gson gson3 = new GsonBuilder().setLenient().create();
 
@@ -113,7 +113,7 @@ public class Fragment_OtherPage extends Fragment {
                 .build();
 
         GetOtherFeed api3 = retrofit3.create(GetOtherFeed.class);
-        Call<List<FeedData>> call3 = api3.getOtherFeed(othernick);
+        Call<List<FeedData>> call3 = api3.getOtherFeed(otheremail);
         call3.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
         {
             @Override
@@ -209,7 +209,6 @@ public class Fragment_OtherPage extends Fragment {
                                 public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                                     if (response.isSuccessful() && response.body() != null) {
                                         Log.e("Success", "followClick 정상!");
-                                        follower_count.setText("1"); //팔로워 카운팅
                                         btn_following.setVisibility(View.VISIBLE); //팔로우 누르면 팔로잉으로 바뀌도록
                                         btn_follow.setVisibility(View.INVISIBLE);
 
@@ -249,7 +248,6 @@ public class Fragment_OtherPage extends Fragment {
                                 public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                                     if (response.isSuccessful() && response.body() != null) {
                                         Log.e("Success", "followClick 정상!");
-                                        follower_count.setText("0"); //팔로워 카운팅
                                         btn_follow.setVisibility(View.VISIBLE); //팔로잉 누르면 팔로우로 바뀌도록(검정->파랑)
                                         btn_following.setVisibility(View.INVISIBLE);
 
@@ -271,9 +269,9 @@ public class Fragment_OtherPage extends Fragment {
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Follow.class);
                             intent.putExtra("member_email", feedData.getMember_email());
-//                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
+                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
+                            intent.putExtra("follow_check2",1); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);
-
                         }
                     });
 
@@ -283,9 +281,9 @@ public class Fragment_OtherPage extends Fragment {
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Follow.class);
                             intent.putExtra("member_email", feedData.getMember_email());
-//                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
+                            intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
+                            intent.putExtra("follow_check2",2); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);
-
                         }
                     });
                 }
