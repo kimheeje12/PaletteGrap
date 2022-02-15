@@ -46,13 +46,7 @@
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".view.activity.Activity_Following"
-            android:exported="true" />
-        <activity
             android:name=".view.activity.Activity_MyStoryEdit"
-            android:exported="true" />
-        <activity
-            android:name=".view.activity.Activity_Follower"
             android:exported="true" />
         <activity
             android:name=".view.activity.Activity_PwEdit"

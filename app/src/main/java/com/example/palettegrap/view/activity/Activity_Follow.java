@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.GetMyFeed;
@@ -39,10 +40,24 @@ public class Activity_Follow extends AppCompatActivity {
     View follower_line;
     View following_line;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follow);
+    protected void onStart() {
+        super.onStart();
+        Log.e("onstart", "onstart");
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("onpause", "onpause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("onResume", "onResume");
 
         Button follow_back = (Button) findViewById(R.id.follow_back);
         TextView member_nick = (TextView) findViewById(R.id.member_nick);
@@ -57,18 +72,21 @@ public class Activity_Follow extends AppCompatActivity {
         follow_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finish();
+                finish();
             }
         });
 
+
         //닉네임 설정
-        Intent intent = getIntent(); //mypage&다른 회원 mypage에서 받아온 이메일 정보(0 또는 1, email)
-        String email = intent.getStringExtra("member_email");
+        Intent intent = getIntent(); //mypage & 다른 회원 mypage에서 받아온 이메일 정보(0 또는 1, email)
+        String mypage_member_email = intent.getStringExtra("mypage_member_email");
+        String otherpage_member_email = intent.getStringExtra("otherpage_member_email");
 
         //팔로우, 팔로잉 이메일 함께 보내주기 위해 현재 이메일 쉐어드에 담아놓기!
         SharedPreferences pref = getSharedPreferences("tmp_follow", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("member_email", email);
+        editor.putString("mypage_member_email", mypage_member_email);
+        editor.putString("otherpage_member_email", otherpage_member_email);
         editor.apply();
 
         //팔로우, 팔로잉 구분하기(0 - 마이페이지 / 1 - 다른 회원 마이페이지)
@@ -84,7 +102,7 @@ public class Activity_Follow extends AppCompatActivity {
                     .build();
 
             GetMyFeed api2 = retrofit2.create(GetMyFeed.class);
-            Call<List<FeedData>> call2 = api2.getMyFeed(email);
+            Call<List<FeedData>> call2 = api2.getMyFeed(mypage_member_email);
             call2.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
             {
                 @Override
@@ -95,6 +113,8 @@ public class Activity_Follow extends AppCompatActivity {
                         member_nick.setText(feedData.getmember_nick()); //닉네임
                         follower_count.setText(feedData.getFollower_count()); //팔로워 카운팅
                         following_count.setText(feedData.getFollowing_count()); //팔로잉 카운팅
+
+
                     }
                 }
 
@@ -131,7 +151,7 @@ public class Activity_Follow extends AppCompatActivity {
                     .build();
 
             GetOtherFeed api2 = retrofit2.create(GetOtherFeed.class);
-            Call<List<FeedData>> call2 = api2.getOtherFeed(email);
+            Call<List<FeedData>> call2 = api2.getOtherFeed(otherpage_member_email);
             call2.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
             {
                 @Override
@@ -206,5 +226,14 @@ public class Activity_Follow extends AppCompatActivity {
                 transaction.commit();
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_follow);
+
+        Log.e("oncreate", "oncreate");
+
     }
 }

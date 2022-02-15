@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,37 +17,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.FollowCancel;
 import com.example.palettegrap.etc.FollowCheck;
 import com.example.palettegrap.etc.FollowClick;
-import com.example.palettegrap.etc.GetImage;
-import com.example.palettegrap.etc.GetMyFeed;
-import com.example.palettegrap.etc.GetMyStory;
-import com.example.palettegrap.etc.GetNickName;
 import com.example.palettegrap.etc.GetOtherFeed;
-import com.example.palettegrap.etc.GetOtherImage;
-import com.example.palettegrap.etc.GetOtherNickName;
 import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.view.activity.Activity_Follow;
-import com.example.palettegrap.view.activity.Activity_Follower;
-import com.example.palettegrap.view.activity.Activity_Following;
-import com.example.palettegrap.view.activity.Activity_Main;
 import com.example.palettegrap.view.activity.Activity_MyStory;
 import com.example.palettegrap.view.activity.Activity_MypageSetting;
-import com.example.palettegrap.view.activity.Activity_ProfileEdit;
-import com.example.palettegrap.view.adapter.ImageSliderAdapter;
 import com.example.palettegrap.view.adapter.MyFeedUploadAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -103,6 +86,7 @@ public class Fragment_OtherPage extends Fragment {
 
         //다른 회원 마이페이지 닉네임, 프로필이미지 / 팔로우&팔로잉 / 게시글 형성
         String otheremail=pref.getString("otheremail",null);
+        Log.e("otheremail check!!!", "otheremail check!!!"+otheremail);
 
         Gson gson3 = new GsonBuilder().setLenient().create();
 
@@ -268,7 +252,7 @@ public class Fragment_OtherPage extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Follow.class);
-                            intent.putExtra("member_email", feedData.getMember_email());
+                            intent.putExtra("otherpage_member_email", feedData.getMember_email());
                             intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
                             intent.putExtra("follow_check2",1); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);
@@ -280,7 +264,7 @@ public class Fragment_OtherPage extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Follow.class);
-                            intent.putExtra("member_email", feedData.getMember_email());
+                            intent.putExtra("otherpage_member_email", feedData.getMember_email());
                             intent.putExtra("follow_check",1); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
                             intent.putExtra("follow_check2",2); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);

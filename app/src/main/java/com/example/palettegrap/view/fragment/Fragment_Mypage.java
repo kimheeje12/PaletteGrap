@@ -15,29 +15,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
-import com.example.palettegrap.etc.GetFeed;
-import com.example.palettegrap.etc.GetImage;
 import com.example.palettegrap.etc.GetMyFeed;
-import com.example.palettegrap.etc.GetNickName;
-import com.example.palettegrap.etc.SpacesItemDecoration;
 import com.example.palettegrap.item.FeedData;
-import com.example.palettegrap.item.MyFeedData;
 import com.example.palettegrap.view.activity.Activity_Follow;
-import com.example.palettegrap.view.activity.Activity_Follower;
-import com.example.palettegrap.view.activity.Activity_Following;
-import com.example.palettegrap.view.activity.Activity_Main;
 import com.example.palettegrap.view.activity.Activity_MyStory;
 import com.example.palettegrap.view.activity.Activity_MypageSetting;
 import com.example.palettegrap.view.activity.Activity_ProfileEdit;
 import com.example.palettegrap.view.activity.Activity_Scrap;
-import com.example.palettegrap.view.adapter.FeedUploadAdapter;
 import com.example.palettegrap.view.adapter.MyFeedUploadAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -134,7 +123,7 @@ public class Fragment_Mypage extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Follow.class);
-                            intent.putExtra("member_email", feedData.getMember_email());
+                            intent.putExtra("mypage_member_email", feedData.getMember_email());
                             intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서 눌렀을 때
                             intent.putExtra("follow_check2",1); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);
@@ -146,7 +135,7 @@ public class Fragment_Mypage extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), Activity_Follow.class);
-                            intent.putExtra("member_email", feedData.getMember_email());
+                            intent.putExtra("mypage_member_email", feedData.getMember_email());
                             intent.putExtra("follow_check",0); //0은 내 마이페이지에서 눌렀을 때, 1은 상대방 페이지에서  눌렀을 때
                             intent.putExtra("follow_check2",2); //1은 팔로워, 2는 팔로잉
                             startActivity(intent);
