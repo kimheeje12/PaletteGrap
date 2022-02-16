@@ -72,8 +72,9 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHo
     public void onBindViewHolder(@NonNull FollowerAdapter.ViewHolder holder, int position) {
         FeedData feeditemposition = feedlist.get(position); //데이터 리스트 객체에서 어떤 것을 가져올 지 위치로 추출하기
 
-        Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_image); // 프로필 이미지
-        holder.nickname.setText(feeditemposition.getmember_nick()); // 닉네임
+            Glide.with(context).load(feeditemposition.getmember_image()).circleCrop().into(holder.member_image); // 프로필 이미지
+            holder.nickname.setText(feeditemposition.getmember_nick()); // 닉네임
+
 
         try{
             if(feeditemposition.getFollow_id()==null){ //follow id가 없다는 말은 서로 follow 되어 있지 않다!
