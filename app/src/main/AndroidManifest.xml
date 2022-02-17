@@ -27,6 +27,15 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.Activity_NoticeUpload"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_PaintingUpload"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_Notice"
+            android:exported="true" />
+        <activity
             android:name=".view.activity.Activity_SearchFeed"
             android:exported="true" />
         <activity

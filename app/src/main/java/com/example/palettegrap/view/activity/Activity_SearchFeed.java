@@ -148,7 +148,9 @@ public class Activity_SearchFeed extends AppCompatActivity {
                                         myList2.add(myList.get(i));
                                     }
                                 }
-                                search_feed_count.setText(String.valueOf(myList2.size()));
+
+                                //찾은 게시글 갯수 표시
+                               search_feed_count.setText(String.valueOf(myList2.size()));
                                 search_feed_count.setVisibility(View.VISIBLE);
 
                                 recyclerView = (RecyclerView) findViewById(R.id.recycler_SearchFeed);

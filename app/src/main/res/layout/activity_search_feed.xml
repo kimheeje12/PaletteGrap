@@ -22,7 +22,7 @@
         android:layout_height="40dp"
         android:background="@drawable/round3"
         android:drawableLeft="@drawable/resize"
-        android:hint="검색"
+        android:hint="키워드를 입력하세요"
         android:padding="10dp"
         android:textColor="@color/white"
         android:textSize="15dp"
