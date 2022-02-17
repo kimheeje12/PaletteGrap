@@ -19,6 +19,7 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/drawable/resize.xml" value="0.1545" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/drawable/round.xml" value="0.269" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/drawable/round2.xml" value="0.2895" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/drawable/round3.xml" value="0.3495" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/drawable/send_message_resize.xml" value="0.338" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/drawable/shape.xml" value="0.2005" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_buy_record.xml" value="0.36666666666666664" />
@@ -50,6 +51,7 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_reply.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_reply2.xml" value="0.5" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_scrap.xml" value="0.28289473684210525" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_search_feed.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_sell_record.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_splash.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_terms_of_service.xml" value="0.4466666666666667" />
@@ -89,6 +91,7 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_mystory.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_reply.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_reply2.xml" value="0.3087719298245614" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_searchfeed.xml" value="0.7521367521367521" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_viewpager.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/terms_of_service_map.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/terms_of_service_privateinfo.xml" value="0.36666666666666664" />

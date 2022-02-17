@@ -195,6 +195,7 @@ public class Fragment_OtherPage extends Fragment {
                                         Log.e("Success", "followClick 정상!");
                                         btn_following.setVisibility(View.VISIBLE); //팔로우 누르면 팔로잉으로 바뀌도록
                                         btn_follow.setVisibility(View.INVISIBLE);
+                                        follower_count.setText(Integer.toString(Integer.parseInt(feedData.getFollower_count()))); //팔로워 카운팅
 
                                     }
                                 }
@@ -234,7 +235,7 @@ public class Fragment_OtherPage extends Fragment {
                                         Log.e("Success", "followClick 정상!");
                                         btn_follow.setVisibility(View.VISIBLE); //팔로잉 누르면 팔로우로 바뀌도록(검정->파랑)
                                         btn_following.setVisibility(View.INVISIBLE);
-
+                                        follower_count.setText(Integer.toString(Integer.parseInt(feedData.getFollower_count())-1)); //팔로워 카운팅
                                     }
                                 }
 

@@ -44,20 +44,6 @@ public class Activity_Follow extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("onstart", "onstart");
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("onpause", "onpause");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("onResume", "onResume");
 
         Button follow_back = (Button) findViewById(R.id.follow_back);
         TextView member_nick = (TextView) findViewById(R.id.member_nick);
@@ -111,9 +97,8 @@ public class Activity_Follow extends AppCompatActivity {
 
                         FeedData feedData = response.body().get(0);
                         member_nick.setText(feedData.getmember_nick()); //닉네임
-                        follower_count.setText(feedData.getFollower_count()); //팔로워 카운팅
+                        follower_count.setText(Integer.toString(Integer.parseInt(feedData.getFollower_count()))); //팔로워 카운팅
                         following_count.setText(feedData.getFollowing_count()); //팔로잉 카운팅
-
 
                     }
                 }
@@ -159,8 +144,9 @@ public class Activity_Follow extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         FeedData feedData = response.body().get(0);
                         member_nick.setText(feedData.getmember_nick()); //닉네임
-                        follower_count.setText(feedData.getFollower_count()); //팔로워 카운팅
+                        follower_count.setText(Integer.toString(Integer.parseInt(feedData.getFollower_count()))); //팔로워 카운팅
                         following_count.setText(feedData.getFollowing_count()); //팔로잉 카운팅
+
 
                     }
                 }

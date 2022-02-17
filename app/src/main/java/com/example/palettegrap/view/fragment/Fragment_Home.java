@@ -29,6 +29,7 @@ import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.etc.GetFeed;
 import com.example.palettegrap.view.activity.Activity_FeedUpload;
 import com.example.palettegrap.view.activity.Activity_MyStory;
+import com.example.palettegrap.view.activity.Activity_SearchFeed;
 import com.example.palettegrap.view.adapter.FeedUploadAdapter;
 import com.example.palettegrap.view.adapter.ImageSliderAdapter;
 import com.google.gson.Gson;
@@ -1235,7 +1236,8 @@ public class Fragment_Home extends Fragment{
         //(사용할 자원, 자원 담을 곳, T/F) -> 메인에 직접 들어가면 T / 프래그먼트에 있으면 F
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
-        Button add = (Button) rootView.findViewById(R.id.add); // 피드 추가 버튼
+        Button add = (Button) rootView.findViewById(R.id.add); //피드 추가 버튼
+        Button search = (Button) rootView.findViewById(R.id.search); //찾기 버튼
 
         //피드 추가
         add.setOnClickListener(new View.OnClickListener() {
@@ -1260,6 +1262,18 @@ public class Fragment_Home extends Fragment{
                 builder.show();
             }
         });
+
+        //피드 찾기
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Activity_SearchFeed.class);
+                startActivity(intent);
+
+            }
+        });
+
+
         return rootView;
     }
 }
