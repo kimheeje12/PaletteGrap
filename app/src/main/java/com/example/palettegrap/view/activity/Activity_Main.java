@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.palettegrap.R;
@@ -39,6 +40,7 @@ public class Activity_Main extends AppCompatActivity {
         autoLogin.apply();
 
         Intent intent = getIntent();
+        int master = intent.getIntExtra("master",-1);
         int mypage = intent.getIntExtra("mypage",-1);
         if(mypage==1){ //마이페이지
             bottomNavigationView.setSelectedItemId(R.id.mypage);
@@ -63,6 +65,13 @@ public class Activity_Main extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             Fragment_Home fragment_home= new Fragment_Home();
             transaction.replace(R.id.frame, fragment_home);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }if(master==3){ //아트 스토리
+            bottomNavigationView.setSelectedItemId(R.id.artstory);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            Fragment_ArtStory fragment_artStory= new Fragment_ArtStory();
+            transaction.replace(R.id.frame, fragment_artStory);
             transaction.addToBackStack(null);
             transaction.commit();
         }

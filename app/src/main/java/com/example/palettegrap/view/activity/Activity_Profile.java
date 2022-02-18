@@ -103,8 +103,6 @@ public class Activity_Profile extends AppCompatActivity {
                         try {
                             photoFile = createImageFile();
                         } catch (IOException ex) {
-                            // Error occurred while creating the File
-                            Log.e("Woongs",ex.getMessage().toString());
                         }
 
                         // 파일이 정상적으로 생성되었다면 진행
@@ -132,7 +130,6 @@ public class Activity_Profile extends AppCompatActivity {
                         checkPermission();
 
                         Intent intent =new Intent();
-//                      intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
                         intent.setType("image/*");
                         intent.setAction(intent.ACTION_GET_CONTENT);
                         intent.putExtra("galleryimage", 1);

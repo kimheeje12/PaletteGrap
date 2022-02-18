@@ -29,6 +29,4 @@ public interface GetFeed {
             @Field("category8") String category8,
             @Field("category9") String category9
     );
-
-
 }

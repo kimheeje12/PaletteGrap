@@ -18,8 +18,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.palettegrap.R;
-import com.example.palettegrap.view.activity.Activity_Notice;
-import com.example.palettegrap.view.activity.Activity_NoticeUpload;
+import com.example.palettegrap.view.activity.Activity_Masterpiece;
+import com.example.palettegrap.view.activity.Activity_MasterpieceDetail;
+import com.example.palettegrap.view.activity.Activity_MasterpieceUpload;
 import com.example.palettegrap.view.activity.Activity_PaintingUpload;
 
 public class Fragment_ArtStory extends Fragment {
@@ -30,7 +31,6 @@ public class Fragment_ArtStory extends Fragment {
 
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -39,7 +39,28 @@ public class Fragment_ArtStory extends Fragment {
         String email = pref.getString("inputemail", null); //현재 로그인된 회원
 
         Button story_upload = (Button) rootView.findViewById(R.id.upload);
-        ImageView btn_notice = (ImageView) rootView.findViewById(R.id.btn_notice);
+        ImageView btn_masterpiece = (ImageView) rootView.findViewById(R.id.btn_masterpiece);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //스토리 업로드(공지사항 & 그림강좌)
         //하드코딩(kimheeje@naver.com)과 동일한 로그인 이메일이 아니라면 공지사항 버튼 안나오도록 설정!
@@ -48,7 +69,7 @@ public class Fragment_ArtStory extends Fragment {
             public void onClick(View view) {
 
                 if(email.equals("kimheeje@naver.com")){
-                    final String[] items ={"공지사항 올리기", "그림강좌 올리기","취소"};
+                    final String[] items ={"오늘의 명화 올리기", "그림강좌 올리기","취소"};
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -57,7 +78,7 @@ public class Fragment_ArtStory extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             if(i==0){
-                                Intent intent = new Intent(getActivity(), Activity_NoticeUpload.class);
+                                Intent intent = new Intent(getActivity(), Activity_MasterpieceUpload.class);
                                 startActivity(intent);
                             }if(i==1){
                                 Intent intent = new Intent(getActivity(), Activity_PaintingUpload.class);
@@ -89,11 +110,11 @@ public class Fragment_ArtStory extends Fragment {
             }
         });
 
-        //공지사항으로 이동
-        btn_notice.setOnClickListener(new View.OnClickListener() {
+        //오늘의 명화로 이동
+        btn_masterpiece.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Notice.class);
+                Intent intent = new Intent(getActivity(), Activity_Masterpiece.class);
                 startActivity(intent);
             }
         });
@@ -107,5 +128,4 @@ public class Fragment_ArtStory extends Fragment {
 
         return rootView;
     }
-
 }

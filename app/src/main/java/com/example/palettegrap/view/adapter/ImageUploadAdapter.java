@@ -115,7 +115,6 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
             super(itemView);
 
          galleryimage = (ImageView) itemView.findViewById(R.id.image);
-         cancel = (TextView) itemView.findViewById(R.id.cancel);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

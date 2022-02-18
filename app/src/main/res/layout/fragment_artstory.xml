@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="공지사항"
+        android:text="오늘의 명화"
         android:textColor="@color/white"
         android:textSize="15dp"
         android:textStyle="bold"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
-        android:id="@+id/Notice_count"
+        android:id="@+id/masterpiece_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="44dp"
@@ -70,13 +70,13 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/btn_notice"
+        android:id="@+id/btn_masterpiece"
         android:layout_width="20dp"
         android:layout_height="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/Notice_count"
-        app:layout_constraintTop_toTopOf="@+id/Notice_count"
+        app:layout_constraintStart_toEndOf="@+id/masterpiece_count"
+        app:layout_constraintTop_toTopOf="@+id/masterpiece_count"
         app:srcCompat="@drawable/forwardbutton" />
 
     <TextView
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/Notice" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_notice"
+        android:id="@+id/recycler_masterpiece"
         android:layout_width="391dp"
         android:layout_height="138dp"
         app:layout_constraintEnd_toEndOf="parent"
