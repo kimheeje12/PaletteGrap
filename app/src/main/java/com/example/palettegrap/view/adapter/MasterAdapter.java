@@ -42,7 +42,6 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
         this.mListener = listener;
     }
 
-
     @NonNull
     @Override
     public MasterAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,6 +59,13 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
 
         Glide.with(context).load(masteritemposition.getMaster_image()).into(holder.masterimage); // 명화 이미지
 
+        //읽음 여부
+        if(Integer.parseInt(masteritemposition.getMaster_check())==1){
+            holder.master_check.setVisibility(View.INVISIBLE);
+        }else {
+            holder.master_check.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -69,13 +75,24 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView masterimage;
+        ImageView masterimage, master_check;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            master_check = (ImageView) itemView.findViewById(R.id.master_check);
             masterimage = (ImageView) itemView.findViewById(R.id.master_image);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAbsoluteAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION){
+                        if(mListener != null){
+                            mListener.onItemClick(view, pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }

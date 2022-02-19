@@ -6,6 +6,9 @@ import java.io.Serializable;
 
 public class MasterData implements Serializable {
 
+    @SerializedName("master_check") //명화 읽음 여부 체크
+    private String master_check;
+
     @SerializedName("member_email") //관리자 이메일
     private String member_email;
 
@@ -21,9 +24,27 @@ public class MasterData implements Serializable {
     @SerializedName("master_image") //명화 이미지
     private String master_image;
 
+    @SerializedName("master_story") //명화 내용
+    private String master_story;
+
     @SerializedName("master_created") //명화 작성일
     private String master_created;
 
+    public String getMaster_story() {
+        return master_story;
+    }
+
+    public String getMaster_check() {
+        return master_check;
+    }
+
+    public void setMaster_check(String master_check) {
+        this.master_check = master_check;
+    }
+
+    public void setMaster_story(String master_story) {
+        this.master_story = master_story;
+    }
 
     public String getMember_email() {
         return member_email;

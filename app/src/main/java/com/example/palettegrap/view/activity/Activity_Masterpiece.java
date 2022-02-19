@@ -2,7 +2,6 @@ package com.example.palettegrap.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -14,20 +13,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.bumptech.glide.Glide;
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.GetMaster;
-import com.example.palettegrap.etc.GetMyFeed;
-import com.example.palettegrap.item.FeedData;
+import com.example.palettegrap.etc.MasterCheckInput;
 import com.example.palettegrap.item.MasterData;
 import com.example.palettegrap.view.adapter.MasterAdapter;
-import com.example.palettegrap.view.adapter.MyFeedUploadAdapter;
-import com.example.palettegrap.view.fragment.Fragment_Mypage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +47,6 @@ public class Activity_Masterpiece extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("autologin", Activity.MODE_PRIVATE);
         String loginemail=sharedPreferences.getString("inputemail",null);
 
-
         //명화리스트 형성
         Gson gson3 = new GsonBuilder().setLenient().create();
 
@@ -71,25 +67,56 @@ public class Activity_Masterpiece extends AppCompatActivity {
 
                     generateFeedList(response.body());
 
-//                    myFeedUploadAdapter.setOnItemClickListener(new MyFeedUploadAdapter.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(View view, int position) {
-//                            FeedData feedData = response.body().get(position);
-//
-//                            Intent intent = new Intent(getActivity(),Activity_MyStory.class);
-//                            intent.putExtra("member_email", feedData.getMember_email());
-//                            intent.putExtra("feed_id", feedData.getfeed_id());
-//                            intent.putExtra("member_image", feedData.getmember_image());
-//                            intent.putExtra("member_nick", feedData.getmember_nick());
-//                            intent.putExtra("feed_text", feedData.getfeed_text());
-//                            intent.putExtra("feed_drawingtool", feedData.getfeed_drawingtool());
-//                            intent.putExtra("feed_drawingtime", feedData.getfeed_drawingtime());
-//                            intent.putExtra("feed_created", feedData.getfeed_created());
-//                            intent.putExtra("feed_category", feedData.getFeed_category());
-//                            intent.putExtra("position", position);
-//                            startActivity(intent);
-//                        }
-//                    });
+
+
+                    masterAdapter.setOnItemClickListener(new MasterAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            MasterData masterData = response.body().get(position);
+
+                            Intent intent = new Intent(Activity_Masterpiece.this, Activity_MasterpieceDetail.class);
+                            intent.putExtra("member_email", masterData.getMember_email());
+                            intent.putExtra("master_id", masterData.getMaster_id());
+                            intent.putExtra("master_title", masterData.getMaster_title());
+                            intent.putExtra("master_artist", masterData.getMaster_artist());
+                            intent.putExtra("master_image", masterData.getMaster_image());
+                            intent.putExtra("master_story", masterData.getMaster_story());
+                            intent.putExtra("master_created", masterData.getMaster_created());
+                            startActivity(intent);
+
+
+                            //해당 아이템을 누르면 이메일/명화 일련번호가 mastercheck table에 입력됨
+                            Gson gson = new GsonBuilder().setLenient().create();
+
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(MasterCheckInput.MasterCheckInput_URL)
+                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                    .addConverterFactory(GsonConverterFactory.create(gson))
+                                    .build();
+
+                            MasterCheckInput api = retrofit.create(MasterCheckInput.class);
+
+                            RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), loginemail); //이메일
+                            RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), masterData.getMaster_id()); //명화 일련번호
+
+                            Call<String> call = api.MasterCheckInput(requestBody1,requestBody2);
+                            call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                            {
+                                @Override
+                                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        Log.e("Success", "mastercheck 정상!");
+
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    Log.e("Fail", "call back 실패" + t.getMessage());
+
+                                }
+                            });
+                        }
+                    });
                 }
             }
 
