@@ -27,6 +27,12 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.Activity_Painting"
+            android:exported="true" />
+        <activity
+            android:name=".view.activity.Activity_PaintingDetail"
+            android:exported="true" />
+        <activity
             android:name=".view.activity.Activity_PaintingEdit"
             android:exported="true" />
         <activity

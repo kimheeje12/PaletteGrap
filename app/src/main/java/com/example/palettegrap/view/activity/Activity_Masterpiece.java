@@ -68,7 +68,6 @@ public class Activity_Masterpiece extends AppCompatActivity {
                     generateFeedList(response.body());
 
 
-
                     masterAdapter.setOnItemClickListener(new MasterAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {

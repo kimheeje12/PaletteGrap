@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.Activity_Masterpiece">
+    tools:context=".view.activity.Activity_Painting">
 
     <Button
         android:id="@+id/button_close"
@@ -20,7 +20,7 @@
         android:id="@+id/masterpiece"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="오늘의 명화"
+        android:text="그림강좌"
         android:textColor="@color/white"
         android:textSize="25dp"
         android:textStyle="bold"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/masterpiece" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_master"
+        android:id="@+id/recycler_painting"
         android:layout_width="match_parent"
         android:layout_height="770dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,6 +51,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view8"
         app:layout_constraintVertical_bias="0.0" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,7 +52,9 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_nickname.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_notice.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_notice_upload.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_painting.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_painting_course_edit.xml" value="0.3087719298245614" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_painting_detail.xml" value="0.22" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_painting_upload.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_profile.xml" value="0.359375" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/activity_profile_edit.xml" value="0.36666666666666664" />
@@ -106,6 +108,7 @@
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_notice.xml" value="0.6666666666666666" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_notice_upload.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_paintingcourse.xml" value="0.3087719298245614" />
+        <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_paintingupload.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_reply.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_reply2.xml" value="0.3087719298245614" />
         <entry key="..\:/Users/kimhe/AndroidStudioProjects/PaletteGrap/app/src/main/res/layout/item_searchfeed.xml" value="0.7521367521367521" />
