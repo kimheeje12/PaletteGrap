@@ -28,6 +28,7 @@ import com.example.palettegrap.item.MasterData;
 import com.example.palettegrap.view.activity.Activity_Masterpiece;
 import com.example.palettegrap.view.activity.Activity_MasterpieceDetail;
 import com.example.palettegrap.view.activity.Activity_MasterpieceUpload;
+import com.example.palettegrap.view.activity.Activity_Painting;
 import com.example.palettegrap.view.activity.Activity_PaintingUpload;
 import com.example.palettegrap.view.adapter.MasterpieceAdapter;
 import com.google.gson.Gson;
@@ -66,6 +67,8 @@ public class Fragment_ArtStory extends Fragment {
         Button story_upload = (Button) rootView.findViewById(R.id.upload);
         ImageView btn_masterpiece = (ImageView) rootView.findViewById(R.id.btn_masterpiece);
         TextView masterpiece_count = (TextView) rootView.findViewById(R.id.masterpiece_count);
+        ImageView btn_painting = (ImageView) rootView.findViewById(R.id.btn_painting);
+        TextView painting_count = (TextView) rootView.findViewById(R.id.painting_count);
 
         //명화리스트 형성
         Gson gson3 = new GsonBuilder().setLenient().create();
@@ -172,6 +175,17 @@ public class Fragment_ArtStory extends Fragment {
         });
 
 
+        //그림강좌리스트 형성
+
+
+
+
+
+
+
+
+
+
         //스토리 업로드(공지사항 & 그림강좌)
         //하드코딩(kimheeje@naver.com)과 동일한 로그인 이메일이 아니라면 공지사항 버튼 안나오도록 설정!
         story_upload.setOnClickListener(new View.OnClickListener() {
@@ -228,6 +242,17 @@ public class Fragment_ArtStory extends Fragment {
                 startActivity(intent);
             }
         });
+
+        //그림강좌로 이동
+        btn_painting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Activity_Painting.class);
+                startActivity(intent);
+
+            }
+        });
+
     }
 
     @Nullable

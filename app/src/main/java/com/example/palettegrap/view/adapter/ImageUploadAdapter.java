@@ -33,8 +33,6 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
         this.ImageData = list;
     }
 
-
-
     public interface OnItemClickListener{
         void onItemClick(View view, int position);
 
@@ -59,7 +57,6 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ImageUploadAdapter.ViewHolder holder, int position) {
-
 
         Uri image = ImageData.get(position);
         Glide.with(context).load(image).into(holder.galleryimage);

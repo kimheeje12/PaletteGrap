@@ -67,7 +67,6 @@ public class Activity_Masterpiece extends AppCompatActivity {
 
                     generateFeedList(response.body());
 
-
                     masterAdapter.setOnItemClickListener(new MasterAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
@@ -82,7 +81,6 @@ public class Activity_Masterpiece extends AppCompatActivity {
                             intent.putExtra("master_story", masterData.getMaster_story());
                             intent.putExtra("master_created", masterData.getMaster_created());
                             startActivity(intent);
-
 
                             //해당 아이템을 누르면 이메일/명화 일련번호가 mastercheck table에 입력됨
                             Gson gson = new GsonBuilder().setLenient().create();
