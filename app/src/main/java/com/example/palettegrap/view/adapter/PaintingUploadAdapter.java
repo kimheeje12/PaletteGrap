@@ -27,12 +27,12 @@ import java.util.List;
 public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAdapter.ViewHolder> implements ItemTouchHelperListener {
 
     private Context context;
-    private List<String> paintingUploadDataList;
+    private List<PaintingUploadData> paintingUploadList;
 
 
-    public PaintingUploadAdapter(Context context, List<String> paintingUploadDataList){
+    public PaintingUploadAdapter(Context context, List<PaintingUploadData> paintingUploadDataList) {
         this.context = context;
-        this.paintingUploadDataList = paintingUploadDataList;
+        this.paintingUploadList = paintingUploadDataList;
 
     }
 
@@ -41,28 +41,32 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
         return position;
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
 
     }
 
-    public void setPaintingUploadDataList(List<String> list){
-        this.paintingUploadDataList = list;
+    public void setPaintingUploadDataList(List<PaintingUploadData> list) {
+        this.paintingUploadList = list;
     }
 
     private PaintingUploadAdapter.OnItemClickListener mListener;
     private PaintingUploadAdapter.OnItemClickListener mListener2;
 
-    public void setOnItemClickListener(PaintingUploadAdapter.OnItemClickListener listener){ this.mListener = listener; }
-    public void setOnItemClickListener2(PaintingUploadAdapter.OnItemClickListener listener2){ this.mListener2 = listener2; }
+    public void setOnItemClickListener(PaintingUploadAdapter.OnItemClickListener listener) {
+        this.mListener = listener;
+    }
 
+    public void setOnItemClickListener2(PaintingUploadAdapter.OnItemClickListener listener2) {
+        this.mListener2 = listener2;
+    }
 
     @NonNull
     @Override
     public PaintingUploadAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_paintingupload,parent,false);
+        View view = inflater.inflate(R.layout.item_paintingupload, parent, false);
         PaintingUploadAdapter.ViewHolder vh = new PaintingUploadAdapter.ViewHolder(view);
         return vh;
     }
@@ -70,9 +74,10 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
     @Override
     public void onBindViewHolder(@NonNull PaintingUploadAdapter.ViewHolder holder, int position) {
 
-        String paintingUploadData = paintingUploadDataList.get(position);
+        PaintingUploadData paintingUploadData = paintingUploadList.get(position);
 
         Glide.with(context).load(paintingUploadData).into(holder.image);
+        holder.paintinguploadtext.setText(paintingUploadData.getPainting_text());
 
         holder.itemView.setTag(position);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -87,26 +92,26 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
 
     @Override
     public int getItemCount() {
-        return (null!=paintingUploadDataList?paintingUploadDataList.size():0);
+        return (null != paintingUploadList ? paintingUploadList.size() : 0);
     }
 
 
-    public void remove(int position){
-        try{
-            paintingUploadDataList.remove(position);
+    public void remove(int position) {
+        try {
+            paintingUploadList.remove(position);
             notifyDataSetChanged();
-        }catch(IndexOutOfBoundsException ex){
+        } catch (IndexOutOfBoundsException ex) {
             ex.printStackTrace();
         }
     }
 
     public boolean onItemMove(int from_position, int to_position) {
         //이동할 객체 저장
-        String paintingUploadData = paintingUploadDataList.get(from_position);
+        PaintingUploadData paintingUploadData = paintingUploadList.get(from_position);
         // 이동할 객체 삭제
-        paintingUploadDataList.remove(from_position);
+        paintingUploadList.remove(from_position);
         // 이동하고 싶은 position에 추가
-        paintingUploadDataList.add(to_position, paintingUploadData); //Adapter에 데이터 이동알림
+        paintingUploadList.add(to_position, paintingUploadData); //Adapter에 데이터 이동알림
         notifyItemMoved(from_position, to_position);
 
         return true;
@@ -117,66 +122,25 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
 
     }
 
-
-    //뷰홀더로 접근
-    public interface OnItemClickListener3{
-        void onItemClick(PaintingUploadAdapter.ViewHolder View, int position);
-
-    }
-
-    private PaintingUploadAdapter.OnItemClickListener3 mListener3;
-
-    public void setOnItemClickListener(PaintingUploadAdapter.OnItemClickListener3 listener){ this.mListener3 = listener; }
-
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView image, delete;
-        public EditText paintinguploadtext;
+        public ImageView image, delete;
+        public TextView paintinguploadtext;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-        image = (ImageView) itemView.findViewById(R.id.image);
-        delete = (ImageView) itemView.findViewById(R.id.delete);
-        paintinguploadtext = (EditText) itemView.findViewById(R.id.paintinguploadtext);
+            image = (ImageView) itemView.findViewById(R.id.image);
+            delete = (ImageView) itemView.findViewById(R.id.delete);
+            paintinguploadtext = (TextView) itemView.findViewById(R.id.paintinguploadtext);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int pos = getAbsoluteAdapterPosition();
-                    if(pos!=RecyclerView.NO_POSITION){
-                        if(mListener != null){
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if (mListener != null) {
                             mListener.onItemClick(view, pos);
-                        }
-                    }
-                }
-            });
-
-            paintinguploadtext.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    int pos = getAbsoluteAdapterPosition();
-                    if(pos!=RecyclerView.NO_POSITION){
-                        if(mListener3 != null){
-                            mListener3.onItemClick(PaintingUploadAdapter.ViewHolder.this,pos);
-
-                            paintinguploadtext.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable editable) {
-                                    paintinguploadtext.getText().toString();
-                                }
-                            });
                         }
                     }
                 }
@@ -186,12 +150,11 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
                 @Override
                 public void onClick(View view) {
                     int pos = getAbsoluteAdapterPosition();
-                    if(pos!=RecyclerView.NO_POSITION){
+                    if (pos != RecyclerView.NO_POSITION) {
                         mListener2.onItemClick(view, pos);
                     }
                 }
             });
-
         }
     }
 }

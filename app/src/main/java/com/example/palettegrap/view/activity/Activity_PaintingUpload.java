@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +36,7 @@ import com.example.palettegrap.R;
 import com.example.palettegrap.etc.FeedUpload;
 import com.example.palettegrap.etc.ItemTouchHelperCallback;
 import com.example.palettegrap.etc.PaintingUpload;
+import com.example.palettegrap.item.PaintingData;
 import com.example.palettegrap.item.PaintingUploadData;
 import com.example.palettegrap.view.adapter.ImageUploadAdapter;
 import com.example.palettegrap.view.adapter.PaintingUploadAdapter;
@@ -63,7 +65,7 @@ public class Activity_PaintingUpload extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private PaintingUploadAdapter paintingUploadAdapter;
-    private List<String> paintingUploadDataList = new ArrayList<>();
+    private List<PaintingUploadData> paintingUploadDataList = new ArrayList<>();
     PaintingUploadData paintingUploadData = new PaintingUploadData();
 
     ItemTouchHelper helper;
@@ -78,56 +80,46 @@ public class Activity_PaintingUpload extends AppCompatActivity {
         Button btn_back = (Button) findViewById(R.id.button_back);
         Button painting_upload = (Button) findViewById(R.id.painting_upload);
         EditText title = (EditText) findViewById(R.id.title);
-        ImageView imageupload = (ImageView) findViewById(R.id.imageupload);
-
-        //리사이클러뷰 형성
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_paintingupload);
-        recyclerView.setHasFixedSize(true);
-
-        paintingUploadAdapter = new PaintingUploadAdapter(getApplicationContext(),paintingUploadDataList);
-        recyclerView.setAdapter(paintingUploadAdapter);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity_PaintingUpload.this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        paintingUploadAdapter.notifyDataSetChanged();
-
-        helper = new ItemTouchHelper(new ItemTouchHelperCallback(paintingUploadAdapter));
-        helper.attachToRecyclerView(recyclerView);
+        ImageView painting_add = (ImageView) findViewById(R.id.painting_add);
+        TextView imageupload2 = (TextView) findViewById(R.id.imageupload2); //이미지 추가 글자
+        ImageView image = (ImageView) findViewById(R.id.image);
+        EditText painting_explain = (EditText) findViewById(R.id.painting_explain);
 
         SharedPreferences pref = getSharedPreferences("autologin", MODE_PRIVATE);
         String loginemail = pref.getString("inputemail", "_");
 
         //갤러리 이동
-        imageupload.setOnClickListener(new View.OnClickListener() {
+        image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 checkPermission();
 
                 Intent intent =new Intent();
-                intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true); // 다중 이미지 가져올 수 있도록 세팅
+                intent.setType("image/*");
                 intent.setAction(intent.ACTION_GET_CONTENT);
+                intent.putExtra("galleryimage", 1);
                 setResult(RESULT_OK);
                 resultLauncher.launch(intent);
 
             }
         });
 
-        //뷰홀더로 접근해서 Edittext 값 얻어오기
-       paintingUploadAdapter.setOnItemClickListener(new PaintingUploadAdapter.OnItemClickListener3() {
+        //새 게시물 추가
+        painting_add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(PaintingUploadAdapter.ViewHolder View, int position) {
+            public void onClick(View view) {
 
-                paintingtextdata = View.paintinguploadtext.getText().toString();
+                paintingUploadData.setPainting_image_path(photoroute);
+                paintingUploadData.setPainting_text(painting_explain.getText().toString());
 
-                paintingUploadDataList.add(paintingtextdata);
+                paintingUploadDataList.add(paintingUploadData);
 
             }
         });
 
-        //최종업로드
+
+        //최종업로드(서버로 전송!)
         painting_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,7 +137,7 @@ public class Activity_PaintingUpload extends AppCompatActivity {
 
                     for (int k = 0; k < paintingUploadDataList.size(); ++k) {
 
-                        File file = new File(paintingUploadDataList.get(k));
+                        File file = new File(String.valueOf(paintingUploadDataList.get(k)));
 
                         RequestBody requestBody4 = RequestBody.create(MediaType.parse("image/*"), file);
 
@@ -153,9 +145,11 @@ public class Activity_PaintingUpload extends AppCompatActivity {
                         MultipartBody.Part image = MultipartBody.Part.createFormData("image" + k, "painting", requestBody4); //서버에서 받는 키값 String, 파일 이름 String, 파일 경로를 가지는 RequestBody 객체
                         files.add(image);
                     }
+
                     RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), loginemail); //이메일
                     RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), title.getText().toString()); //제목
                     RequestBody requestBody3 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(paintingUploadDataList.size())); //게시글(이미지+text) 사이즈
+                    Log.e("데이터 리스트", "데이터 리스트"+paintingUploadDataList);
 
                     Call<String> call = api.PaintingUpload(requestBody1, requestBody2, requestBody3, files);
                     call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
@@ -184,31 +178,31 @@ public class Activity_PaintingUpload extends AppCompatActivity {
             }
         });
 
-        //삭제
-        paintingUploadAdapter.setOnItemClickListener2(new PaintingUploadAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(Activity_PaintingUpload.this);
-
-                builder.setTitle("정말 삭제 하시겠습니까?").setMessage("\n");
-
-                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-
-                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        paintingUploadAdapter.remove(position);
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-        });
+//        //삭제
+//        paintingUploadAdapter.setOnItemClickListener2(new PaintingUploadAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(Activity_PaintingUpload.this);
+//
+//                builder.setTitle("정말 삭제 하시겠습니까?").setMessage("\n");
+//
+//                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                    }
+//                });
+//
+//                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        paintingUploadAdapter.remove(position);
+//                    }
+//                });
+//                AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
+//            }
+//        });
     }
 
     @Override
@@ -227,42 +221,17 @@ public class Activity_PaintingUpload extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == RESULT_OK) {
 
-                        if (result == null) { // 어떠한 이미지도 선택되지 않은 경우
-                            Toast.makeText(getApplicationContext(), "이미지를 선택해주세요", Toast.LENGTH_SHORT).show();
-                        } else { // 이미지가 하나라도 선택된 경우
-                            if (result.getData().getClipData() == null) {
+                        ImageView image = (ImageView) findViewById(R.id.image);
 
-                                Intent imagedata = result.getData();
-                                Uri uri = imagedata.getData();
+                        Intent imagedata = result.getData();
+                        Uri uri = imagedata.getData();
 
-                                photoroute = createCopyAndReturnRealPath(Activity_PaintingUpload.this, uri); // 절대경로 가져오기!
+                        photoroute = createCopyAndReturnRealPath(Activity_PaintingUpload.this,uri); // 절대경로 가져오기!
 
-                                paintingUploadData.setPainting_image_path(photoroute);
-                                paintingUploadDataList.add(photoroute);
-                                paintingUploadAdapter.setPaintingUploadDataList(paintingUploadDataList);
+//                      Uri imageUrl=uri.parse(createCopyAndReturnRealPath(Activity_profile.this,uri));
+                        Glide.with(Activity_PaintingUpload.this).load(uri).into(image);
 
-                            } else { //이미지를 여러 장 선택한 경우
-                                ClipData clipData = result.getData().getClipData();
 
-                                if (clipData.getItemCount() > 10) { //선택한 이미지가 11장 이상인 경우
-                                    Toast.makeText(getApplicationContext(), "사진은 10장까지 선택가능합니다", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    for (int i = 0; i < clipData.getItemCount(); i++) {
-                                        Uri imageUri = clipData.getItemAt(i).getUri(); // 선택한 이미지들의 Uri를 가져옴
-                                        try {
-
-                                            photoroute = createCopyAndReturnRealPath(Activity_PaintingUpload.this, imageUri); // 절대경로 가져오기!
-
-                                            paintingUploadDataList.add(photoroute);
-                                            paintingUploadAdapter.setPaintingUploadDataList(paintingUploadDataList);
-
-                                        } catch (Exception e) {
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        paintingUploadAdapter.notifyDataSetChanged();
                     }
                 }
             });
