@@ -76,7 +76,7 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
 
         PaintingUploadData paintingUploadData = paintingUploadList.get(position);
 
-        Glide.with(context).load(paintingUploadData).into(holder.image);
+        Glide.with(context).load(paintingUploadData.getPainting_image_path()).into(holder.image);
         holder.paintinguploadtext.setText(paintingUploadData.getPainting_text());
 
         holder.itemView.setTag(position);

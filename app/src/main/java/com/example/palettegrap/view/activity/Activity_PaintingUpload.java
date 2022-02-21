@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,7 @@ import com.example.palettegrap.etc.ItemTouchHelperCallback;
 import com.example.palettegrap.etc.PaintingUpload;
 import com.example.palettegrap.item.PaintingData;
 import com.example.palettegrap.item.PaintingUploadData;
+import com.example.palettegrap.view.adapter.FeedUploadAdapter;
 import com.example.palettegrap.view.adapter.ImageUploadAdapter;
 import com.example.palettegrap.view.adapter.PaintingUploadAdapter;
 import com.example.palettegrap.view.adapter.ReplyAdapter;
@@ -66,7 +68,7 @@ public class Activity_PaintingUpload extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PaintingUploadAdapter paintingUploadAdapter;
     private List<PaintingUploadData> paintingUploadDataList = new ArrayList<>();
-    PaintingUploadData paintingUploadData = new PaintingUploadData();
+
 
     ItemTouchHelper helper;
 
@@ -82,11 +84,33 @@ public class Activity_PaintingUpload extends AppCompatActivity {
         EditText title = (EditText) findViewById(R.id.title);
         ImageView painting_add = (ImageView) findViewById(R.id.painting_add);
         TextView imageupload2 = (TextView) findViewById(R.id.imageupload2); //이미지 추가 글자
+        TextView painting_text = (TextView) findViewById(R.id.painting_text); //그림강좌를 추가해주세요 문구
         ImageView image = (ImageView) findViewById(R.id.image);
         EditText painting_explain = (EditText) findViewById(R.id.painting_explain);
 
         SharedPreferences pref = getSharedPreferences("autologin", MODE_PRIVATE);
         String loginemail = pref.getString("inputemail", "_");
+
+        //리사이클러뷰 형성
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_paintingupload);
+        recyclerView.setHasFixedSize(true);
+
+        paintingUploadAdapter = new PaintingUploadAdapter(Activity_PaintingUpload.this, paintingUploadDataList);
+        recyclerView.setAdapter(paintingUploadAdapter);
+
+        //게시글이 비었을 때
+        if(paintingUploadDataList.size()!=0){
+            painting_text.setVisibility(View.INVISIBLE);
+        }else{
+            painting_text.setVisibility(View.VISIBLE);
+        }
+
+        //리사이클러뷰 연결
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Activity_PaintingUpload.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        paintingUploadAdapter.notifyDataSetChanged();
+
 
         //갤러리 이동
         image.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +134,8 @@ public class Activity_PaintingUpload extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                PaintingUploadData paintingUploadData = new PaintingUploadData();
+
                 paintingUploadData.setPainting_image_path(photoroute);
                 paintingUploadData.setPainting_text(painting_explain.getText().toString());
 
@@ -117,7 +143,6 @@ public class Activity_PaintingUpload extends AppCompatActivity {
 
             }
         });
-
 
         //최종업로드(서버로 전송!)
         painting_upload.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +203,7 @@ public class Activity_PaintingUpload extends AppCompatActivity {
             }
         });
 
-//        //삭제
+        //삭제
 //        paintingUploadAdapter.setOnItemClickListener2(new PaintingUploadAdapter.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(View view, int position) {
@@ -222,15 +247,17 @@ public class Activity_PaintingUpload extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK) {
 
                         ImageView image = (ImageView) findViewById(R.id.image);
+                        TextView image2 = (TextView) findViewById(R.id.imageupload2);
 
                         Intent imagedata = result.getData();
                         Uri uri = imagedata.getData();
 
                         photoroute = createCopyAndReturnRealPath(Activity_PaintingUpload.this,uri); // 절대경로 가져오기!
 
+                        image2.setVisibility(View.VISIBLE);
+
 //                      Uri imageUrl=uri.parse(createCopyAndReturnRealPath(Activity_profile.this,uri));
                         Glide.with(Activity_PaintingUpload.this).load(uri).into(image);
-
 
                     }
                 }
