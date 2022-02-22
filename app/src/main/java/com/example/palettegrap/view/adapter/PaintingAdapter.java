@@ -71,6 +71,14 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
     holder.title.setText(paintingitemposition.getPainting_title());
     holder.nickname.setText(paintingitemposition.getMember_nick());
 
+        //읽음 여부
+        if(Integer.parseInt(paintingitemposition.getPainting_check())==1){
+            holder.painting_check.setVisibility(View.INVISIBLE);
+        }else {
+            holder.painting_check.setVisibility(View.VISIBLE);
+        }
+
+
         //작성시간
         String stringDate = paintingitemposition.getPainting_created();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,11 +97,12 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, nickname, created_date;
-        ImageView unlike, painting_image;
+        ImageView unlike, painting_image, painting_check;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            painting_check = (ImageView) itemView.findViewById(R.id.painting_check);
             title = (TextView) itemView.findViewById(R.id.title);
             nickname = (TextView) itemView.findViewById(R.id.nickname);
             created_date = (TextView) itemView.findViewById(R.id.created_date);

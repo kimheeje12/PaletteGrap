@@ -25,6 +25,7 @@ import com.example.palettegrap.R;
 import com.example.palettegrap.etc.GetMaster;
 import com.example.palettegrap.etc.GetPainting;
 import com.example.palettegrap.etc.MasterCheckInput;
+import com.example.palettegrap.etc.PaintingCheckInput;
 import com.example.palettegrap.item.MasterData;
 import com.example.palettegrap.item.PaintingData;
 import com.example.palettegrap.view.activity.Activity_Masterpiece;
@@ -280,35 +281,35 @@ public class Fragment_ArtStory extends Fragment {
                             startActivity(intent);
 
                             //해당 아이템을 누르면 이메일/명화 일련번호가 mastercheck table에 입력됨
-//                            Gson gson = new GsonBuilder().setLenient().create();
-//
-//                            Retrofit retrofit = new Retrofit.Builder()
-//                                    .baseUrl(MasterCheckInput.MasterCheckInput_URL)
-//                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
-//                                    .addConverterFactory(GsonConverterFactory.create(gson))
-//                                    .build();
-//
-//                            MasterCheckInput api = retrofit.create(MasterCheckInput.class);
-//
-//                            RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), loginemail); //이메일
-//                            RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), masterData.getMaster_id()); //명화 일련번호
-//
-//                            Call<String> call = api.MasterCheckInput(requestBody1,requestBody2);
-//                            call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
-//                            {
-//                                @Override
-//                                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-//                                    if (response.isSuccessful() && response.body() != null) {
-//                                        Log.e("Success", "paintingcheck 정상!");
-//
-//                                    }
-//                                }
-//                                @Override
-//                                public void onFailure(Call<String> call, Throwable t) {
-//                                    Log.e("Fail", "call back 실패" + t.getMessage());
-//
-//                                }
-//                            });
+                            Gson gson = new GsonBuilder().setLenient().create();
+
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(PaintingCheckInput.PaintingCheckInput_URL)
+                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                                    .addConverterFactory(GsonConverterFactory.create(gson))
+                                    .build();
+
+                            PaintingCheckInput api = retrofit.create(PaintingCheckInput.class);
+
+                            RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), loginemail); //이메일
+                            RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), paintingData.getPainting_id()); //그림강좌 id
+
+                            Call<String> call = api.PaintingCheckInput(requestBody1,requestBody2);
+                            call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+                            {
+                                @Override
+                                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        Log.e("Success", "그림강좌 checkinput 정상!");
+
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    Log.e("Fail", "call back 실패" + t.getMessage());
+
+                                }
+                            });
                         }
                     });
                 }

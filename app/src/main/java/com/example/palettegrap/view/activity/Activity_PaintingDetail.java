@@ -24,6 +24,7 @@ import com.example.palettegrap.etc.GetPainting;
 import com.example.palettegrap.etc.GetPaintingDetail;
 import com.example.palettegrap.etc.MasterDelete;
 import com.example.palettegrap.etc.PaintingDelete;
+import com.example.palettegrap.item.FeedData;
 import com.example.palettegrap.item.MasterData;
 import com.example.palettegrap.item.PaintingData;
 import com.example.palettegrap.view.adapter.MasterAdapter;
@@ -32,6 +33,7 @@ import com.example.palettegrap.view.adapter.PaintingDetailAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,6 +49,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Activity_PaintingDetail extends AppCompatActivity {
 
+
+    public List<PaintingData> paintingDataList;
     private PaintingDetailAdapter paintingDetailAdapter;
     private RecyclerView recyclerView;
 
@@ -65,6 +69,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
         ImageView unlike = (ImageView) findViewById(R.id.unlike); //빈 하트 (누르면 빨강으로) - like버튼
 
         SharedPreferences sharedPreferences = getSharedPreferences("autologin", Activity.MODE_PRIVATE);
+        String nick = sharedPreferences.getString("inputnick", null);
         String loginemail=sharedPreferences.getString("inputemail",null);
 
         Intent intent = getIntent();
@@ -74,9 +79,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
         String likecount = intent.getStringExtra("like_count");
         String painting_id = intent.getStringExtra("painting_id");
         String painting_title = intent.getStringExtra("painting_title");
-        String painting_image_path = intent.getStringExtra("painting_image_path");
         String created_date = intent.getStringExtra("painting_created");
-        String painting_text = intent.getStringExtra("painting_text");
 
         //설정(아이템 클릭시 얻어온 이메일과 현재 로그인 되어있는 이메일이 같다면 설정창 보이도록!) / 수정&삭제
         if(member_email.equals(loginemail)){
@@ -93,15 +96,14 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             if(i==0){
-//                                Intent intent = new Intent(Activity_PaintingDetail.this, Activity_PaintingEdit.class);
-//                                intent.putExtra("member_email", member_email);
-//                                intent.putExtra("master_id", master_id);
-//                                intent.putExtra("master_title", master_title);
-//                                intent.putExtra("master_artist", master_artist);
-//                                intent.putExtra("master_image", master_image);
-//                                intent.putExtra("master_story", master_story);
-//                                intent.putExtra("master_created", master_created);
-//                                startActivity(intent);
+                                Intent intent = new Intent(Activity_PaintingDetail.this, Activity_PaintingEdit.class);
+                                SharedPreferences pref = getSharedPreferences("painting", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString("painting_id", painting_id);
+                                editor.putString("painting_title", painting_title);
+                                editor.apply();
+                                intent.putExtra("paintingdata", (Serializable) paintingDataList);
+                                startActivity(intent);
                             }else if(i==1){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(Activity_PaintingDetail.this);
                                 builder.setTitle("정말 삭제 하시겠습니까?").setMessage("\n");
@@ -161,6 +163,28 @@ public class Activity_PaintingDetail extends AppCompatActivity {
         Glide.with(Activity_PaintingDetail.this).load(member_image).circleCrop().into(profileimage);
         nickname.setText(member_nick);
 
+        //프로필 클릭 시 마이페이지로 이동!
+        profileimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(member_nick.equals(nick)){
+                    Intent intent = new Intent(Activity_PaintingDetail.this, Activity_Main.class);
+                    intent.putExtra("mypage",1);
+                    startActivity(intent);
+
+                }else{
+                    //다른 회원 이메일 정보 넘기기(다른 회원 마이페이지 이동했을 때 데이터를 불러오기 위해)
+                    SharedPreferences pref = getSharedPreferences("otherprofile", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("otheremail", member_email);
+                    editor.apply();
+                    Intent intent = new Intent(Activity_PaintingDetail.this, Activity_Main.class);
+                    intent.putExtra("mypage",2);
+                    startActivity(intent);
+                }
+            }
+        });
+
         //그림강좌 리스트 형성
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -180,7 +204,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                     Log.e("Success", "그림강좌 call back 정상!");
 
                     generateFeedList(response.body());
-
+                    paintingDataList=response.body(); //수정을 위해 담아놓기!
                 }
             }
 

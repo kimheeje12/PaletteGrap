@@ -2,7 +2,13 @@ package com.example.palettegrap.item;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PaintingData {
+import java.io.Serializable;
+
+public class PaintingData implements Serializable {
+
+
+    @SerializedName("painting_check") //읽음 여부 체크
+    private String painting_check;
 
     @SerializedName("member_image") //회원 프로필 이미지
     private String member_image;
@@ -33,6 +39,15 @@ public class PaintingData {
 
     @SerializedName("painting_text") // 그림강좌 내용
     private String painting_text;
+
+
+    public String getPainting_check() {
+        return painting_check;
+    }
+
+    public void setPainting_check(String painting_check) {
+        this.painting_check = painting_check;
+    }
 
     public String getMember_image() {
         return member_image;

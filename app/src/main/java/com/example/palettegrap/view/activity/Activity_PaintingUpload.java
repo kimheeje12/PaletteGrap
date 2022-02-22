@@ -138,14 +138,17 @@ public class Activity_PaintingUpload extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                PaintingUploadData paintingUploadData = new PaintingUploadData();
+                if (photoroute==null || painting_explain.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "내용을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                } else {
+                    PaintingUploadData paintingUploadData = new PaintingUploadData();
 
-                paintingUploadData.setPainting_image_path(photoroute);
-                paintingUploadData.setPainting_text(painting_explain.getText().toString());
+                    paintingUploadData.setPainting_image_path(photoroute);
+                    paintingUploadData.setPainting_text(painting_explain.getText().toString());
 
-                paintingUploadDataList.add(paintingUploadData);
-                paintingUploadAdapter.notifyDataSetChanged();
-
+                    paintingUploadDataList.add(paintingUploadData);
+                    paintingUploadAdapter.notifyDataSetChanged();
+                }
             }
         });
 
