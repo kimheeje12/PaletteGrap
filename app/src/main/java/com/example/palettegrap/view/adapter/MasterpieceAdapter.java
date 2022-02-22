@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.palettegrap.R;
 import com.example.palettegrap.item.MasterData;
 
@@ -56,7 +59,10 @@ public class MasterpieceAdapter extends RecyclerView.Adapter<MasterpieceAdapter.
 
         MasterData masteritemposition = masterDataList.get(position);
 
-        Glide.with(context).load(masteritemposition.getMaster_image()).into(holder.masterimage); // 명화 이미지
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
+
+        Glide.with(context).load(masteritemposition.getMaster_image()).apply(requestOptions).into(holder.masterimage); // 명화 이미지
 
         //읽음 여부
         if(Integer.parseInt(masteritemposition.getMaster_check())==1){

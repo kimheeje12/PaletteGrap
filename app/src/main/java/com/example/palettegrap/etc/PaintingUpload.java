@@ -20,7 +20,8 @@ public interface PaintingUpload {
             @Part("member_email") RequestBody member_email,
             @Part("painting_title") RequestBody painting_title,
             @Part("CntImage") RequestBody CntImage,
-            @Part List<MultipartBody.Part> files); //여러 항목을 보낼 때 file
+            @Part List<MultipartBody.Part> files,
+            @Part List<MultipartBody.Part> files2); //여러 항목을 보낼 때 file
 
 
 }

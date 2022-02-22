@@ -17,7 +17,6 @@ public class Activity_Painting extends AppCompatActivity {
 
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -31,10 +30,7 @@ public class Activity_Painting extends AppCompatActivity {
 
 
 
-
         //그림강좌 리스트 형성
-
-
 
 
 

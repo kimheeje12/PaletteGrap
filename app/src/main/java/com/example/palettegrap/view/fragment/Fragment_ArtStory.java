@@ -23,14 +23,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.GetMaster;
+import com.example.palettegrap.etc.GetPainting;
 import com.example.palettegrap.etc.MasterCheckInput;
+import com.example.palettegrap.etc.PaintingUpload;
 import com.example.palettegrap.item.MasterData;
+import com.example.palettegrap.item.PaintingData;
 import com.example.palettegrap.view.activity.Activity_Masterpiece;
 import com.example.palettegrap.view.activity.Activity_MasterpieceDetail;
 import com.example.palettegrap.view.activity.Activity_MasterpieceUpload;
 import com.example.palettegrap.view.activity.Activity_Painting;
 import com.example.palettegrap.view.activity.Activity_PaintingUpload;
 import com.example.palettegrap.view.adapter.MasterpieceAdapter;
+import com.example.palettegrap.view.adapter.PaintingAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -47,8 +51,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Fragment_ArtStory extends Fragment {
 
-    public static List<MasterData> masterDataList;
     private MasterpieceAdapter masterpieceAdapter;
+    private PaintingAdapter paintingAdapter;
     private RecyclerView recyclerView;
 
     ViewGroup rootView;
@@ -69,6 +73,74 @@ public class Fragment_ArtStory extends Fragment {
         TextView masterpiece_count = (TextView) rootView.findViewById(R.id.masterpiece_count);
         ImageView btn_painting = (ImageView) rootView.findViewById(R.id.btn_painting);
         TextView painting_count = (TextView) rootView.findViewById(R.id.painting_count);
+
+
+        //스토리 업로드(공지사항 & 그림강좌)
+        //하드코딩(kimheeje@naver.com)과 동일한 로그인 이메일이 아니라면 공지사항 버튼 안나오도록 설정!
+        story_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(loginemail.equals("kimheeje@naver.com")){
+                    final String[] items ={"오늘의 명화 올리기", "그림강좌 올리기","취소"};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setTitle("PaletteGrap");
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(i==0){
+                                Intent intent = new Intent(getActivity(), Activity_MasterpieceUpload.class);
+                                startActivity(intent);
+                            }if(i==1){
+                                Intent intent = new Intent(getActivity(), Activity_PaintingUpload.class);
+                                startActivity(intent);
+                            } else{
+                            }
+                        }
+                    });
+                    builder.show();
+                }else{
+                    final String[] items ={"그림강좌 올리기","취소"};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setTitle("PaletteGrap");
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(i==0){
+                                Intent intent = new Intent(getActivity(), Activity_PaintingUpload.class);
+                                startActivity(intent);
+                            }
+                            else{
+                            }
+                        }
+                    });
+                    builder.show();
+                }
+            }
+        });
+
+        //오늘의 명화로 이동
+        btn_masterpiece.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Activity_Masterpiece.class);
+                startActivity(intent);
+            }
+        });
+
+        //그림강좌로 이동
+        btn_painting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Activity_Painting.class);
+                startActivity(intent);
+
+            }
+        });
 
         //명화리스트 형성
         Gson gson3 = new GsonBuilder().setLenient().create();
@@ -174,85 +246,109 @@ public class Fragment_ArtStory extends Fragment {
             }
         });
 
-
         //그림강좌리스트 형성
+        Gson gson = new GsonBuilder().setLenient().create();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GetPainting.GetPainting_URL)
+                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
 
-
-
-
-
-
-
-
-
-        //스토리 업로드(공지사항 & 그림강좌)
-        //하드코딩(kimheeje@naver.com)과 동일한 로그인 이메일이 아니라면 공지사항 버튼 안나오도록 설정!
-        story_upload.setOnClickListener(new View.OnClickListener() {
+        GetPainting api = retrofit.create(GetPainting.class);
+        Call<List<PaintingData>> call = api.GetPainting(loginemail);
+        call.enqueue(new Callback<List<PaintingData>>() //enqueue: 데이터를 입력하는 함수
+        {
             @Override
-            public void onClick(View view) {
+            public void onResponse(@NonNull Call<List<PaintingData>> call, @NonNull Response<List<PaintingData>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "그림강좌 call back 정상!");
 
-                if(loginemail.equals("kimheeje@naver.com")){
-                    final String[] items ={"오늘의 명화 올리기", "그림강좌 올리기","취소"};
+                    generateFeedList(response.body());
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                    builder.setTitle("PaletteGrap");
-                    builder.setItems(items, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if(i==0){
-                                Intent intent = new Intent(getActivity(), Activity_MasterpieceUpload.class);
-                                startActivity(intent);
-                            }if(i==1){
-                                Intent intent = new Intent(getActivity(), Activity_PaintingUpload.class);
-                                startActivity(intent);
-                            } else{
-                            }
-                        }
-                    });
-                    builder.show();
-                }else{
-                    final String[] items ={"그림강좌 올리기","취소"};
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                    builder.setTitle("PaletteGrap");
-                    builder.setItems(items, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if(i==0){
-                                Intent intent = new Intent(getActivity(), Activity_PaintingUpload.class);
-                                startActivity(intent);
-                            }
-                            else{
-                            }
-                        }
-                    });
-                    builder.show();
+//                    masterpieceAdapter.setOnItemClickListener(new MasterpieceAdapter.OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(View view, int position) {
+//                            PaintingData masterData = response.body().get(position);
+//
+//                            Intent intent = new Intent(getActivity(), Activity_MasterpieceDetail.class);
+//                            intent.putExtra("member_email", masterData.getMember_email());
+//                            intent.putExtra("master_id", masterData.getMaster_id());
+//                            intent.putExtra("master_title", masterData.getMaster_title());
+//                            intent.putExtra("master_artist", masterData.getMaster_artist());
+//                            intent.putExtra("master_image", masterData.getMaster_image());
+//                            intent.putExtra("master_story", masterData.getMaster_story());
+//                            intent.putExtra("master_created", masterData.getMaster_created());
+//                            startActivity(intent);
+//
+//                            //해당 아이템을 누르면 이메일/명화 일련번호가 mastercheck table에 입력됨
+//                            Gson gson = new GsonBuilder().setLenient().create();
+//
+//                            Retrofit retrofit = new Retrofit.Builder()
+//                                    .baseUrl(MasterCheckInput.MasterCheckInput_URL)
+//                                    .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+//                                    .addConverterFactory(GsonConverterFactory.create(gson))
+//                                    .build();
+//
+//                            MasterCheckInput api = retrofit.create(MasterCheckInput.class);
+//
+//                            RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), loginemail); //이메일
+//                            RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), masterData.getMaster_id()); //명화 일련번호
+//
+//                            Call<String> call = api.MasterCheckInput(requestBody1,requestBody2);
+//                            call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
+//                            {
+//                                @Override
+//                                public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+//                                    if (response.isSuccessful() && response.body() != null) {
+//                                        Log.e("Success", "paintingcheck 정상!");
+//
+//                                    }
+//                                }
+//                                @Override
+//                                public void onFailure(Call<String> call, Throwable t) {
+//                                    Log.e("Fail", "call back 실패" + t.getMessage());
+//
+//                                }
+//                            });
+//                        }
+//                    });
                 }
             }
-        });
 
-        //오늘의 명화로 이동
-        btn_masterpiece.setOnClickListener(new View.OnClickListener() {
+            private void generateFeedList(List<PaintingData> body){
+
+                //리사이클러뷰 형성
+                recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_painting);
+
+                paintingAdapter = new PaintingAdapter(getActivity(), body);
+                recyclerView.setAdapter(paintingAdapter);
+
+                //그림강좌 갯수 카운팅
+                painting_count.setText(String.valueOf(body.size())+"개");
+
+                //게시글이 비었을 때
+//                if(body.size()!=0){
+//                    empty.setVisibility(View.INVISIBLE);
+//                }else{
+//                    empty.setVisibility(View.VISIBLE);
+//                }
+
+                //리사이클러뷰 연결
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(linearLayoutManager);
+
+                masterpieceAdapter.notifyDataSetChanged();
+
+            }
+
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Masterpiece.class);
-                startActivity(intent);
+            public void onFailure(Call<List<PaintingData>> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
+
             }
         });
-
-        //그림강좌로 이동
-        btn_painting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Painting.class);
-                startActivity(intent);
-
-            }
-        });
-
     }
 
     @Nullable

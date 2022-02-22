@@ -33,6 +33,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.FeedUpload;
 import com.example.palettegrap.etc.ItemTouchHelperCallback;
@@ -43,6 +46,8 @@ import com.example.palettegrap.view.adapter.FeedUploadAdapter;
 import com.example.palettegrap.view.adapter.ImageUploadAdapter;
 import com.example.palettegrap.view.adapter.PaintingUploadAdapter;
 import com.example.palettegrap.view.adapter.ReplyAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,6 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Activity_PaintingUpload extends AppCompatActivity {
@@ -68,7 +74,6 @@ public class Activity_PaintingUpload extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PaintingUploadAdapter paintingUploadAdapter;
     private List<PaintingUploadData> paintingUploadDataList = new ArrayList<>();
-
 
     ItemTouchHelper helper;
 
@@ -111,7 +116,6 @@ public class Activity_PaintingUpload extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         paintingUploadAdapter.notifyDataSetChanged();
 
-
         //갤러리 이동
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,15 +135,16 @@ public class Activity_PaintingUpload extends AppCompatActivity {
 
         //새 게시물 추가
         painting_add.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-
                 PaintingUploadData paintingUploadData = new PaintingUploadData();
 
                 paintingUploadData.setPainting_image_path(photoroute);
                 paintingUploadData.setPainting_text(painting_explain.getText().toString());
 
                 paintingUploadDataList.add(paintingUploadData);
+                paintingUploadAdapter.notifyDataSetChanged();
 
             }
         });
@@ -151,38 +156,54 @@ public class Activity_PaintingUpload extends AppCompatActivity {
                 if(title.getText().toString().equals("") || paintingUploadDataList.size()==0){
                     Toast.makeText(getApplicationContext(), "내용을 입력해주세요", Toast.LENGTH_SHORT).show();
                 }else{
+                    Gson gson = new GsonBuilder().setLenient().create();
 
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl(PaintingUpload.PaintingUpload_URL)
                             .addConverterFactory(ScalarsConverterFactory.create()) //HTTP 통신 시에 주고받는 데이터 형태를 변환시켜 주는 컨버터 지정 설정
+                            .addConverterFactory(GsonConverterFactory.create(gson))
                             .build();
                     PaintingUpload api = retrofit.create(PaintingUpload.class);
 
-                    ArrayList<MultipartBody.Part> files = new ArrayList<>(); // 여러 파일들을 담아줄 arraylist
+
+                    //그림강좌 이미지
+                    ArrayList<MultipartBody.Part> files = new ArrayList<>();
 
                     for (int k = 0; k < paintingUploadDataList.size(); ++k) {
 
-                        File file = new File(String.valueOf(paintingUploadDataList.get(k)));
+                        File file = new File(paintingUploadDataList.get(k).getPainting_image_path());
+                        Log.e("이미지 파일 확인", "이미지 파일 확인"+paintingUploadDataList.get(k).getPainting_image_path());
 
-                        RequestBody requestBody4 = RequestBody.create(MediaType.parse("image/*"), file);
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
 
-                        //RequestBody로 Multipart.part 객체 생성
-                        MultipartBody.Part image = MultipartBody.Part.createFormData("image" + k, "painting", requestBody4); //서버에서 받는 키값 String, 파일 이름 String, 파일 경로를 가지는 RequestBody 객체
+                        MultipartBody.Part image = MultipartBody.Part.createFormData("image" + k, file.getName(), requestBody); //서버에서 받는 키값 String, 파일 이름 String, 파일 경로를 가지는 RequestBody 객체
                         files.add(image);
                     }
+                    Log.e("files 확인", "files 확인"+files);
+
+                    ArrayList<MultipartBody.Part> files2 = new ArrayList<>();
+
+                    //그림강좌 텍스트
+                    for (int k = 0; k < paintingUploadDataList.size(); ++k) {
+
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), paintingUploadDataList.get(k).getPainting_text());
+
+                        MultipartBody.Part text = MultipartBody.Part.createFormData("text" + k, paintingUploadDataList.get(k).getPainting_text(), requestBody); //서버에서 받는 키값 String, 파일 이름 String, 파일 경로를 가지는 RequestBody 객체
+                        files.add(text);
+                    }
+                    Log.e("files 확인", "files 확인"+files);
 
                     RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), loginemail); //이메일
                     RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), title.getText().toString()); //제목
                     RequestBody requestBody3 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(paintingUploadDataList.size())); //게시글(이미지+text) 사이즈
-                    Log.e("데이터 리스트", "데이터 리스트"+paintingUploadDataList);
 
-                    Call<String> call = api.PaintingUpload(requestBody1, requestBody2, requestBody3, files);
+                    Call<String> call = api.PaintingUpload(requestBody1, requestBody2, requestBody3, files, files2);
                     call.enqueue(new Callback<String>() //enqueue: 데이터를 입력하는 함수
                     {
                         @Override
                         public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                             if (response.isSuccessful() && response.body() != null) {
-                                Log.e("Success", "피드 이미지, 텍스트 정상적으로 전송");
+                                Log.e("Success", "그림강좌 정상적으로 전송!");
                                 finish();
                             }
                         }
@@ -204,30 +225,30 @@ public class Activity_PaintingUpload extends AppCompatActivity {
         });
 
         //삭제
-//        paintingUploadAdapter.setOnItemClickListener2(new PaintingUploadAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(Activity_PaintingUpload.this);
-//
-//                builder.setTitle("정말 삭제 하시겠습니까?").setMessage("\n");
-//
-//                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                    }
-//                });
-//
-//                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        paintingUploadAdapter.remove(position);
-//                    }
-//                });
-//                AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-//            }
-//        });
+        paintingUploadAdapter.setOnItemClickListener2(new PaintingUploadAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Activity_PaintingUpload.this);
+
+                builder.setTitle("정말 삭제 하시겠습니까?").setMessage("\n");
+
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        paintingUploadAdapter.remove(position);
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
     }
 
     @Override
@@ -253,11 +274,12 @@ public class Activity_PaintingUpload extends AppCompatActivity {
                         Uri uri = imagedata.getData();
 
                         photoroute = createCopyAndReturnRealPath(Activity_PaintingUpload.this,uri); // 절대경로 가져오기!
+                        image2.setVisibility(View.INVISIBLE);
 
-                        image2.setVisibility(View.VISIBLE);
+                        RequestOptions requestOptions = new RequestOptions();
+                        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
 
-//                      Uri imageUrl=uri.parse(createCopyAndReturnRealPath(Activity_profile.this,uri));
-                        Glide.with(Activity_PaintingUpload.this).load(uri).into(image);
+                        Glide.with(Activity_PaintingUpload.this).load(uri).apply(requestOptions).into(image);
 
                     }
                 }

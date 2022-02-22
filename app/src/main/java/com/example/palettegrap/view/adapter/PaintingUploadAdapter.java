@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.palettegrap.R;
 import com.example.palettegrap.etc.ItemTouchHelperListener;
 import com.example.palettegrap.item.FeedData;
@@ -28,7 +31,6 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
 
     private Context context;
     private List<PaintingUploadData> paintingUploadList;
-
 
     public PaintingUploadAdapter(Context context, List<PaintingUploadData> paintingUploadDataList) {
         this.context = context;
@@ -76,7 +78,10 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
 
         PaintingUploadData paintingUploadData = paintingUploadList.get(position);
 
-        Glide.with(context).load(paintingUploadData.getPainting_image_path()).into(holder.image);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
+
+        Glide.with(context).load(paintingUploadData.getPainting_image_path()).apply(requestOptions).into(holder.image);
         holder.paintinguploadtext.setText(paintingUploadData.getPainting_text());
 
         holder.itemView.setTag(position);
@@ -151,7 +156,9 @@ public class PaintingUploadAdapter extends RecyclerView.Adapter<PaintingUploadAd
                 public void onClick(View view) {
                     int pos = getAbsoluteAdapterPosition();
                     if (pos != RecyclerView.NO_POSITION) {
-                        mListener2.onItemClick(view, pos);
+                        if (mListener2 != null) {
+                            mListener2.onItemClick(view, pos);
+                        }
                     }
                 }
             });

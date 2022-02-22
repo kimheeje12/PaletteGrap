@@ -13,6 +13,9 @@ public class PaintingData {
     @SerializedName("member_email") // 회원 이메일
     private String member_email;
 
+    @SerializedName("member_nick") // 닉네임
+    private String member_nick;
+
     @SerializedName("like_count") // 좋아요 갯수
     private String like_count;
 
@@ -27,6 +30,14 @@ public class PaintingData {
 
     @SerializedName("painting_text") // 그림강좌 내용
     private String painting_text;
+
+    public String getMember_nick() {
+        return member_nick;
+    }
+
+    public void setMember_nick(String member_nick) {
+        this.member_nick = member_nick;
+    }
 
     public String getPainting_id() {
         return painting_id;

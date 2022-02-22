@@ -98,7 +98,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/member_image"
+        android:id="@+id/painting_image"
         android:layout_width="55dp"
         android:layout_height="55dp"
         tools:srcCompat="@tools:sample/avatars" />
