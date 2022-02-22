@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -64,6 +65,7 @@ public class Activity_MasterpieceDetail extends AppCompatActivity {
         String master_image = intent.getStringExtra("master_image");
         String master_story = intent.getStringExtra("master_story");
         String master_created = intent.getStringExtra("master_created");
+        Log.e("작성일 체크", "작성일 체크"+master_created);
 
         Glide.with(Activity_MasterpieceDetail.this).load(master_image).into(masterpiece);
         masterpiece_title.setText(master_title);

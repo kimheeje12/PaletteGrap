@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class PaintingData {
 
+    @SerializedName("member_image") //회원 프로필 이미지
+    private String member_image;
+
     @SerializedName("painting_id") // 그림강좌 게시글 일련번호
     private String painting_id;
 
@@ -30,6 +33,14 @@ public class PaintingData {
 
     @SerializedName("painting_text") // 그림강좌 내용
     private String painting_text;
+
+    public String getMember_image() {
+        return member_image;
+    }
+
+    public void setMember_image(String member_image) {
+        this.member_image = member_image;
+    }
 
     public String getMember_nick() {
         return member_nick;

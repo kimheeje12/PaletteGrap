@@ -25,13 +25,12 @@ import com.example.palettegrap.R;
 import com.example.palettegrap.etc.GetMaster;
 import com.example.palettegrap.etc.GetPainting;
 import com.example.palettegrap.etc.MasterCheckInput;
-import com.example.palettegrap.etc.PaintingUpload;
 import com.example.palettegrap.item.MasterData;
 import com.example.palettegrap.item.PaintingData;
 import com.example.palettegrap.view.activity.Activity_Masterpiece;
 import com.example.palettegrap.view.activity.Activity_MasterpieceDetail;
 import com.example.palettegrap.view.activity.Activity_MasterpieceUpload;
-import com.example.palettegrap.view.activity.Activity_Painting;
+import com.example.palettegrap.view.activity.Activity_PaintingDetail;
 import com.example.palettegrap.view.activity.Activity_PaintingUpload;
 import com.example.palettegrap.view.adapter.MasterpieceAdapter;
 import com.example.palettegrap.view.adapter.PaintingAdapter;
@@ -71,9 +70,13 @@ public class Fragment_ArtStory extends Fragment {
         Button story_upload = (Button) rootView.findViewById(R.id.upload);
         ImageView btn_masterpiece = (ImageView) rootView.findViewById(R.id.btn_masterpiece);
         TextView masterpiece_count = (TextView) rootView.findViewById(R.id.masterpiece_count);
-        ImageView btn_painting = (ImageView) rootView.findViewById(R.id.btn_painting);
         TextView painting_count = (TextView) rootView.findViewById(R.id.painting_count);
 
+        //오늘의 명화 & 그림강좌 비었을 때
+        ImageView emptyimage = (ImageView) rootView.findViewById(R.id.emptyimage);
+        ImageView emptyimage2 = (ImageView) rootView.findViewById(R.id.emptyimage2);
+        TextView emptytext = (TextView) rootView.findViewById(R.id.emptytext);
+        TextView emptytext2 = (TextView) rootView.findViewById(R.id.emptytext2);
 
         //스토리 업로드(공지사항 & 그림강좌)
         //하드코딩(kimheeje@naver.com)과 동일한 로그인 이메일이 아니라면 공지사항 버튼 안나오도록 설정!
@@ -129,16 +132,6 @@ public class Fragment_ArtStory extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Activity_Masterpiece.class);
                 startActivity(intent);
-            }
-        });
-
-        //그림강좌로 이동
-        btn_painting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Activity_Painting.class);
-                startActivity(intent);
-
             }
         });
 
@@ -224,11 +217,13 @@ public class Fragment_ArtStory extends Fragment {
                 masterpiece_count.setText(String.valueOf(body.size())+"개");
 
                 //게시글이 비었을 때
-//                if(body.size()!=0){
-//                    empty.setVisibility(View.INVISIBLE);
-//                }else{
-//                    empty.setVisibility(View.VISIBLE);
-//                }
+                if(body.size()!=0){
+                    emptyimage.setVisibility(View.INVISIBLE);
+                    emptytext.setVisibility(View.INVISIBLE);
+                }else{
+                    emptyimage.setVisibility(View.VISIBLE);
+                    emptytext.setVisibility(View.VISIBLE);
+                }
 
                 //리사이클러뷰 연결
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
@@ -266,21 +261,24 @@ public class Fragment_ArtStory extends Fragment {
 
                     generateFeedList(response.body());
 
-//                    masterpieceAdapter.setOnItemClickListener(new MasterpieceAdapter.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(View view, int position) {
-//                            PaintingData masterData = response.body().get(position);
-//
-//                            Intent intent = new Intent(getActivity(), Activity_MasterpieceDetail.class);
-//                            intent.putExtra("member_email", masterData.getMember_email());
-//                            intent.putExtra("master_id", masterData.getMaster_id());
-//                            intent.putExtra("master_title", masterData.getMaster_title());
-//                            intent.putExtra("master_artist", masterData.getMaster_artist());
-//                            intent.putExtra("master_image", masterData.getMaster_image());
-//                            intent.putExtra("master_story", masterData.getMaster_story());
-//                            intent.putExtra("master_created", masterData.getMaster_created());
-//                            startActivity(intent);
-//
+                    paintingAdapter.setOnItemClickListener(new PaintingAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            PaintingData paintingData = response.body().get(position);
+
+                            Intent intent = new Intent(getActivity(), Activity_PaintingDetail.class);
+                            intent.putExtra("member_email", paintingData.getMember_email());
+                            intent.putExtra("member_image", paintingData.getMember_image());
+                            intent.putExtra("member_nick", paintingData.getMember_nick());
+                            intent.putExtra("like_count", paintingData.getLike_count());
+                            intent.putExtra("painting_id", paintingData.getPainting_id());
+                            intent.putExtra("painting_content_id", paintingData.getPainting_content_id());
+                            intent.putExtra("painting_title", paintingData.getPainting_title());
+                            intent.putExtra("painting_iamge_path", paintingData.getPainting_image_path());
+                            intent.putExtra("painting_created", paintingData.getPainting_created());
+                            intent.putExtra("painting_text", paintingData.getPainting_text());
+                            startActivity(intent);
+
 //                            //해당 아이템을 누르면 이메일/명화 일련번호가 mastercheck table에 입력됨
 //                            Gson gson = new GsonBuilder().setLenient().create();
 //
@@ -311,8 +309,8 @@ public class Fragment_ArtStory extends Fragment {
 //
 //                                }
 //                            });
-//                        }
-//                    });
+                        }
+                    });
                 }
             }
 
@@ -325,21 +323,23 @@ public class Fragment_ArtStory extends Fragment {
                 recyclerView.setAdapter(paintingAdapter);
 
                 //그림강좌 갯수 카운팅
-                painting_count.setText(String.valueOf(body.size())+"개");
+                painting_count.setText(String.valueOf("("+body.size())+"개"+")");
 
                 //게시글이 비었을 때
-//                if(body.size()!=0){
-//                    empty.setVisibility(View.INVISIBLE);
-//                }else{
-//                    empty.setVisibility(View.VISIBLE);
-//                }
+                if(body.size()!=0){
+                    emptyimage2.setVisibility(View.INVISIBLE);
+                    emptytext2.setVisibility(View.INVISIBLE);
+                }else{
+                    emptyimage2.setVisibility(View.VISIBLE);
+                    emptytext2.setVisibility(View.VISIBLE);
+                }
 
                 //리사이클러뷰 연결
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(linearLayoutManager);
 
-                masterpieceAdapter.notifyDataSetChanged();
+                paintingAdapter.notifyDataSetChanged();
 
             }
 

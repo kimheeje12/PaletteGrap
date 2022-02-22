@@ -34,7 +34,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Activity_Masterpiece extends AppCompatActivity {
 
-    public static List<MasterData> masterDataList;
     private MasterAdapter masterAdapter;
     private RecyclerView recyclerView;
 

@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/masterpiece"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="title"
@@ -42,7 +42,7 @@
         app:srcCompat="@drawable/setting2" />
 
     <TextView
-        android:id="@+id/masterpiece_created"
+        android:id="@+id/painting_created"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -50,7 +50,7 @@
         android:textColor="@color/white"
         android:textSize="10dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/masterpiece"
+        app:layout_constraintBottom_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <View
@@ -62,13 +62,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/masterpiece" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <View
         android:id="@+id/view9"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="60dp"
         android:background="#808080"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,9 @@
         android:layout_width="47dp"
         android:layout_height="42dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -103,7 +105,7 @@
         android:id="@+id/unlike"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="180dp"
+        android:layout_marginStart="110dp"
         app:layout_constraintBottom_toBottomOf="@+id/nickname"
         app:layout_constraintStart_toEndOf="@+id/nickname"
         app:layout_constraintTop_toTopOf="@+id/nickname"
@@ -113,7 +115,7 @@
         android:id="@+id/like"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="180dp"
+        android:layout_marginStart="110dp"
         android:background="@drawable/like"
         android:backgroundTint="#ff0000"
         android:visibility="invisible"
@@ -150,11 +152,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_paintingdetail"
-        android:layout_width="441dp"
-        android:layout_height="696dp"
+        android:layout_width="match_parent"
+        android:layout_height="725dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view8" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

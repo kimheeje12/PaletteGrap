@@ -18,6 +18,9 @@ import com.example.palettegrap.R;
 import com.example.palettegrap.item.MasterData;
 import com.example.palettegrap.item.PaintingData;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHolder> {
@@ -67,8 +70,17 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
 
     holder.title.setText(paintingitemposition.getPainting_title());
     holder.nickname.setText(paintingitemposition.getMember_nick());
-    holder.created_date.setText(paintingitemposition.getPainting_created());
 
+        //작성시간
+        String stringDate = paintingitemposition.getPainting_created();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = format.parse(stringDate);
+            String writetime= formatTimeString(date);
+            holder.created_date.setText(writetime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -100,5 +112,35 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
                 }
             });
         }
+    }
+
+    public class Time_MAXIMUM {
+        public static final int SEC = 60;
+        public static final int MIN = 60;
+        public static final int HOUR = 24;
+        public static final int DAY = 30;
+        public static final int MONTH = 12;
+    }
+
+    public static String formatTimeString(Date tempDate) {
+        long curTime = System.currentTimeMillis();
+        long regTime = tempDate.getTime();
+        long diffTime = (curTime - regTime) / 1000;
+        String msg;
+
+        if (diffTime < ReplyAdapter.Time_MAXIMUM.SEC) {
+            msg = "방금 전";
+        } else if ((diffTime /= ReplyAdapter.Time_MAXIMUM.SEC) < ReplyAdapter.Time_MAXIMUM.MIN) {
+            msg = diffTime + "분 전";
+        } else if ((diffTime /= ReplyAdapter.Time_MAXIMUM.MIN) < ReplyAdapter.Time_MAXIMUM.HOUR) {
+            msg = diffTime + "시간 전";
+        } else if ((diffTime /= ReplyAdapter.Time_MAXIMUM.HOUR) < ReplyAdapter.Time_MAXIMUM.DAY) {
+            msg = diffTime + "일 전";
+        } else if ((diffTime /= ReplyAdapter.Time_MAXIMUM.DAY) < ReplyAdapter.Time_MAXIMUM.MONTH) {
+            msg = diffTime + "달 전";
+        } else {
+            msg = diffTime + "년 전";
+        }
+        return msg;
     }
 }
