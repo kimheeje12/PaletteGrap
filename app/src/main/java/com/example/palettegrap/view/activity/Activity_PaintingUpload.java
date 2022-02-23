@@ -138,6 +138,7 @@ public class Activity_PaintingUpload extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+
                 if (photoroute==null || painting_explain.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "내용을 입력해주세요!", Toast.LENGTH_SHORT).show();
                 } else {

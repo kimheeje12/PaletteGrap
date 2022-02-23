@@ -103,7 +103,6 @@ public class Activity_MyStoryEdit extends AppCompatActivity {
 
         //List 통채로 받아오기(이미지 추가를 위해)
         myList = (List<FeedData>) getIntent().getSerializableExtra("myList");
-
         for (int k = 0; k < myList.size(); ++k) {
             FeedData feedData = myList.get(k);
 
