@@ -76,8 +76,6 @@ public class Activity_PaintingEdit extends AppCompatActivity {
     String photoroute;
     TextView image2;
 
-    PaintingUploadData paintingData;
-
     String tmp_PaintingPath;
 
     @Override
@@ -105,6 +103,10 @@ public class Activity_PaintingEdit extends AppCompatActivity {
         SharedPreferences pref2 = getSharedPreferences("painting", MODE_PRIVATE);
         String painting_id = pref2.getString("painting_id", null);
         String painting_title = pref2.getString("painting_title", null);
+
+
+        title.setText(painting_title); //그림강좌 제목!
+
         paintingDataList = (List<PaintingData>) getIntent().getSerializableExtra("paintingdata");
         for (int k = 0; k < paintingDataList.size(); ++k) {
 
@@ -177,7 +179,7 @@ public class Activity_PaintingEdit extends AppCompatActivity {
                                 paintingUploadData.setPainting_text(painting_explain.getText().toString());
 
                                 paintingUploadDataList.set(position, paintingUploadData);
-                                paintingUploadDataList3.add(paintingUploadData); // 순서정리용
+                                paintingUploadDataList3.set(position, paintingUploadData);
 
                                 //다시 수정 버튼 -> 추가 버튼
                                 painting_edit.setVisibility(View.INVISIBLE);
@@ -197,7 +199,9 @@ public class Activity_PaintingEdit extends AppCompatActivity {
                                 paintingUploadData.setPainting_text(painting_explain.getText().toString());
 
                                 paintingUploadDataList.set(position, paintingUploadData);
-                                paintingUploadDataList3.add(paintingUploadData); // 순서정리용
+
+                                paintingUploadDataList2.add(paintingUploadData); // 서버로 보내기 위해(새로운 이미지)
+                                paintingUploadDataList3.set(position, paintingUploadData);
 
                                 //다시 수정 버튼 -> 추가 버튼
                                 painting_edit.setVisibility(View.INVISIBLE);
@@ -293,19 +297,17 @@ public class Activity_PaintingEdit extends AppCompatActivity {
                         MultipartBody.Part text = MultipartBody.Part.createFormData("text" + k, paintingUploadDataList2.get(k).getPainting_text(), requestBody); //서버에서 받는 키값 String, 파일 이름 String, 파일 경로를 가지는 RequestBody 객체
                         files.add(text);
                     }
-                    Log.e("files 확인", "files 확인"+files);
-
+                    Log.e("paintingUploadDataList3 check", "paintingUploadDataList3 check"+paintingUploadDataList3);
 
                     //기존 이미지 + text 모아서 보내기!
                     for (int i = 0; i < paintingUploadDataList3.size(); ++i) {
                         tmp_PaintingPath = tmp_PaintingPath + "///" + paintingUploadDataList3.get(i).getPainting_image_path() + "///" + paintingUploadDataList3.get(i).getPainting_text() + "///" + i + "///"; //서버로 보내기 위한 String 합치기
                     }
-
                     RequestBody requestBody1 = RequestBody.create(MediaType.parse("text/plain"), painting_id); //그림강좌 id
                     RequestBody requestBody2 = RequestBody.create(MediaType.parse("text/plain"), loginemail); //이메일
                     RequestBody requestBody3 = RequestBody.create(MediaType.parse("text/plain"), title.getText().toString()); //제목
-                    RequestBody requestBody4 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(paintingUploadDataList.size())); //게시글(이미지+text) 사이즈
-                    RequestBody requestBody5 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(paintingUploadDataList.size())); //기존 게시글(이미지+text) 사이즈
+                    RequestBody requestBody4 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(paintingUploadDataList2.size())); //게시글(이미지+text) 사이즈
+                    RequestBody requestBody5 = RequestBody.create(MediaType.parse("*/*"), String.valueOf(paintingUploadDataList3.size())); //기존 게시글(이미지+text) 사이즈
                     RequestBody requestBody6 = RequestBody.create(MediaType.parse("text/plain"), tmp_PaintingPath); //기존 데이터
 
                     Call<String> call = api.PaintingEdit(requestBody1, requestBody2, requestBody3, requestBody4, requestBody5, requestBody6, files, files);

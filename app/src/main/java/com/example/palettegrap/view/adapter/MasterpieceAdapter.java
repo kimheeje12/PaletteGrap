@@ -66,7 +66,7 @@ public class MasterpieceAdapter extends RecyclerView.Adapter<MasterpieceAdapter.
 
         //읽음 여부
         if(Integer.parseInt(masteritemposition.getMaster_check())==1){
-                holder.master_check.setVisibility(View.INVISIBLE);
+            holder.master_check.setVisibility(View.INVISIBLE);
         }else {
             holder.master_check.setVisibility(View.VISIBLE);
         }

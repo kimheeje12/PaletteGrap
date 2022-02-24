@@ -131,14 +131,13 @@ public class Activity_MasterpieceDetail extends AppCompatActivity {
                                             @Override
                                             public void onResponse(@NonNull Call<List<MasterData>> call, @NonNull Response<List<MasterData>> response) {
                                                 if (response.isSuccessful() && response.body() != null) {
-                                                    finish();
-                                                    Toast.makeText(getApplicationContext(), "오늘의 명화가 삭제되었습니다", Toast.LENGTH_SHORT).show();
 
                                                 }
                                             }
                                             @Override
                                             public void onFailure(Call<List<MasterData>> call, Throwable t) {
-
+                                                finish();
+                                                Toast.makeText(getApplicationContext(), "오늘의 명화가 삭제되었습니다", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     }

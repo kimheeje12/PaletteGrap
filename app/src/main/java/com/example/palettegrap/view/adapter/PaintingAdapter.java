@@ -70,6 +70,7 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
 
     holder.title.setText(paintingitemposition.getPainting_title());
     holder.nickname.setText(paintingitemposition.getMember_nick());
+    holder.like_count.setText(paintingitemposition.getLike_count());
 
         //읽음 여부
         if(Integer.parseInt(paintingitemposition.getPainting_check())==1){
@@ -78,6 +79,16 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
             holder.painting_check.setVisibility(View.VISIBLE);
         }
 
+        int likecount = Integer.parseInt(paintingitemposition.getLike_count()); //좋아요 갯수
+
+        //좋아요 여부(좋아요 갯수가 0이 아니라면, 하트보여주기)
+        if (likecount != 0) {
+            holder.like.setVisibility(View.VISIBLE);
+            holder.unlike.setVisibility(View.INVISIBLE);
+        } else {
+            holder.like.setVisibility(View.INVISIBLE);
+            holder.unlike.setVisibility(View.VISIBLE);
+        }
 
         //작성시간
         String stringDate = paintingitemposition.getPainting_created();
@@ -96,8 +107,8 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, nickname, created_date;
-        ImageView unlike, painting_image, painting_check;
+        TextView title, nickname, created_date, like_count;
+        ImageView like, unlike, painting_image, painting_check;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,7 +118,9 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
             nickname = (TextView) itemView.findViewById(R.id.nickname);
             created_date = (TextView) itemView.findViewById(R.id.created_date);
             unlike = (ImageView) itemView.findViewById(R.id.unlike);
+            like = (ImageView) itemView.findViewById(R.id.like);
             painting_image = (ImageView) itemView.findViewById(R.id.painting_image);
+            like_count = (TextView) itemView.findViewById(R.id.like_count);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
