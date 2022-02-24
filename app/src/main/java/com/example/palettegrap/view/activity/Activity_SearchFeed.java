@@ -39,7 +39,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Activity_SearchFeed extends AppCompatActivity {
 
-
     private List<FeedData> myList;
     private List<FeedData> myList2 = new ArrayList<>();
     private SearchFeedAdapter searchFeedAdapter;
@@ -57,6 +56,79 @@ public class Activity_SearchFeed extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("autologin", MODE_PRIVATE);
         String loginemail = pref.getString("inputemail", null);
+
+        Gson gson = new GsonBuilder().setLenient().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(SearchFeed.SearchFeed_URL)
+                .addConverterFactory(ScalarsConverterFactory.create()) // Response를 String 형태로 받고 싶다면 사용하기!
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        SearchFeed api = retrofit.create(SearchFeed.class);
+        Call<List<FeedData>> call = api.getFeed(searchfeed_input.getText().toString(), loginemail);
+        call.enqueue(new Callback<List<FeedData>>() //enqueue: 데이터를 입력하는 함수
+        {
+            @Override
+            public void onResponse(@NonNull Call<List<FeedData>> call, @NonNull Response<List<FeedData>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("Success", "searchfeed call back 정상!");
+
+                    myList = response.body();
+
+                    if(searchfeed_input.getText().toString().length()==0) {
+                        recyclerView = (RecyclerView) findViewById(R.id.recycler_SearchFeed);
+                        recyclerView.setHasFixedSize(true);
+
+                        searchFeedAdapter = new SearchFeedAdapter(Activity_SearchFeed.this, myList);
+                        recyclerView.setAdapter(searchFeedAdapter);
+
+                        //게시글이 비었을 때
+                        search_feed1.setVisibility(View.INVISIBLE);
+                        search_feed2.setVisibility(View.INVISIBLE);
+                        search_feed_count.setVisibility(View.INVISIBLE);
+
+                        //리사이클러뷰 연결
+                        GridLayoutManager gridLayoutManager = new GridLayoutManager(Activity_SearchFeed.this, 3, GridLayoutManager.VERTICAL, false);
+                        recyclerView.setLayoutManager(gridLayoutManager);
+
+                        searchFeedAdapter.notifyDataSetChanged();
+
+                        try {
+                            searchFeedAdapter.setOnItemClickListener(new SearchFeedAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, int position) {
+
+                                    FeedData feedData = response.body().get(position);
+
+                                    Intent intent = new Intent(Activity_SearchFeed.this, Activity_MyStory.class);
+                                    intent.putExtra("member_email", feedData.getMember_email());
+                                    intent.putExtra("feed_id", feedData.getfeed_id());
+                                    intent.putExtra("member_image", feedData.getmember_image());
+                                    intent.putExtra("member_nick", feedData.getmember_nick());
+                                    intent.putExtra("feed_text", feedData.getfeed_text());
+                                    intent.putExtra("feed_drawingtool", feedData.getfeed_drawingtool());
+                                    intent.putExtra("feed_drawingtime", feedData.getfeed_drawingtime());
+                                    intent.putExtra("feed_created", feedData.getfeed_created());
+                                    intent.putExtra("feed_category", feedData.getFeed_category());
+                                    intent.putExtra("position", position);
+                                    startActivity(intent);
+                                }
+                            });
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FeedData>> call, Throwable t) {
+                Log.e("Fail", "call back 실패" + t.getMessage());
+
+            }
+        });
 
 
         searchfeed_input.addTextChangedListener(new TextWatcher() {
@@ -138,6 +210,7 @@ public class Activity_SearchFeed extends AppCompatActivity {
                                 }
 
                             }else {
+                                myList2.clear(); // 반복문이 계속 돌기 때문에 비워줘야됨
 
                                 for (int i = 0; i < myList.size(); i++) {
                                     if (myList.get(i).getmember_nick().toLowerCase().contains(searchfeed_input.getText().toString()) ||

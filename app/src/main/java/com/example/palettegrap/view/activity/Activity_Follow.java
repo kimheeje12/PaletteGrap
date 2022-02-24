@@ -62,7 +62,6 @@ public class Activity_Follow extends AppCompatActivity {
             }
         });
 
-
         //닉네임 설정
         Intent intent = getIntent(); //mypage & 다른 회원 mypage에서 받아온 이메일 정보(0 또는 1, email)
         String mypage_member_email = intent.getStringExtra("mypage_member_email");
@@ -98,7 +97,7 @@ public class Activity_Follow extends AppCompatActivity {
                         FeedData feedData = response.body().get(0);
                         member_nick.setText(feedData.getmember_nick()); //닉네임
                         follower_count.setText(Integer.toString(Integer.parseInt(feedData.getFollower_count()))); //팔로워 카운팅
-                        following_count.setText(feedData.getFollowing_count()); //팔로잉 카운팅
+                        following_count.setText(Integer.toString(Integer.parseInt(feedData.getFollowing_count()))); //팔로잉 카운팅
 
                     }
                 }
@@ -145,7 +144,7 @@ public class Activity_Follow extends AppCompatActivity {
                         FeedData feedData = response.body().get(0);
                         member_nick.setText(feedData.getmember_nick()); //닉네임
                         follower_count.setText(Integer.toString(Integer.parseInt(feedData.getFollower_count()))); //팔로워 카운팅
-                        following_count.setText(feedData.getFollowing_count()); //팔로잉 카운팅
+                        following_count.setText(Integer.toString(Integer.parseInt(feedData.getFollowing_count()))); //팔로잉 카운팅
 
 
                     }

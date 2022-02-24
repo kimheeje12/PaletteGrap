@@ -65,7 +65,6 @@ public class MasterAdapter extends RecyclerView.Adapter<MasterAdapter.ViewHolder
         }else {
             holder.master_check.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override

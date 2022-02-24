@@ -158,7 +158,7 @@
         android:id="@+id/masterpiece_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="120dp"
         android:text="이미지를 등록해주세요"
         android:textColor="@color/white"
         android:textSize="20dp"

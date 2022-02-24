@@ -75,7 +75,7 @@ public class PaintingAdapter extends RecyclerView.Adapter<PaintingAdapter.ViewHo
         //읽음 여부
         if(Integer.parseInt(paintingitemposition.getPainting_check())==1){
             holder.painting_check.setVisibility(View.INVISIBLE);
-        }else {
+        }else{
             holder.painting_check.setVisibility(View.VISIBLE);
         }
 

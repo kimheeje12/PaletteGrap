@@ -273,6 +273,10 @@ public class Fragment_Follower extends Fragment {
                                                         @Override
                                                         public void onItemClick(View view, int position) {
 
+
+
+
+
                                                             FeedData feedData = response.body().get(position);
 
                                                             Gson gson = new GsonBuilder().setLenient().create();
@@ -452,6 +456,8 @@ public class Fragment_Follower extends Fragment {
                                                         followerAdapter.setOnItemClickListener2(new FollowerAdapter.OnItemClickListener() {
                                                             @Override
                                                             public void onItemClick(View view, int position) {
+
+
 
                                                                 FeedData feedData = response.body().get(position);
 

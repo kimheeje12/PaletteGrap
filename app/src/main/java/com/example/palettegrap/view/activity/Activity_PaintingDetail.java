@@ -59,6 +59,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Activity_PaintingDetail extends AppCompatActivity {
 
     public List<PaintingData> paintingDataList;
+    public List<PaintingData> paintingDataList2;
     private PaintingDetailAdapter paintingDetailAdapter;
     private RecyclerView recyclerView;
 
@@ -110,7 +111,8 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                                 editor.putString("painting_id", painting_id);
                                 editor.putString("painting_title", painting_title);
                                 editor.apply();
-                                intent.putExtra("paintingdata", (Serializable) paintingDataList);
+                                intent.putExtra("paintingdata", (Serializable) paintingDataList2);
+                                Log.e("그림강좌 데이터 확인", "그림강좌 데이터 확인"+paintingDataList2.size());
                                 startActivity(intent);
                             }else if(i==1){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(Activity_PaintingDetail.this);
@@ -211,7 +213,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                     Log.e("Success", "그림강좌 call back 정상!");
 
                     generateFeedList(response.body());
-                    paintingDataList=response.body(); //수정을 위해 담아놓기!
+                    paintingDataList2=response.body(); //수정을 위해 담아놓기!
                 }
             }
 
