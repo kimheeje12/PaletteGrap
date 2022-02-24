@@ -86,7 +86,7 @@ public class Fragment_ArtStory extends Fragment {
             public void onClick(View view) {
 
                 if(loginemail.equals("kimheeje@naver.com")){
-                    final String[] items ={"오늘의 명화 올리기", "그림강좌 올리기","취소"};
+                    final String[] items ={"오늘의 명화 작성하기", "그림강좌 작성하기","취소"};
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

@@ -31,16 +31,23 @@
             android:exported="true" />
         <activity
             android:name=".view.activity.Activity_PaintingEdit"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".view.activity.Activity_MasterpieceEdit"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.Activity_MasterpieceUpload"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".view.activity.Activity_PaintingUpload"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".view.activity.Activity_MasterpieceDetail"
             android:exported="true" />
@@ -71,7 +78,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.Activity_MyStoryEdit"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".view.activity.Activity_PwEdit"
             android:exported="true" />

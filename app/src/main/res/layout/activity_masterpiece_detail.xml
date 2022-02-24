@@ -55,7 +55,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="770dp"
+        android:layout_height="615dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +143,7 @@
                 android:textSize="15dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.722"
+                app:layout_constraintHorizontal_bias="0.65"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/masterpiece_title" />
 
@@ -160,7 +161,7 @@
             <TextView
                 android:id="@+id/masterpiece_content"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="wrap_content"
                 android:hint="오늘의 명화 내용"
                 android:padding="15dp"
                 android:textColor="@color/white"

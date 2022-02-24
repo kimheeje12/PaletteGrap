@@ -91,7 +91,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
         String created_date = intent.getStringExtra("painting_created");
 
         //설정(아이템 클릭시 얻어온 이메일과 현재 로그인 되어있는 이메일이 같다면 설정창 보이도록!) / 수정&삭제
-        if(member_email.equals(loginemail)){
+        if(member_email.equals(loginemail) || loginemail.equals("kimheeje@naver.com")){
             setting.setVisibility(View.VISIBLE);
             setting.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -160,13 +160,13 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                     builder.show();
                 }
             });
-        }else{
+        }
+        else{
             setting.setVisibility(View.INVISIBLE);
         }
 
         //그림강좌 제목
         title.setText(painting_title);
-
 
         //하단 프로필, 닉네임
         Glide.with(Activity_PaintingDetail.this).load(member_image).circleCrop().into(profileimage);
