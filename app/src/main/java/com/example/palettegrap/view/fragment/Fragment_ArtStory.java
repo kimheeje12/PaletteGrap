@@ -278,6 +278,7 @@ public class Fragment_ArtStory extends Fragment {
                             intent.putExtra("painting_iamge_path", paintingData.getPainting_image_path());
                             intent.putExtra("painting_created", paintingData.getPainting_created());
                             intent.putExtra("painting_text", paintingData.getPainting_text());
+                            intent.putExtra("position", position);
                             startActivity(intent);
 
                             //해당 아이템을 누르면 이메일/명화 일련번호가 mastercheck table에 입력됨

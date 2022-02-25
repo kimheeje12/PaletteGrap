@@ -85,10 +85,10 @@ public class Activity_PaintingDetail extends AppCompatActivity {
         String member_email = intent.getStringExtra("member_email");
         String member_image = intent.getStringExtra("member_image");
         String member_nick = intent.getStringExtra("member_nick");
-        String likecount = intent.getStringExtra("like_count");
         String painting_id = intent.getStringExtra("painting_id");
         String painting_title = intent.getStringExtra("painting_title");
         String created_date = intent.getStringExtra("painting_created");
+        int position = intent.getIntExtra("position",-1);
 
         //설정(아이템 클릭시 얻어온 이메일과 현재 로그인 되어있는 이메일이 같다면 설정창 보이도록!) / 수정&삭제
         if(member_email.equals(loginemail) || loginemail.equals("kimheeje@naver.com")){
@@ -289,7 +289,6 @@ public class Activity_PaintingDetail extends AppCompatActivity {
             }
         });
 
-
         //좋아요 갯수 카운팅
         Gson gson4 = new GsonBuilder().setLenient().create();
 
@@ -309,7 +308,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                     Log.e("Success", "call back 정상!");
                     paintingDataList = response.body();
 
-                    PaintingData paintingData = paintingDataList.get(0);
+                    PaintingData paintingData = paintingDataList.get(position);
                     like_count.setText(paintingData.getLike_count());
 
                 }
@@ -366,7 +365,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                                         Log.e("Success", "call back 정상!");
                                         paintingDataList = response.body();
 
-                                        PaintingData paintingData = paintingDataList.get(0);
+                                        PaintingData paintingData = paintingDataList.get(position);
                                         like_count.setText(paintingData.getLike_count());
 
                                     }
@@ -436,7 +435,7 @@ public class Activity_PaintingDetail extends AppCompatActivity {
                                         Log.e("Success", "call back 정상!");
                                         paintingDataList = response.body();
 
-                                        PaintingData paintingData = paintingDataList.get(0);
+                                        PaintingData paintingData = paintingDataList.get(position);
                                         like_count.setText(paintingData.getLike_count());
 
                                     }
